@@ -12,3 +12,8 @@
   font-family: Pop-B;
   src: url(../Fonts/Poppins/Poppins-Bold.ttf);
 }
+
+@font-face {
+  font-family: iskoola-potha;
+  src: url(../Fonts/Sinhala/Iskoola\ Pota\ Regular.ttf);
+}
