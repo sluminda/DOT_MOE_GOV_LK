@@ -1,0 +1,14 @@
+@font-face {
+  font-family: Pop-R;
+  src: url(../Fonts/Poppins/Poppins-Regular.ttf);
+}
+
+@font-face {
+  font-family: Pop-SB;
+  src: url(../Fonts/Poppins/Poppins-SemiBold.ttf);
+}
+
+@font-face {
+  font-family: Pop-B;
+  src: url(../Fonts/Poppins/Poppins-Bold.ttf);
+}
