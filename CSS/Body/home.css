@@ -1,0 +1,145 @@
+/*
+=================
+Main Section Hero
+=================
+*/
+
+.hero {
+  grid-template-columns: 2fr 3fr;
+  /* padding: var(--padding-2); */ /*Important*/
+  align-self: center;
+  justify-self: center;
+}
+
+.hero figure {
+  padding: var(--padding-1);
+}
+
+.hero figure img {
+  /* background-image: url(../../Images/Body/Hero/image2.jpg); */
+  max-width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border-radius: 50px;
+}
+
+.hero article {
+  padding: 10%;
+  row-gap: 2rem;
+  text-align: center;
+}
+
+.hero article h1 {
+  font-size: var(--font-big-2);
+  font-family: var(--font-B);
+  color: var(--secondary-color);
+}
+
+.hero article p {
+  text-align: justify;
+  font-size: var(--font-regular);
+  color: var(--secondary-color);
+}
+
+/*
+=======================
+Main Section Objectives
+=======================
+*/
+
+.objectives {
+  grid-template-columns: repeat(2, 1fr);
+  padding: 5% 10%; /*Important*/
+  gap: 10%;
+}
+
+.object_container {
+  row-gap: var(--padding-small);
+}
+
+.object_container figure {
+  gap: 1rem;
+}
+
+.object_container figure .fa-bullseye,
+.object_container figure .fa-eye-low-vision {
+  color: var(--secondary-color);
+}
+
+.object_container figure figcaption {
+  font-size: var(--font-big-1);
+  font-family: pop-B;
+  text-align: center;
+  color: var(--secondary-color);
+}
+
+.object_container p {
+  color: var(--secondary-color);
+  font-size: var(--font-regular);
+  text-align: justify;
+}
+
+/*
+=============================
+Main Section Training Modules
+=============================
+*/
+
+.training {
+  padding: 5% 10%; /*Important*/
+  gap: 10%;
+}
+
+.training h2 {
+  text-align: center;
+  font-size: var(--font-big-1);
+  font-family: pop-B;
+  color: var(--secondary-color);
+}
+
+/* Training Module Cards*/
+.training_modules {
+  padding: 5%; /*Important*/
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10%; /*Important*/
+}
+
+/* @media (mix-width: 1000px) {
+      .training_modules {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+    } */
+
+.modules_container {
+  padding: 7%;
+  box-shadow: 0 0 3px var(--secondary-color);
+  border-radius: 10px;
+  align-items: center;
+  row-gap: var(--font-big-2); /* Important */
+}
+
+.training_modules .modules_container h3 {
+  color: var(--secondary-color);
+  text-align: center;
+}
+
+.training_modules .modules_container ul {
+  list-style-type: none;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.training_modules .modules_container ul li {
+  display: flex;
+}
+
+.training_modules .modules_container ul li a {
+  text-decoration: none;
+  color: var(--secondary-color);
+  padding: 0.5rem 1rem;
+  position: relative;
+  box-shadow: 0 0 2px var(--secondary-color);
+  border-radius: 5px;
+}
