@@ -122,6 +122,12 @@ header .gov-logo-container .gov-logo-title h1:first-child {
   font-family: var(--font-Sinhala);
 }
 
+@supports (-moz-appearance: none) {
+  header .gov-logo-container .gov-logo-title h1:first-child {
+    letter-spacing: -1px;
+  }
+}
+
 header .gov-logo-container .gov-logo-title h1:nth-child(2) {
   letter-spacing: -2px;
 }

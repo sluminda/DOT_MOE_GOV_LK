@@ -102,15 +102,9 @@ Main Section Training Modules
 /* Training Module Cards*/
 .training_modules {
   padding: 5%; /*Important*/
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 10%; /*Important*/
 }
-
-/* @media (mix-width: 1000px) {
-      .training_modules {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      }
-    } */
 
 .modules_container {
   padding: 7%;
@@ -127,8 +121,13 @@ Main Section Training Modules
 
 .training_modules .modules_container ul {
   list-style-type: none;
-  justify-content: space-around;
+  justify-content: space-evenly;
   gap: 1rem;
+}
+
+.training_modules .modules_container .guidline-box {
+  flex-wrap: wrap;
+  flex-grow: 2rem;
 }
 
 .training_modules .modules_container ul li {
