@@ -73,12 +73,18 @@ Default Configuration
 }
 
 .horizontal-line {
-  display: flex;
-  width: 80%;
+  width: 75%;
   height: 2px;
   background-color: var(--secondary-color);
   border-radius: 100vh;
-  justify-content: center;
+  justify-self: center;
+  align-self: center;
+}
+
+@media (max-width: 500px) {
+  .horizontal-line {
+    margin: 1.5rem 0;
+  }
 }
 
 /*

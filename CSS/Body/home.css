@@ -5,7 +5,7 @@ Main Section Hero
 */
 
 .hero {
-  grid-template-columns: 2fr 3fr;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   /* padding: var(--padding-2); */ /*Important*/
   align-self: center;
   justify-self: center;
@@ -31,6 +31,15 @@ Main Section Hero
   text-align: center;
 }
 
+/* Hero Responsive */
+@media (max-width: 500px) {
+  .hero article {
+    row-gap: 1.5rem;
+    padding: 0 3rem;
+  }
+}
+/* End here  |*/
+
 .hero article h1 {
   font-size: var(--font-big-2);
   font-family: var(--font-B);
@@ -50,13 +59,30 @@ Main Section Objectives
 */
 
 .objectives {
-  grid-template-columns: repeat(2, 1fr);
-  padding: 5% 10%; /*Important*/
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  padding: 5% 10%;
   gap: 10%;
 }
 
+/* objectives Responsive |*/
+@media (max-width: 700px) {
+  .objectives {
+    gap: 0;
+  }
+
+  .object_container {
+    padding: 1rem;
+  }
+
+  .object_container p {
+    text-align: center;
+  }
+}
+/* End here  |*/
+
 .object_container {
   row-gap: var(--padding-small);
+  padding: 10%;
 }
 
 .object_container figure {
@@ -89,7 +115,7 @@ Main Section Training Modules
 
 .training {
   padding: 5% 10%; /*Important*/
-  gap: 10%;
+  gap: var(--font-big-2);
 }
 
 .training h2 {
@@ -103,8 +129,16 @@ Main Section Training Modules
 .training_modules {
   padding: 5%; /*Important*/
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 10%; /*Important*/
+  gap: var(--padding-2); /*Important*/
 }
+
+/* Training Modules Responsive |*/
+@media (max-width: 700px) {
+  .training_modules {
+    gap: 2rem;
+  }
+}
+/* End here  |*/
 
 .modules_container {
   padding: 7%;
@@ -112,6 +146,7 @@ Main Section Training Modules
   border-radius: 10px;
   align-items: center;
   row-gap: var(--font-big-2); /* Important */
+  justify-content: space-evenly;
 }
 
 .training_modules .modules_container h3 {
@@ -142,3 +177,39 @@ Main Section Training Modules
   box-shadow: 0 0 2px var(--secondary-color);
   border-radius: 5px;
 }
+
+/*
+=======================
+Main Section Programme
+=======================
+*/
+
+.programme article {
+  padding: 5% 10%; /*Important*/
+  gap: var(--font-big-2);
+}
+
+.programme article h2 {
+  text-align: center;
+  font-size: var(--font-big-1);
+  font-family: pop-B;
+  color: var(--secondary-color);
+}
+
+.programme article p {
+  text-align: justify;
+  color: var(--secondary-color);
+  font-size: var(--font-regular);
+}
+
+/* Programme Responsive |*/
+@media (max-width: 700px) {
+  .programme {
+    padding: 1rem;
+  }
+
+  .programme p {
+    text-align: center;
+  }
+}
+/* End here  |*/
