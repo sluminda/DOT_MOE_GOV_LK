@@ -200,6 +200,7 @@ Main Section Programme
   text-align: justify;
   color: var(--secondary-color);
   font-size: var(--font-regular);
+  max-width: 85ch;
 }
 
 /* Programme Responsive |*/
@@ -210,6 +211,17 @@ Main Section Programme
 
   .programme p {
     text-align: center;
+    color: var(--secondary-color);
   }
 }
 /* End here  |*/
+
+/*
+=======================
+Main Section Statements
+=======================
+*/
+
+.statements {
+  gap: 1.5rem;
+}
