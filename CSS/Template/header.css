@@ -14,11 +14,11 @@ Default Configuration
 }
 
 :root {
-  --bg-color: #fafafa;
+  --bg-color: #ffffff;
   --secondary-color: rgb(0, 0, 0);
   --button-color: #508de9;
   --button-hover-color: #8196b4;
-  --container-color: #d9d9d9;
+  --container-color: #d7d7d7;
 
   --font-R: pop-R;
   --font-SB: pop-SB;
@@ -74,7 +74,7 @@ Default Configuration
 
 .horizontal-line {
   width: 75%;
-  height: 2px;
+  height: 1px;
   background-color: var(--secondary-color);
   border-radius: 100vh;
   justify-self: center;
@@ -99,60 +99,60 @@ body {
   height: 100%;
 }
 
-header {
+body > header {
   align-items: center;
   justify-content: space-between;
   padding: 1rem var(--padding-1);
   box-shadow: 0 0 5px var(--secondary-color);
 }
 
-/* --- Header Gov Logo --- */
+/* --- body > Header Gov Logo --- */
 
-header .gov-logo-container {
+body > header .gov-logo-container {
   grid-template-columns: auto auto;
   user-select: none;
 }
 
-header .gov-logo-container .gov-logo {
+body > header .gov-logo-container .gov-logo {
   width: 100px;
   height: 100px;
   justify-content: center;
 }
 
-header .gov-logo-container .gov-logo-title h1 {
+body > header .gov-logo-container .gov-logo-title h1 {
   line-height: 35px;
   color: var(--secondary-color);
 }
 
-header .gov-logo-container .gov-logo-title h1:first-child {
+body > header .gov-logo-container .gov-logo-title h1:first-child {
   font-family: var(--font-Sinhala);
 }
 
 @supports (-moz-appearance: none) {
-  header .gov-logo-container .gov-logo-title h1:first-child {
+  body > header .gov-logo-container .gov-logo-title h1:first-child {
     letter-spacing: -1px;
   }
 }
 
-header .gov-logo-container .gov-logo-title h1:nth-child(2) {
+body > header .gov-logo-container .gov-logo-title h1:nth-child(2) {
   letter-spacing: -2px;
 }
 
-header .gov-logo-container .gov-logo-title h1:last-child {
+body > header .gov-logo-container .gov-logo-title h1:last-child {
   letter-spacing: -1px;
   font-family: Calibri, "Trebuchet MS", sans-serif;
 }
 
-/* --- Header Navigation --- */
+/* --- body > Header Navigation --- */
 
-header nav ul {
+body > header nav ul {
   list-style-type: none;
   box-shadow: 0 0 5px 3px rgb(195, 195, 195);
   padding: 1rem var(--padding-1);
   border-radius: 20px;
 }
 
-header nav ul li a {
+body > header nav ul li a {
   font-weight: 600;
   font-size: var(--h4);
   text-decoration: none;
@@ -160,8 +160,8 @@ header nav ul li a {
   padding: 0.5rem 1rem;
 }
 
-/* --- Header Data Officer Logo --- */
+/* --- body > Header Data Officer Logo --- */
 
-header > img:last-child {
+body > header > img:last-child {
   width: 100px;
 }
