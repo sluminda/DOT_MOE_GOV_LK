@@ -14,11 +14,11 @@ Default Configuration
 }
 
 :root {
-  --bg-color: #000000;
-  --secondary-color: rgb(255, 255, 255);
+  --bg-color: #ffffff;
+  --secondary-color: rgb(0, 0, 0);
   --button-color: #508de9;
   --button-hover-color: #8196b4;
-  --container-color: #d7d7d7;
+  --container-color: #4d5056;
 
   --font-R: pop-R;
   --font-SB: pop-SB;
@@ -33,6 +33,14 @@ Default Configuration
   --padding-small: 2rem;
   --padding-1: 3rem;
   --padding-2: 3.5rem;
+}
+
+[data-theme="dark"] {
+  --bg-color: #232020;
+  --secondary-color: rgb(255, 255, 255);
+  --button-color: #508de9;
+  --button-hover-color: #8196b4;
+  --container-color: #44474d;
 }
 
 .DF {
@@ -64,7 +72,7 @@ Default Configuration
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .center {
@@ -102,11 +110,116 @@ body {
 body > header {
   align-items: center;
   justify-content: space-between;
-  padding: 1rem var(--padding-1);
+  padding: 1rem 8%;
   box-shadow: 0 0 5px var(--secondary-color);
 }
 
+/* Mobile navigation */
+
+body > header .mobile-nav-container {
+  display: none;
+}
+
+body > header .mobile-nav-container,
+body > header .mobile-nav-container .fa-bars {
+  position: relative;
+  cursor: pointer;
+}
+
+body > header .mobile-nav-container .fa-bars {
+  z-index: 10;
+}
+
+body > header .mobile-nav-container .fa-bars,
+body > header .mobile-nav-container .fa-xmark,
+body > header .mobile-nav .fa-house,
+body > header .mobile-nav .fa-person-chalkboard,
+body > header .mobile-nav .fa-section,
+body > header .mobile-nav .fa-flag,
+body > header .mobile-nav .fa-newspaper,
+body > header .mobile-nav .fa-images,
+body > header .mobile-nav .fa-address-book,
+body > header .mobile-nav h3 {
+  color: var(--secondary-color);
+  position: relative;
+}
+
+body > header .mobile-nav div {
+  display: flex;
+  position: relative;
+  width: 15px;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-nav {
+  z-index: 15;
+  position: absolute;
+  top: 100px;
+  background-color: var(--bg-color);
+  border-radius: 20px;
+  box-shadow: 0 0 5px var(--secondary-color);
+  padding: 1.5rem 2rem;
+  margin: 0 2rem;
+  height: auto;
+  opacity: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+  transform: translateX(0);
+}
+
+/* Transition for Mobile Navigation */
+.hidden-effect {
+  display: block;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition-property: opacity, transform;
+  transition-timing-function: 0.3s;
+}
+
+.mobile-nav ul {
+  row-gap: 1.5rem;
+  position: relative;
+}
+
+.mobile-nav ul li {
+  gap: 1.5rem;
+  position: relative;
+  list-style-type: none;
+}
+
+.mobile-nav ul li a {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 1rem;
+  align-items: center;
+  justify-content: left;
+  position: relative;
+  padding: 0;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  color: var(--secondary-color);
+  text-wrap: nowrap;
+}
+
+/* Header Responsive 500px*/
+
+/* @media (max-width: 500px) {
+  .mobile-nav {
+    z-index: 5;
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+    margin-right: 2rem;
+  }
+} */
+
 /* --- body > Header Gov Logo --- */
+
+.mobile-gov-logo-container {
+  display: none;
+}
 
 body > header .gov-logo-container {
   grid-template-columns: auto auto;
@@ -145,14 +258,14 @@ body > header .gov-logo-container .gov-logo-title h1:last-child {
 
 /* --- body > Header Navigation --- */
 
-body > header nav ul {
+body > header .wide_navigation ul {
   list-style-type: none;
   box-shadow: 0 0 5px 3px rgb(195, 195, 195);
   padding: 1rem var(--padding-1);
   border-radius: 20px;
 }
 
-body > header nav ul li a {
+body > header .wide_navigation ul li a {
   font-weight: 600;
   font-size: var(--h4);
   text-decoration: none;
@@ -162,6 +275,159 @@ body > header nav ul li a {
 
 /* --- body > Header Data Officer Logo --- */
 
-body > header > img:last-child {
+body > header > .data-officer-logo-container {
   width: 100px;
+}
+
+body > header > .data-officer-logo-container img {
+  width: 100px;
+}
+
+/* Dark-Mode */
+
+/* @keyframes mymove {
+  from {
+    transform: rotate(265deg);
+  }
+  to {
+    transform: rotate(275deg);
+  }
+}
+
+@keyframes mymovee {
+  from {
+    transform: rotate(275deg);
+  }
+  to {
+    transform: rotate(265deg);
+  }
+} */
+
+.theme-switch-wrapper {
+  display: flex;
+  position: absolute;
+  top: 300px;
+  right: -80px;
+  align-items: center;
+  transform: rotate(270deg);
+  z-index: 9;
+  /* animation: mymove 2s ease;
+  animation: mymovee 2s ease;
+  transform-origin: left; */
+}
+
+.theme-switch-wrapper em {
+  margin-left: 10px;
+  font-size: 1rem;
+}
+
+.theme-switch {
+  display: inline-block;
+  height: 34px;
+  position: relative;
+  width: 60px;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.slider {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 0.4s;
+}
+
+.slider:before {
+  background-color: #fff;
+  bottom: 4px;
+  content: "";
+  height: 26px;
+  left: 4px;
+  position: absolute;
+  transition: 0.4s;
+  width: 26px;
+}
+
+input:checked + .slider {
+  background-color: var(--button-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Header Responsive 1080px*/
+
+@media (max-width: 1080px) {
+  .wide_navigation {
+    display: none;
+  }
+
+  body > header {
+    padding: 1.5rem 1rem;
+    justify-content: space-evenly;
+  }
+
+  body > header .mobile-nav-container {
+    display: flex;
+    width: 30px;
+  }
+
+  .theme-switch-wrapper {
+    top: 250px;
+  }
+}
+
+/* Header Responsive 700px*/
+
+@media (max-width: 700px) {
+  .wide_navigation {
+    display: none;
+  }
+
+  .mobile-gov-logo-container {
+    display: flex;
+    position: relative;
+    /* transform: translateX(-10px); */
+  }
+
+  body > header {
+    padding: 1.5rem 1rem;
+    justify-content: space-evenly;
+  }
+
+  body > header > .data-officer-logo-container {
+    width: 60px;
+  }
+
+  body > header > .data-officer-logo-container img {
+    width: 60px;
+  }
+
+  .gov-logo-container {
+    display: none;
+  }
+
+  .mobile-gov-logo-container {
+    display: flex;
+    /* width: 180px; */
+  }
+
+  .mobile-gov-logo-container img {
+    width: 200px;
+  }
 }

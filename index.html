@@ -19,13 +19,81 @@
     <link rel="stylesheet" href="./CSS/Template/footer.css">
 
     <script defer src="./JS/home.js"></script>
+    <script defer src="./JS/header.js"></script>
 </head>
 
 <body>
 
     <!-- Header Section -->
 
-    <header class="DF PR hidden">
+    <header class="DF PR">
+        <!-- Mobile Navigation Icon-->
+        <div class="mobile-nav-container open">
+            <i class="fa-solid fa-2x fa-bars"></i>
+        </div>
+
+        <div class="mobile-nav-container close hidden">
+            <i class="fa-solid fa-2x fa-xmark"></i>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <nav class="mobile-nav hidden-effect">
+            <ul>
+                <li><a href="#">
+                        <div><i class="fa-solid fa-house"></i></div>
+                        <h3>Home</h3>
+                    </a>
+                </li>
+
+                <li><a href="#">
+                        <div><i class="fa-solid fa-person-chalkboard"></i></div>
+                        <h3>Training Module</h3>
+                    </a>
+                </li>
+
+                <li><a href="#">
+                        <div><i class="fa-solid fa-section"></i></div>
+                        <h3>Contributors</h3>
+                    </a>
+                </li>
+
+                <li><a href="#">
+                        <div><i class="fa-regular fa-flag"></i></div>
+                        <h3>Notices</h3>
+                    </a>
+                </li>
+
+                <li><a href="#">
+                        <div><i class="fa-regular fa-newspaper"></i></div>
+                        <h3>News</h3>
+                    </a>
+                </li>
+
+                <li><a href="#">
+                        <div><i class="fa-regular fa-images"></i></div>
+                        <h3>Gallery</h3>
+                    </a>
+                </li>
+
+                <li><a href="#">
+                        <div><i class="fa-regular fa-address-book"></i></div>
+                        <h3>Contact</h3>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+        <!-- Mobile Navigation Logo -->
+        <div class="mobile-gov-logo-container mbglc1">
+            <img src="./Images/Header/MOE logo Light mode.png" alt="Mobile_Gov_Logo">
+        </div>
+
+        <!-- Mobile Navigation Logo -->
+        <div class="mobile-gov-logo-container mbglc2 hidden">
+            <img src="./Images/Header/MOE logo Darkmode.png" alt="Mobile_Gov_Logo">
+        </div>
 
         <!-- Header Logo Container  -->
         <div class=" gov-logo-container DG PR center">
@@ -44,7 +112,7 @@
         </div>
 
         <!-- Navigation -->
-        <nav>
+        <nav class="wide_navigation">
             <ul class="DF PR">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Contributors</a></li>
@@ -53,7 +121,24 @@
         </nav>
 
         <!-- Data Officer Logo -->
-        <img loading="lazy" src="./Images/Header/Data_Officer Logo White.png" alt="Data_officer_Logo">
+        <div class="data-officer-logo-container DF PR dolc1">
+            <img loading="lazy" class="PR" src="./Images/Header/Data_Officer Logo White.png" alt="Data_officer_Logo">
+        </div>
+
+        <div class="data-officer-logo-container DF PR dolc2 hidden">
+            <img loading="lazy" class="PR" src="./Images/Header/Data_Officer Logo Dark.png" alt="Data_officer_Logo">
+        </div>
+
+        <!-- Dark Mode  -->
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <div class="slider round"></div>
+            </label>
+            <em>Enable Dark Mode!</em>
+        </div>
+
+
     </header>
 
     <!-- Body Content Starts -->
