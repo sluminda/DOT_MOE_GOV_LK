@@ -20,26 +20,54 @@ mobile_nav_close.addEventListener("click", () => {
   mobile_nav.classList.add("hidden-effect");
 });
 
-// Dark Mode
 const toggleSwitch = document.querySelector(
   '.theme-switch input[type="checkbox"]'
 );
 
 function switchTheme(e) {
-  if (e.target.checked) {
-    document.documentElement.setAttribute("data-theme", "dark");
-    logo1_white.classList.add("hidden");
-    logo1_dark.classList.remove("hidden");
-
-    logo2_white.classList.add("hidden");
-    logo2_dark.classList.remove("hidden");
+  const darkModeEnabled = e.target.checked;
+  if (darkModeEnabled) {
+    enableDarkMode();
   } else {
-    document.documentElement.setAttribute("data-theme", "light");
-    logo1_white.classList.remove("hidden");
-    logo1_dark.classList.add("hidden");
+    enableLightMode();
+  }
+}
 
-    logo2_white.classList.remove("hidden");
-    logo2_dark.classList.add("hidden");
+function enableDarkMode() {
+  document.documentElement.setAttribute("data-theme", "dark");
+  toggleSwitch.checked = true;
+  logo1_white.classList.add("hidden");
+  logo1_dark.classList.remove("hidden");
+  logo2_white.classList.add("hidden");
+  logo2_dark.classList.remove("hidden");
+  localStorage.setItem("theme", "dark");
+}
+
+function enableLightMode() {
+  document.documentElement.setAttribute("data-theme", "light");
+  toggleSwitch.checked = false;
+  logo1_white.classList.remove("hidden");
+  logo1_dark.classList.add("hidden");
+  logo2_white.classList.remove("hidden");
+  logo2_dark.classList.add("hidden");
+  localStorage.setItem("theme", "light");
+}
+
+// Check for saved theme preference in localStorage
+const currentTheme = localStorage.getItem("theme");
+if (currentTheme) {
+  if (currentTheme === "dark") {
+    enableDarkMode();
+  } else {
+    enableLightMode();
+  }
+} else {
+  // Check if user's system prefers dark mode
+  if (
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  ) {
+    enableDarkMode();
   }
 }
 
