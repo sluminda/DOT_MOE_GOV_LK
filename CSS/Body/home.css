@@ -42,7 +42,7 @@ Main Section Hero
 
   .hero article {
     row-gap: 1.5rem;
-    padding: 0 3rem;
+    padding: 0 8%;
   }
 }
 /* End here  |*/
@@ -74,8 +74,13 @@ Main Section Objectives
 /* objectives Responsive |*/
 @media (max-width: 700px) {
   .objectives {
-    gap: 3rem;
+    gap: 2rem;
     padding: 5% 5%;
+  }
+
+  .object_container {
+    row-gap: var(--padding-small);
+    padding: 0 7%;
   }
 
   .object_container p {
@@ -86,7 +91,7 @@ Main Section Objectives
 
 .object_container {
   row-gap: var(--padding-small);
-  padding: 0 15%;
+  padding: 0 3%;
 }
 
 .object_container figure {
@@ -136,10 +141,12 @@ Main Section Training Modules
 @media (max-width: 700px) {
   .training {
     gap: var(--font-big-2);
+    padding: 0 8%; /*Important*/
   }
 
   .training_modules {
     gap: 2rem;
+    padding: 0; /*Important*/
   }
 }
 /* End here  |*/
@@ -214,6 +221,11 @@ Main Section Programme
     padding: 1rem;
   }
 
+  .programme article {
+    padding: 5% 3%; /*Important*/
+    gap: var(--font-big-2);
+  }
+
   .programme p {
     text-align: center;
     color: var(--secondary-color);
@@ -239,11 +251,11 @@ Main Section Statements
   flex-direction: column;
   background-color: var(--container-color);
   border-radius: 15px;
-  padding: var(--padding-1);
+  padding: 1.3rem;
   justify-content: center;
   align-items: center;
   row-gap: 1.5rem;
-  max-width: 350px;
+  max-width: 320px;
 }
 
 .statements article figure {
@@ -281,14 +293,15 @@ Main Section Statements
   text-decoration: none;
   padding: 0.4rem 1rem;
   background-color: var(--button-color);
-  color: var(--bg-color);
+  color: var(--secondary-color);
   border-radius: 50px;
 }
 
 /* Responsive */
 @media (max-width: 700px) {
   .statements {
-    padding: 2rem 10%;
+    padding: 2rem 3%;
+    gap: 2rem;
   }
 
   .statements article {
@@ -462,11 +475,16 @@ Main Section Notice & News
 /* Responsive */
 @media (max-width: 700px) {
   .noticeboard {
-    padding: 2rem 10%;
+    padding: 2rem 11%;
   }
 
   .noticeboard article {
-    padding: 0 5%;
+    padding: 0 0%;
+  }
+
+  .noticeboard article ul p {
+    padding: 0 3%;
+    text-align: justify;
   }
 }
 /* End */
