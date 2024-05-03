@@ -8,6 +8,9 @@ let logo1_dark = document.querySelector(".mbglc2");
 let logo2_white = document.querySelector(".dolc1");
 let logo2_dark = document.querySelector(".dolc2");
 
+let dark_mode = document.querySelector(".mode1");
+let white_mode = document.querySelector(".mode2");
+
 mobile_nav_open.addEventListener("click", () => {
   mobile_nav_open.classList.add("hidden");
   mobile_nav_close.classList.remove("hidden");
@@ -40,6 +43,7 @@ function enableDarkMode() {
   logo1_dark.classList.remove("hidden");
   logo2_white.classList.add("hidden");
   logo2_dark.classList.remove("hidden");
+
   localStorage.setItem("theme", "dark");
 }
 
@@ -50,6 +54,7 @@ function enableLightMode() {
   logo1_dark.classList.add("hidden");
   logo2_white.classList.remove("hidden");
   logo2_dark.classList.add("hidden");
+
   localStorage.setItem("theme", "light");
 }
 

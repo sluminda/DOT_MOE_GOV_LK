@@ -154,6 +154,7 @@ body > header .mobile-nav div {
 }
 
 .mobile-nav {
+  visibility: hidden;
   z-index: 15;
   position: absolute;
   top: 100px;
@@ -285,24 +286,6 @@ body > header > .data-officer-logo-container img {
 
 /* Dark-Mode */
 
-/* @keyframes mymove {
-  from {
-    transform: rotate(265deg);
-  }
-  to {
-    transform: rotate(275deg);
-  }
-}
-
-@keyframes mymovee {
-  from {
-    transform: rotate(275deg);
-  }
-  to {
-    transform: rotate(265deg);
-  }
-} */
-
 .theme-switch-wrapper {
   display: flex;
   position: absolute;
@@ -311,14 +294,18 @@ body > header > .data-officer-logo-container img {
   align-items: center;
   transform: rotate(270deg);
   z-index: 9;
-  /* animation: mymove 2s ease;
-  animation: mymovee 2s ease;
-  transform-origin: left; */
 }
 
-.theme-switch-wrapper em {
+.theme-switch-wrapper .mode1 {
   margin-left: 10px;
   font-size: 1rem;
+  color: var(--secondary-color);
+}
+
+.theme-switch-wrapper .mode2 {
+  margin-left: 10px;
+  font-size: 1rem;
+  color: var(--bg-color);
 }
 
 .theme-switch {
