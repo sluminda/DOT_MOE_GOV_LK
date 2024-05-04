@@ -154,7 +154,6 @@ body > header .mobile-nav div {
 }
 
 .mobile-nav {
-  visibility: hidden;
   z-index: 15;
   position: absolute;
   top: 100px;
@@ -166,7 +165,7 @@ body > header .mobile-nav div {
   margin: 0 2rem;
   height: auto;
   opacity: 1;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
   overflow: hidden;
   transform: translateX(0);
 }
@@ -174,9 +173,10 @@ body > header .mobile-nav div {
 /* Transition for Mobile Navigation */
 .hidden-effect {
   display: block;
+  visibility: hidden;
   opacity: 0;
   transform: translateX(-10px);
-  transition-property: opacity, transform;
+  transition-property: opacity, transform visibility;
   transition-timing-function: 0.3s;
 }
 
@@ -305,7 +305,7 @@ body > header > .data-officer-logo-container img {
 .theme-switch-wrapper .mode2 {
   margin-left: 10px;
   font-size: 1rem;
-  color: var(--bg-color);
+  color: var(--secondary-color);
 }
 
 .theme-switch {
