@@ -1,10 +1,10 @@
-footer {
+.footer {
   box-shadow: 0 0 5px var(--secondary-color);
   padding: 1rem var(--padding-1);
   gap: 1rem;
 }
 
-.contact > div {
+.footer .contact > div {
   padding: 5% 15%;
 }
 
@@ -13,66 +13,66 @@ footer {
 Footer Section Contact
 ======================
 */
-.contact {
+.footer .contact {
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
 }
 
-.contact h3 {
+.footer .contact h3 {
   text-align: center;
   color: var(--secondary-color);
 }
 
 /* Left */
 
-.contact .location iframe {
+.footer .contact .location iframe {
   max-width: 350px;
   height: 220px;
   border-radius: 10px;
   outline: 1px solid var(--secondary-color);
 }
 
-.contact .contact_details .address,
-.contact .contact_details .phone,
-.contact .contact_details .email {
+.footer .contact .contact_details .address,
+.footer .contact .contact_details .phone,
+.footer .contact .contact_details .email {
   align-items: start;
   justify-content: left;
   gap: 1rem;
 }
 
-.contact .contact_details .fa-location-dot,
-.contact .contact_details .fa-phone,
-.contact .contact_details .fa-envelope {
+.footer .contact .contact_details .fa-location-dot,
+.footer .contact .contact_details .fa-phone,
+.footer .contact .contact_details .fa-envelope {
   padding-top: 5px;
   color: var(--secondary-color);
 }
 
-.contact .contact_details .phone,
-.contact .contact_details .email {
+.footer .contact .contact_details .phone,
+.footer .contact .contact_details .email {
   justify-content: left;
 }
 
-.location,
-.contact_details,
-.links {
+.footer .location,
+.footer .contact_details,
+.footer .links {
   justify-content: start;
   gap: 1.5rem;
 }
 
 /* Middle side  */
-.contact .contact_details p {
+.footer .contact .contact_details p {
   color: var(--secondary-color);
 }
 
 /* Right Side */
 
-footer .contact .links ul {
+.footer .contact .links ul {
   display: flex;
   gap: 1rem;
   color: var(--secondary-color);
 }
 
-footer .contact .links a {
+.footer .contact .links a {
   color: var(--secondary-color);
   text-wrap: nowrap;
 }
@@ -82,7 +82,7 @@ footer .contact .links a {
 Footer Section Horizontal Line
 ==============================
 */
-.horizontal-line-footer {
+.footer .horizontal-line-footer {
   width: 90%;
   height: 1px;
   background-color: var(--secondary-color);
@@ -97,32 +97,32 @@ Footer Section Copyright
 ========================
 */
 
-.copyright {
+.footer .copyright {
   text-align: center;
   /* box-shadow: 0 0 2px 1px; */
 }
 
-.copyright p {
+.footer .copyright p {
   font-family: pop-SB;
   color: var(--secondary-color);
 }
 
 /* Responsive */
 @media (max-width: 700px) {
-  footer {
+  .footer {
     padding: 2rem 0;
     gap: 0;
   }
 
-  footer .contact {
+  .footer .contact {
     gap: 0;
   }
 
-  footer .contact > div {
+  .footer .contact > div {
     padding: 1.5rem 7%;
   }
 
-  footer .copyright {
+  .footer .copyright {
     padding: 0 5%;
   }
 
@@ -130,9 +130,9 @@ Footer Section Copyright
     margin: 1.5rem 0;
   }
 
-  .location,
-  .contact_details,
-  .links {
+  .footer .location,
+  .footer .contact_details,
+  .footer .links {
     justify-content: start;
     gap: 1.5rem;
   }

@@ -15,10 +15,16 @@
 
     <link rel="stylesheet" href="../CSS/fonts.css">
     <link rel="stylesheet" href="../CSS/Template/header.css">
-    <link rel="stylesheet" href="../CSS/Body/statements.css">
+    <link rel="stylesheet" href="../CSS/Body/gallery.css">
     <link rel="stylesheet" href="../CSS/Template/footer.css">
 
     <script defer src="../JS/header.js"></script>
+    <script defer src="../JS/gallery.js"></script>
+
+
+    <link rel="stylesheet" href="../node_modules/photoswipe/dist/photoswipe.css">
+
+
 </head>
 
 <body>
@@ -38,37 +44,19 @@
         <!-- Mobile Navigation -->
         <nav class="mobile-nav hidden-effect">
             <ul>
-                <li><a href="#">
+                <li><a href="../index.html">
                         <div><i class="fa-solid fa-house"></i></div>
                         <h3>Home</h3>
                     </a>
                 </li>
 
-                <li><a href="#training-module">
-                        <div><i class="fa-solid fa-person-chalkboard"></i></div>
-                        <h3>Training Module</h3>
-                    </a>
-                </li>
-
-                <li><a href="#">
-                        <div><i class="fa-solid fa-section"></i></div>
+                <li><a href="./Contributors.html">
+                        <div><i class="fa-solid fa-handshake-angle"></i></div>
                         <h3>Contributors</h3>
                     </a>
                 </li>
 
-                <li><a href="#notices">
-                        <div><i class="fa-regular fa-flag"></i></div>
-                        <h3>Notices</h3>
-                    </a>
-                </li>
-
-                <li><a href="#news">
-                        <div><i class="fa-regular fa-newspaper"></i></div>
-                        <h3>News</h3>
-                    </a>
-                </li>
-
-                <li><a href="#">
+                <li><a href="./Gallery.html">
                         <div><i class="fa-regular fa-images"></i></div>
                         <h3>Gallery</h3>
                     </a>
@@ -112,10 +100,29 @@
 
         <!-- Navigation -->
         <nav class="wide_navigation">
-            <ul class="DF PR">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Contributors</a></li>
-                <li><a href="#">Gallery</a></li>
+            <ul class="DF PR center">
+                <li>
+                    <a class="DF FD-R center" href="../index.html">
+                        <div>
+                            <i class="fa-solid fa-house"></i>
+                        </div>
+                        <h3>Home</h3>
+                    </a>
+                </li>
+                <li><a class="DF FD-R center" href="./Contributors.html">
+                        <div>
+                            <i class="fa-solid fa-handshake-angle"></i>
+                        </div>
+                        <h3>Contributors</h3>
+                    </a>
+                </li>
+                <li><a class="DF FD-R center" href="./Gallery.html">
+                        <div>
+                            <i class="fa-regular fa-images"></i>
+                        </div>
+                        <h3>Gallery</h3>
+                    </a>
+                </li>
             </ul>
         </nav>
 
@@ -140,17 +147,58 @@
 
     </header>
 
+
+
+
+
     <!-- Body Content Starts -->
     <main class="DF PR FD-C">
 
-        <!-- Section Hero -->
-        <section class="hero">
+        <!-- gallery -->
+        <section class="gallery">
+
+
+            <div class="pswp-gallery pswp-gallery--single-column" id="gallery--getting-started">
+                <a href="https://cdn.photoswipe.com/photoswipe-demo-images/photos/2/img-2500.jpg" data-pswp-width="1669"
+                    data-pswp-height="2500" target="_blank">
+                    <img src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/2/img-200.jpg" alt="" />
+                </a> <!-- cropped thumbnail: -->
+
+                <a href="https://cdn.photoswipe.com/photoswipe-demo-images/photos/7/img-2500.jpg" data-pswp-width="1875"
+                    data-pswp-height="2500" data-cropped="true" target="_blank">
+                    <img src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/7/img-200.jpg" alt="" />
+                    Cropped
+                </a>
+                <!-- data-pswp-src with custom URL in href -->
+                <a href="https://unsplash.com"
+                    data-pswp-src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/3/img-2500.jpg"
+                    data-pswp-width="2500" data-pswp-height="1666" target="_blank">
+                    <img src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/3/img-200.jpg" alt="" />
+                </a>
+                <!-- Without thumbnail: -->
+                <a href="http://example.com"
+                    data-pswp-src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/5/img-2500.jpg"
+                    data-pswp-width="2500" data-pswp-height="1668" target="_blank">
+                    No thumbnail
+                </a>
+                <!-- wrapped with any element: -->
+                <div>
+                    <a href="https://cdn.photoswipe.com/photoswipe-demo-images/photos/6/img-2500.jpg"
+                        data-pswp-width="2500" data-pswp-height="1667" target="_blank">
+                        <img src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/6/img-200.jpg" alt="" />
+                    </a>
+                </div>
+            </div>
 
         </section>
     </main>
 
+
+
+
+
     <!-- Footer Starts Here -->
-    <footer class="DF FD-C PR">
+    <footer class="footer DF FD-C PR">
         <!-- Contact Section -->
         <section class="contact DG PR">
             <!-- Google Map Column -->
@@ -215,6 +263,21 @@
                 Ministry of Education.</p>
         </section>
     </footer>
+
+
+
+    <script type="module">
+        import PhotoSwipeLightbox from '../node_modules/photoswipe/dist/photoswipe-lightbox.esm.js';
+        import PhotoSwipe from '../node_modules/photoswipe/photoswipe.esm.js';
+
+        const lightbox = new PhotoSwipeLightbox({
+            gallery: '#gallery--no-dynamic-import',
+            children: 'a',
+            pswpModule: PhotoSwipe
+        });
+
+        lightbox.init();
+    </script>
 </body>
 
 </html>

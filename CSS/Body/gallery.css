@@ -1,0 +1,23 @@
+main {
+  width: 100%;
+  height: 100%;
+}
+
+.statement div header,
+.statement div blockquote,
+.statement div footer {
+  color: var(--secondary-color);
+  text-align: justify;
+}
+
+.statement {
+  grid-template-columns: 3fr 4fr;
+  padding: var(--padding-2);
+  gap: 2rem;
+}
+
+/*
+============
+Gallery View
+============
+*/
