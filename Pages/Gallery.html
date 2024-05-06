@@ -24,6 +24,15 @@
 
     <link rel="stylesheet" href="../node_modules/photoswipe/dist/photoswipe.css">
 
+    <script type="module">
+        import PhotoSwipeLightbox from '../node_modules/photoswipe/dist/photoswipe-lightbox.esm.js';
+        const lightbox = new PhotoSwipeLightbox({
+            gallery: '#my-gallery',
+            children: 'a',
+            pswpModule: () => import('../node_modules/photoswipe/dist/photoswipe.esm.js')
+        });
+        lightbox.init();
+    </script>
 
 </head>
 
@@ -149,45 +158,95 @@
 
 
 
-
-
     <!-- Body Content Starts -->
     <main class="DF PR FD-C">
 
         <!-- gallery -->
-        <section class="gallery">
+        <section class="gallery DF FD-C center PR">
 
+            <header>- Gallery -</header>
 
-            <div class="pswp-gallery pswp-gallery--single-column" id="gallery--getting-started">
-                <a href="https://cdn.photoswipe.com/photoswipe-demo-images/photos/2/img-2500.jpg" data-pswp-width="1669"
-                    data-pswp-height="2500" target="_blank">
-                    <img src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/2/img-200.jpg" alt="" />
-                </a> <!-- cropped thumbnail: -->
-
-                <a href="https://cdn.photoswipe.com/photoswipe-demo-images/photos/7/img-2500.jpg" data-pswp-width="1875"
-                    data-pswp-height="2500" data-cropped="true" target="_blank">
-                    <img src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/7/img-200.jpg" alt="" />
-                    Cropped
+            <div class="gallery-list center DG PR pswp-gallery pswp-gallery--single-column" id="my-gallery">
+                <!-- One -->
+                <a href="../Images/Body/Gallery/High_Resolution/DSC_0300.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/DSC_0300.jpg" alt="Image 1" loading="lazy" />
                 </a>
-                <!-- data-pswp-src with custom URL in href -->
-                <a href="https://unsplash.com"
-                    data-pswp-src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/3/img-2500.jpg"
-                    data-pswp-width="2500" data-pswp-height="1666" target="_blank">
-                    <img src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/3/img-200.jpg" alt="" />
+                <!-- Two -->
+                <a href="../Images/Body/Gallery/High_Resolution/DSC_0303.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/DSC_0303.jpg" alt="Image 2" loading="lazy" />
                 </a>
-                <!-- Without thumbnail: -->
-                <a href="http://example.com"
-                    data-pswp-src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/5/img-2500.jpg"
-                    data-pswp-width="2500" data-pswp-height="1668" target="_blank">
-                    No thumbnail
+                <!-- Three -->
+                <a href="../Images/Body/Gallery/High_Resolution/DSC_0305.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/DSC_0305.jpg" alt="Image 3" loading="lazy" />
                 </a>
-                <!-- wrapped with any element: -->
-                <div>
-                    <a href="https://cdn.photoswipe.com/photoswipe-demo-images/photos/6/img-2500.jpg"
-                        data-pswp-width="2500" data-pswp-height="1667" target="_blank">
-                        <img src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/6/img-200.jpg" alt="" />
-                    </a>
-                </div>
+                <!-- Four -->
+                <a href="../Images/Body/Gallery/High_Resolution/DSC_0307.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/DSC_0307.jpg" alt="Image 4" loading="lazy" />
+                </a>
+                <!-- Five -->
+                <a href="../Images/Body/Gallery/High_Resolution/DSC_0313.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/DSC_0313.jpg" alt="Image 5" loading="lazy" />
+                </a>
+                <!-- Six -->
+                <a href="../Images/Body/Gallery/High_Resolution/IMG_1363.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/IMG_1363.jpg" alt="Image 6" loading="lazy" />
+                </a>
+                <!-- Seven -->
+                <a href="../Images/Body/Gallery/High_Resolution/IMG_1364.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/IMG_1364.jpg" alt="Image 7" loading="lazy" />
+                </a>
+                <!-- Eight -->
+                <a href="../Images/Body/Gallery/High_Resolution/IMG_1372.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/IMG_1372.jpg" alt="Image 8" loading="lazy" />
+                </a>
+                <!-- Nine -->
+                <a href="../Images/Body/Gallery/High_Resolution/IMG_1379.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/IMG_1379.jpg" alt="Image 9" loading="lazy" />
+                </a>
+                <!-- Ten -->
+                <a href="../Images/Body/Gallery/High_Resolution/IMG_1403.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/IMG_1403.jpg" alt="Image 10" loading="lazy" />
+                </a>
+                <!-- Eleven -->
+                <a href="../Images/Body/Gallery/High_Resolution/IMG_1405.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/IMG_1405.jpg" alt="Image 11" loading="lazy" />
+                </a>
+                <!-- Twelve -->
+                <a href="../Images/Body/Gallery/High_Resolution/IMG_1407.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/IMG_1407.jpg" alt="Image 12" loading="lazy" />
+                </a>
+                <!-- Thirteen -->
+                <a href="../Images/Body/Gallery/High_Resolution/IMG_1410.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/IMG_1410.jpg" alt="Image 13" loading="lazy" />
+                </a>
+                <!-- Fourteen -->
+                <a href="../Images/Body/Gallery/High_Resolution/IMG_1415.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/IMG_1415.jpg" alt="Image 14" loading="lazy" />
+                </a>
+                <!-- Fifteen -->
+                <a href="../Images/Body/Gallery/High_Resolution/IMG_1418.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/IMG_1418.jpg" alt="Image 15" loading="lazy" />
+                </a>
+                <!-- Sixteen -->
+                <a href="../Images/Body/Gallery/High_Resolution/IMG_1422.jpg" data-pswp-width="2900"
+                    data-pswp-height="1930" target="_blank">
+                    <img src="../Images/Body/Gallery/Thumbnails/IMG_1422.jpg" alt="Image 16" loading="lazy" />
+                </a>
             </div>
 
         </section>
@@ -264,20 +323,6 @@
         </section>
     </footer>
 
-
-
-    <script type="module">
-        import PhotoSwipeLightbox from '../node_modules/photoswipe/dist/photoswipe-lightbox.esm.js';
-        import PhotoSwipe from '../node_modules/photoswipe/photoswipe.esm.js';
-
-        const lightbox = new PhotoSwipeLightbox({
-            gallery: '#gallery--no-dynamic-import',
-            children: 'a',
-            pswpModule: PhotoSwipe
-        });
-
-        lightbox.init();
-    </script>
 </body>
 
 </html>

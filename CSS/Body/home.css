@@ -68,14 +68,22 @@ Main Section Objectives
 .objectives {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   padding: 5% 15%;
-  /* gap: 10%; */
+  gap: 10%;
+}
+
+/* objectives Responsive |*/
+@media (max-width: 780px) {
+  .objectives {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 5% 5%;
+  }
 }
 
 /* objectives Responsive |*/
 @media (max-width: 700px) {
   .objectives {
     gap: 2rem;
-    padding: 5% 5%;
   }
 
   .object_container {
@@ -91,7 +99,7 @@ Main Section Objectives
 
 .object_container {
   row-gap: var(--padding-small);
-  padding: 0 3%;
+  padding: 0 5%;
 }
 
 .object_container figure {
@@ -141,7 +149,7 @@ Main Section Training Modules
 @media (max-width: 700px) {
   .training {
     gap: var(--font-big-2);
-    padding: 0 8%; /*Important*/
+    padding: 5% 8%; /*Important*/
   }
 
   .training_modules {
@@ -149,6 +157,7 @@ Main Section Training Modules
     padding: 0; /*Important*/
   }
 }
+
 /* End here  |*/
 
 .modules_container {

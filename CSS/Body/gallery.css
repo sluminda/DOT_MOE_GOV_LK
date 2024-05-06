@@ -3,17 +3,16 @@ main {
   height: 100%;
 }
 
-.statement div header,
-.statement div blockquote,
-.statement div footer {
-  color: var(--secondary-color);
-  text-align: justify;
+main .gallery {
+  padding: var(--padding-2) 8%;
+  gap: var(--padding-1);
 }
 
-.statement {
-  grid-template-columns: 3fr 4fr;
-  padding: var(--padding-2);
-  gap: 2rem;
+main .gallery header {
+  text-align: center;
+  font-family: pop-SB;
+  font-size: var(--font-big-1);
+  color: var(--secondary-color);
 }
 
 /*
@@ -21,3 +20,26 @@ main {
 Gallery View
 ============
 */
+.gallery-list {
+  width: 100%;
+  height: 100%;
+  grid-template-columns: repeat(auto-fit, 300px);
+
+  gap: 1rem;
+}
+
+.gallery-list a {
+  display: flex;
+  justify-content: center;
+}
+
+.gallery-list a img {
+  max-width: 300px;
+  border-radius: 5px;
+}
+
+/* @media (max-width: 1360px) {
+  .gallery-list {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+} */

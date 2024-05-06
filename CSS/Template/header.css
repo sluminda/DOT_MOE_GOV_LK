@@ -263,7 +263,7 @@ body > header .gov-logo-container .gov-logo-title h1:last-child {
 body > header .wide_navigation ul {
   list-style-type: none;
   box-shadow: 0 0 5px 3px rgb(195, 195, 195);
-  padding: 1rem var(--padding-1);
+  padding: 0.5rem var(--padding-1);
   border-radius: 20px;
 }
 
