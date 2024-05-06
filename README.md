@@ -15,8 +15,8 @@ Check out the [demo](https://sluminda.github.io/DOT_MOE_GOV_LK/) of the updated 
 
 ## Contributors
 
-- Sandaruwan Fernando (UX UI Design)
-- Luminda Saranga (Development)
+- [Sandaruwan Fernando](https://github.com/Darshanafdo) (UX UI Design)
+- [Luminda Saranga](https://github.com/sluminda) (Development)
 
 ## Technologies Used
 
