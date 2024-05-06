@@ -22,14 +22,14 @@
     <script defer src="../JS/gallery.js"></script>
 
 
-    <link rel="stylesheet" href="../node_modules/photoswipe/dist/photoswipe.css">
+    <link rel="stylesheet" href="../photoswipe/dist/photoswipe.css">
 
     <script type="module">
-        import PhotoSwipeLightbox from '../node_modules/photoswipe/dist/photoswipe-lightbox.esm.js';
+        import PhotoSwipeLightbox from '../photoswipe/dist/photoswipe-lightbox.esm.js';
         const lightbox = new PhotoSwipeLightbox({
             gallery: '#my-gallery',
             children: 'a',
-            pswpModule: () => import('../node_modules/photoswipe/dist/photoswipe.esm.js')
+            pswpModule: () => import('../photoswipe/dist/photoswipe.esm.js')
         });
         lightbox.init();
     </script>
