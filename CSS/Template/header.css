@@ -83,8 +83,8 @@ Default Configuration
 }
 
 .horizontal-line {
-  width: 75%;
-  height: 1px;
+  width: 60%;
+  height: 2px;
   background-color: var(--secondary-color);
   border-radius: 100vh;
   justify-self: center;
