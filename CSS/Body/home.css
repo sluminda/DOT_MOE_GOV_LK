@@ -135,6 +135,10 @@ Main Section Objectives
   color: var(--secondary-color);
   font-size: var(--font-regular);
   text-align: justify;
+  /* text-justify: distribute;  */
+  /* hyphens: auto; */
+  /* -webkit-hyphens: auto; */
+  word-spacing: -0.05em;
 }
 
 /*
