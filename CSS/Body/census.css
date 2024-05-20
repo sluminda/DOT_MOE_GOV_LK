@@ -1,0 +1,87 @@
+main {
+  margin: 0 auto;
+}
+
+.hidden_transition {
+  display: none !important;
+  transform: translateY(-100px);
+  transition-property: transform;
+}
+
+.show_transition {
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+
+/*
+==============
+Main Container
+==============
+*/
+
+main .grid_container {
+  grid-template-columns: 1fr 3fr;
+  margin: var(--padding-small) 10%;
+  gap: 3rem;
+}
+
+/*
+===================
+Main Container Left
+===================
+*/
+
+main .grid_container .grid_item_left {
+  text-align: center;
+}
+
+main .grid_container .grid_item_left nav ul {
+  list-style-type: none;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+}
+
+main .grid_container .grid_item_left nav header {
+  padding: 0.8rem 1rem;
+  background-color: rgb(227, 209, 186);
+  gap: 0.7rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+main .grid_container .grid_item_left nav header h3 {
+  color: var(--secondary-color);
+  font-family: var(--font-Sinhala);
+}
+
+main .grid_container .grid_item_left nav ul li a {
+  display: flex;
+  text-decoration: none;
+  color: var(--secondary-color);
+  background-color: rgb(255, 238, 216);
+  padding: 0.5rem 4rem;
+  text-align: center;
+  font-family: var(--font-Sinhala);
+}
+
+/*
+====================
+Main Container Right
+====================
+*/
+
+.grid_container .grid_item_right ul li {
+  list-style-type: none;
+}
+
+.grid_container .grid_item_right ul li a {
+  display: flex;
+  position: relative;
+  text-decoration: none;
+  color: var(--secondary-color);
+  padding: 0.5rem 2rem;
+  background-color: honeydew;
+  font-size: var(--font-regular);
+  font-family: var(--font-Sinhala);
+}
