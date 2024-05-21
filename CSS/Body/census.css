@@ -4,13 +4,9 @@ main {
 
 .hidden_transition {
   display: none !important;
-  transform: translateY(-100px);
-  transition-property: transform;
 }
 
 .show_transition {
-  transform: translateY(0);
-  transition: transform 0.3s ease;
 }
 
 /*
@@ -48,6 +44,8 @@ main .grid_container .grid_item_left nav header {
   gap: 0.7rem;
   cursor: pointer;
   user-select: none;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
 }
 
 main .grid_container .grid_item_left nav header h3 {
@@ -59,10 +57,11 @@ main .grid_container .grid_item_left nav ul li a {
   display: flex;
   text-decoration: none;
   color: var(--secondary-color);
-  background-color: rgb(255, 238, 216);
-  padding: 0.5rem 4rem;
-  text-align: center;
   font-family: var(--font-Sinhala);
+  font-size: 1rem;
+  background-color: rgb(255, 238, 216);
+  padding: 0.6rem 5rem;
+  text-align: center;
 }
 
 /*
