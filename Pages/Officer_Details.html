@@ -19,13 +19,53 @@
     <link rel="stylesheet" href="../CSS/Template/footer.css">
 
     <script defer src="../JS/header.js"></script>
+    <script defer src="../JS/officer_details.js"></script>
 </head>
 
 <body>
 
-    <!-- Header Section -->
+    <div class="login_btn_container DF FD-R">
+        <i class="fa-solid fa-key"></i>
+        <em>Admin Login</em>
+    </div>
 
+    <!-- Login PopUp -->
+    <div class="login-background_container  close-transition">
+
+        <div class="login-container DF center">
+
+            <form action="../PHP/login.php" method="post" class="DF FD-C PR">
+
+                <div class="close_btn_container">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+
+                <div class="login-box DG">
+                    <div>
+                        <label for="username">Username</label>
+                    </div>
+                    <div>
+                        <input name="uname" id="username" type="text" placeholder="Enter Your Username" required>
+                    </div>
+                    <div>
+                        <label for="password">Password</label>
+                    </div>
+                    <div>
+                        <input name="pwd" id="password" type="password" placeholder="Enter Your Password" required>
+                    </div>
+                </div>
+
+                <div class="login-links DF PR">
+                    <a href="#">Forgot Password</a>
+                    <button name="submit" type="submit">Login</button>
+                </div>
+        </div>
+    </div>
+
+
+    <!-- Header Section -->
     <header class="DF PR">
+
         <!-- Mobile Navigation Icon-->
         <div class="mobile-nav-container open">
             <i class="fa-solid fa-2x fa-bars"></i>
@@ -148,16 +188,18 @@
     <!-- Body Content Starts -->
     <main class="DF PR FD-C">
 
+
+
+        <!-- Table Content Starts Here -->
         <header class="heading DF FD-C center">
             - Data Officer Details -
         </header>
 
         <table class="table_1">
-
             <thead>
                 <tr>
                     <th class="first_column_title">No.</th>
-                    <th class="middle_column_title">Sri Lankan Provinces</th>
+                    <th class="middle_column_title province" data-province="Provinces">Sri Lankan Provinces</th>
                     <th class="last_column_title">Links</th>
                 </tr>
             </thead>
@@ -165,116 +207,52 @@
             <tbody>
                 <tr>
                     <td class="first_column">1</td>
-                    <td class="middle_column">Western Province</td>
+                    <td class="middle_column province" data-province="Western">Western Province</td>
                     <td class="last_column"><a href="" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">2</td>
-                    <td class="middle_column">Central Province</td>
+                    <td class="middle_column province" data-province="Central">Central Province</td>
                     <td class="last_column"><a href="" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">3</td>
-                    <td class="middle_column">Southern Province</td>
+                    <td class="middle_column province" data-province="Southern">Southern Province</td>
                     <td class="last_column"><a href="" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">4</td>
-                    <td class="middle_column">Northern Province</td>
+                    <td class="middle_column province" data-province="Northern">Northern Province</td>
                     <td class="last_column"><a href="" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">5</td>
-                    <td class="middle_column">Eastern Province</td>
+                    <td class="middle_column province" data-province="Eastern">Eastern Province</td>
                     <td class="last_column"><a href="" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">6</td>
-                    <td class="middle_column">North Western Province</td>
+                    <td class="middle_column province" data-province="North Western">North Western Province</td>
                     <td class="last_column"><a href="" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">7</td>
-                    <td class="middle_column">North Central Province</td>
+                    <td class="middle_column province" data-province="North Central">North Central Province</td>
                     <td class="last_column"><a href="" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">8</td>
-                    <td class="middle_column">Uva Province</td>
+                    <td class="middle_column province" data-province="Uva">Uva Province</td>
                     <td class="last_column"><a href="" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">9</td>
-                    <td class="middle_column">Sabaragamuwa Province</td>
+                    <td class="middle_column province" data-province="Sabaragamuwa">Sabaragamuwa Province</td>
                     <td class="last_column"><a href="" target="_blank">Visit</a></td>
                 </tr>
             </tbody>
         </table>
-
-
-
-        <table class="table_2">
-
-            <thead>
-                <tr>
-                    <th class="first_column_title">No.</th>
-                    <th class="middle_column_title">Provinces</th>
-                    <th class="last_column_title">Links</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td class="first_column">1</td>
-                    <td class="middle_column">Western</td>
-                    <td class="last_column"><a href="#" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">2</td>
-                    <td class="middle_column">Central</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">3</td>
-                    <td class="middle_column">South</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">4</td>
-                    <td class="middle_column">Northern</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">5</td>
-                    <td class="middle_column">Eastern</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">6</td>
-                    <td class="middle_column">North West</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">7</td>
-                    <td class="middle_column">North Central</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">8</td>
-                    <td class="middle_column">Uva</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">9</td>
-                    <td class="middle_column">Sabaragamuwa</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-            </tbody>
-
-        </table>
-
     </main>
-
 
 
 

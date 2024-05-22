@@ -16,11 +16,19 @@ Default Configuration
 
 :root {
   --bg-color: #ffffff;
-  --secondary-color: rgb(0, 0, 0);
+  --secondary-color: #000000;
   --button-color: #508de9;
   --button-hover-color: #8196b4;
   --container-color: #e4efff;
   --icon-color: rgb(69, 214, 84);
+  --close-btn-color: #ffffff;
+  --close-btn-hover-color: #e3e3e3;
+  --login-box-color: #ffffff;
+  --login-box-textbox-color: #ffffff7f;
+  --placeholder-color: #474747b0;
+  --link-color: rgb(105, 105, 238);
+  --table-heading-color: #96ceff;
+  --table-body-color: #c4e3fe;
 
   --font-R: pop-R;
   --font-SB: pop-SB;
@@ -43,6 +51,14 @@ Default Configuration
   --button-color: #508de9;
   --button-hover-color: #8196b4;
   --container-color: #44474d;
+  --close-btn-color: #1f1e1e;
+  --close-btn-hover-color: #000000;
+  --login-box-color: #0000005d;
+  --login-box-textbox-color: #4e4e4e62;
+  --placeholder-color: #ffffff7f;
+  --link-color: #c2deff;
+  --table-heading-color: #1d1d1d;
+  --table-body-color: #353131ce;
 }
 
 .DF {
