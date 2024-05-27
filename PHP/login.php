@@ -1,18 +1,32 @@
-<?php 
-if(isset($_POST["submit"]) ){
+// login.php
+<?php
+include './db_connect.php';
 
-    $userName = $_POST['uname'];
-    $userPassword = $_POST['pwd'];
+session_start();
 
-    $connection =  mysqli_connect('root','root','','dot_moe');
+$response = [];
 
-    if ($connection -> connect_error) {
-        die("Connection failed: " . $connection -> connect_error);
-      }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['uname'];
+    $password = $_POST['pwd'];
 
-      $query = "SELECT id, firstname, lastname FROM MyGuests";
-    $result = $conn->query($sql);
+    $sql = "SELECT * FROM userlogin WHERE userName = :username";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':username', $username);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && password_verify($password, $user['userPassword'])) {
+        $_SESSION['username'] = $user['userName'];
+        $response['status'] = 'success';
+        $response['redirect'] = 'welcome.php'; // Redirect to welcome.php
+    } else {
+        $response['status'] = 'error';
+        $response['message'] = 'Wrong! Invalid username or password.';
+    }
 }
 
-    
+header('Content-Type: application/json');
+echo json_encode($response);
+exit();
 ?>

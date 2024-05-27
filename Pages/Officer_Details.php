@@ -20,9 +20,12 @@
 
     <script defer src="../JS/header.js"></script>
     <script defer src="../JS/officer_details.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
+
+
 
     <div class="login_btn_container DF FD-R">
         <i class="fa-solid fa-key"></i>
@@ -30,17 +33,14 @@
     </div>
 
     <!-- Login PopUp -->
-    <div class="login-background_container  close-transition">
-
+    <div class="login-background_container close-transition">
         <div class="login-container DF center">
-
-            <form action="../PHP/login.php" method="post" class="DF FD-C PR">
-
+            <form id="login-form" class="DF FD-C PR">
                 <div class="close_btn_container">
                     <i class="fa-solid fa-xmark"></i>
                 </div>
-
                 <div class="login-box DG">
+                    <div id="error-message" style="color: red;"></div>
                     <div>
                         <label for="username">Username</label>
                     </div>
@@ -54,13 +54,43 @@
                         <input name="pwd" id="password" type="password" placeholder="Enter Your Password" required>
                     </div>
                 </div>
-
                 <div class="login-links DF PR">
                     <a href="#">Forgot Password</a>
                     <button name="submit" type="submit">Login</button>
                 </div>
+            </form>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#login-form').on('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                var formData = $(this).serialize(); // Serialize the form data
+
+                $.ajax({
+                    type: 'POST',
+                    url: '../PHP/login.php',
+                    data: formData,
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log(response); // Debugging line to check response
+                        if (response.status === 'success') {
+                            console.log('Redirecting to: ' + response.redirect);
+                            window.location.href = response.redirect; // Redirect on successful login
+                        } else {
+                            $('#error-message').text(response.message); // Show error message
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText); // Debugging line to check error response
+                        $('#error-message').text('An error occurred. Please try again.'); // Handle AJAX errors
+                    }
+                });
+            });
+        });
+    </script>
 
 
     <!-- Header Section -->
