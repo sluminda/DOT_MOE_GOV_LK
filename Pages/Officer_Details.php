@@ -5,13 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
-        integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <link rel="stylesheet" href="../CSS/fonts.css">
     <link rel="stylesheet" href="../CSS/Template/header.css">
@@ -21,6 +17,7 @@
     <script defer src="../JS/header.js"></script>
     <script defer src="../JS/officer_details.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../PHP/login.js"></script>
 </head>
 
 <body>
@@ -40,7 +37,9 @@
                     <i class="fa-solid fa-xmark"></i>
                 </div>
                 <div class="login-box DG">
-                    <div id="error-message" style="color: red;"></div>
+
+                    <div id="error-message" class="error_msg"></div>
+
                     <div>
                         <label for="username">Username</label>
                     </div>
@@ -61,37 +60,6 @@
             </form>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function() {
-            $('#login-form').on('submit', function(event) {
-                event.preventDefault(); // Prevent the default form submission
-
-                var formData = $(this).serialize(); // Serialize the form data
-
-                $.ajax({
-                    type: 'POST',
-                    url: '../PHP/login.php',
-                    data: formData,
-                    dataType: 'json',
-                    success: function(response) {
-                        console.log(response); // Debugging line to check response
-                        if (response.status === 'success') {
-                            console.log('Redirecting to: ' + response.redirect);
-                            window.location.href = response.redirect; // Redirect on successful login
-                        } else {
-                            $('#error-message').text(response.message); // Show error message
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText); // Debugging line to check error response
-                        $('#error-message').text('An error occurred. Please try again.'); // Handle AJAX errors
-                    }
-                });
-            });
-        });
-    </script>
-
 
     <!-- Header Section -->
     <header class="DF PR">
@@ -294,10 +262,7 @@
             <!-- Google Map Column -->
             <div class="location DF FD-C PR center">
                 <h3>Google Map</h3>
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3960.9941086631047!2d79.930527!3d6.891307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2517dc82a9fef%3A0xa2cb100ac511407c!2sMinistry%20of%20Education!5e0!3m2!1sen!2sus!4v1712734841372!5m2!1sen!2sus"
-                    style="border:0;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3960.9941086631047!2d79.930527!3d6.891307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2517dc82a9fef%3A0xa2cb100ac511407c!2sMinistry%20of%20Education!5e0!3m2!1sen!2sus!4v1712734841372!5m2!1sen!2sus" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
 
             <div id="contact" class="contact_details DF FD-C PR">

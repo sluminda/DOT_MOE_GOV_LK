@@ -61,6 +61,11 @@ Admin Login Here
   row-gap: 1.2rem;
 }
 
+.login-box .error_msg {
+  grid-column: span 2;
+  color: red;
+}
+
 .login-container .login-box label {
   text-wrap: nowrap;
   user-select: none;

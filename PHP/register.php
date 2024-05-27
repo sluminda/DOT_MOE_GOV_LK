@@ -2,8 +2,8 @@
 
 include './db_connect.php';
 
-$username = 'admin1';
-$password = 'admin1';
+$username = 'admin';
+$password = 'admin';
 $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
 $sql = "INSERT INTO userlogin (userName, userPassword) VALUES (:username, :password)";
