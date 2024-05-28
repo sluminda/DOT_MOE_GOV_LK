@@ -3,123 +3,25 @@
 Admin Login Here
 =================
 */
-
-.close-transition {
-  display: none !important;
-}
-
-.open-transition {
-  display: flex !important;
-}
-
 .login-background_container {
-  position: fixed;
-  inset: 0;
-  justify-content: center;
-  align-items: center;
-  background-color: #00000080;
-  backdrop-filter: blur(4px);
-  z-index: 20;
+  height: 84vh;
 }
 
 .login-container {
-  position: fixed;
+  position: relative;
   margin: auto;
   background-color: var(--login-box-color);
   padding: 30px;
   border-radius: 10px;
 }
 
-.login-container form {
-  row-gap: 1rem;
+.login-container .login-form .login_row {
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
 
-.close_btn_container {
-  display: flex;
-  position: absolute;
-  font-size: 1.2rem;
+.login-container .login-form .login_row label {
   color: var(--secondary-color);
-  transform: translate(-40px, -40px);
-  padding: 0.25rem 0.4rem;
-  background-color: var(--bg-color);
-  border-radius: 100vh;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  z-index: 100;
-  box-shadow: 0 0 2px 0 var(--secondary-color);
-}
-
-.close_btn_container:hover,
-.close_btn_container:focus {
-  background-color: var(--close-btn-hover-color);
-}
-
-.login-container .login-box {
-  grid-template-columns: 100px 1fr;
-  align-items: center;
-  justify-content: center;
-  row-gap: 1.2rem;
-}
-
-.login-box .error_msg {
-  grid-column: span 2;
-  color: red;
-}
-
-.login-container .login-box label {
-  text-wrap: nowrap;
-  user-select: none;
-  color: var(--secondary-color);
-}
-
-.login-box input[type="text"],
-.login-box input[type="password"] {
-  width: 100%;
-  padding: 5px 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  outline: 0;
-  background-color: var(--login-box-textbox-color);
-}
-
-.login-box input::placeholder,
-.login-box input::placeholder {
-  color: var(--placeholder-color);
-}
-
-.login-box input {
-  color: var(--secondary-color);
-}
-
-.login-box input[type="text"]:focus,
-.login-box input[type="password"]:focus {
-  outline: 1px solid #ff7f2f;
-}
-
-.login-container .login-links {
-  justify-content: right;
-  align-items: center;
-  column-gap: 1rem;
-}
-
-.login-container div:last-child a {
-  text-wrap: nowrap;
-  color: var(--link-color);
-}
-
-.login-container button {
-  width: 100px;
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.login-container button:hover {
-  background-color: #024c9a;
 }
 
 @media (max-width: 600px) {
@@ -160,106 +62,4 @@ Login Btn Area
 .login_btn_container .fa-key,
 .login_btn_container em {
   color: var(--secondary-color);
-}
-
-/*
-=================
-Header Title Here
-=================
-*/
-
-.heading {
-  padding: var(--padding-1) 0 0 0;
-  font-size: var(--font-big-1);
-  font-weight: 800;
-  color: var(--secondary-color);
-}
-
-/*
-==========
-Table Here
-==========
-*/
-
-.table_1 {
-  margin: var(--padding-1) 30%;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 0 1px var(--secondary-color);
-  border-radius: 10px;
-  text-wrap: nowrap;
-}
-
-/* Table Head */
-
-.table_1 thead {
-  background-color: var(--table-heading-color);
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  align-items: center;
-}
-
-/* Table Body */
-.table_1 tbody {
-  background-color: var(--table-body-color);
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-
-/* Common Effects */
-.table_1 tr {
-  display: grid;
-  grid-template-columns: 1fr 5fr 2fr;
-  margin: 1.2rem 0;
-}
-
-.table_1 tbody .first_column {
-  text-align: center;
-  color: var(--secondary-color);
-}
-
-.table_1 tbody .middle_column {
-  padding-left: 10%;
-  color: var(--secondary-color);
-}
-
-.table_1 tbody .last_column {
-  text-align: center;
-  color: var(--secondary-color);
-}
-
-.table_1 tbody .last_column a {
-  color: var(--link-color);
-}
-
-.table_1 thead .first_column_title {
-  text-align: center;
-  color: var(--secondary-color);
-}
-
-.table_1 thead .middle_column_title {
-  padding-left: 10%;
-  text-align: left;
-  color: var(--secondary-color);
-}
-
-.table_1 thead .last_column_title {
-  text-align: center;
-  color: var(--secondary-color);
-}
-
-/* Responsive Area */
-
-@media (max-width: 1000px) {
-  .province {
-    font-size: 0;
-  }
-  .province::before {
-    content: attr(data-province);
-    font-size: 16px;
-  }
-
-  .table_1 {
-    margin: var(--padding-1) 10%;
-  }
 }

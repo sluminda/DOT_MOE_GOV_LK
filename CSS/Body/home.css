@@ -194,6 +194,7 @@ Main Section Training Modules
   align-items: center;
   row-gap: var(--font-big-2); /* Important */
   justify-content: space-between;
+  background-color: var(--container-color);
 }
 
 .training_modules .modules_container h3 {
@@ -219,10 +220,18 @@ Main Section Training Modules
 .training_modules .modules_container ul li a {
   text-decoration: none;
   color: var(--secondary-color);
+  background-color: ;
   padding: 0.5rem 1rem;
   position: relative;
   box-shadow: 0 0 2px var(--secondary-color);
   border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.training_modules .modules_container ul li a:hover,
+.training_modules .modules_container ul li a:focus {
+  background-color: var(--button-hover-color);
+  transition: background-color 0.3s ease;
 }
 
 /*

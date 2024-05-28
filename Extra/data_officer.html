@@ -19,9 +19,50 @@
     <link rel="stylesheet" href="../CSS/Template/footer.css">
 
     <script defer src="../JS/header.js"></script>
+    <script defer src="../JS/officer_details.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../PHP/login.js"></script>
 </head>
 
 <body>
+
+    <div class="login_btn_container DF FD-R">
+        <i class="fa-solid fa-key"></i>
+        <em>Admin Login</em>
+    </div>
+
+    <!-- Login PopUp -->
+    <div class="login-background_container close-transition">
+        <div class="login-container DF center">
+            <form id="login-form" class="DF FD-C PR" action="authenticate.php" method="POST">
+                <div class="close_btn_container">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+                <div class="login-box DG">
+                    <div id="error-message" class="error_msg"></div>
+                    <div>
+                        <label for="username">Username</label>
+                    </div>
+                    <div>
+                        <input name="uname" id="username" type="text" placeholder="Enter Your Username" required>
+                    </div>
+                    <div>
+                        <label for="password">Password</label>
+                    </div>
+                    <div>
+                        <input name="pwd" id="password" type="password" placeholder="Enter Your Password" required>
+                    </div>
+                </div>
+                <div class="login-links DF PR">
+                    <a href="#">Forgot Password</a>
+                    <button name="submit" type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
 
     <!-- Header Section -->
     <header class="DF PR">
@@ -141,32 +182,79 @@
 
     </header>
 
+
+
+
+
     <!-- Body Content Starts -->
     <main class="DF PR FD-C">
 
-        <!-- Login PopUp -->
-        <div class="login-background_container DF PR center">
 
-            <form class="login-form PR center" action="../PHP/login.php" method="post">
 
-                <div class="login_row DG PR center">
-                    <label for="username">Username</label>
-                    <input id="username" name="username" type="text" required>
-                </div>
+        <!-- Table Content Starts Here -->
+        <header class="heading DF FD-C center">
+            - Data Officer Details -
+        </header>
 
-                <div class="login_row DG PR center">
-                    <label for="password">Password</label>
-                    <input id="password" name="password" type="password" required>
-                </div>
+        <table class="table_1">
+            <thead>
+                <tr>
+                    <th class="first_column_title">No.</th>
+                    <th class="middle_column_title province" data-province="Provinces">Sri Lankan Provinces</th>
+                    <th class="last_column_title">Links</th>
+                </tr>
+            </thead>
 
-                <div class="login_row DG PR">
-                    <a href="">Forgot Password</a>
-                    <button type="submit">Login</button>
-                </div>
-
-            </form>
-        </div>
+            <tbody>
+                <tr>
+                    <td class="first_column">1</td>
+                    <td class="middle_column province" data-province="Western">Western Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">2</td>
+                    <td class="middle_column province" data-province="Central">Central Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">3</td>
+                    <td class="middle_column province" data-province="Southern">Southern Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">4</td>
+                    <td class="middle_column province" data-province="Northern">Northern Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">5</td>
+                    <td class="middle_column province" data-province="Eastern">Eastern Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">6</td>
+                    <td class="middle_column province" data-province="North Western">North Western Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">7</td>
+                    <td class="middle_column province" data-province="North Central">North Central Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">8</td>
+                    <td class="middle_column province" data-province="Uva">Uva Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">9</td>
+                    <td class="middle_column province" data-province="Sabaragamuwa">Sabaragamuwa Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+            </tbody>
+        </table>
     </main>
+
 
 
 
