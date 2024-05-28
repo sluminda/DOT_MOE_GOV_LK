@@ -4,7 +4,7 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "dot_moe_gov_lk";
-$port = 3306;
+$port = 3308;
 
 try {
     // Create connection
@@ -14,4 +14,3 @@ try {
 } catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());
 }
-?>
