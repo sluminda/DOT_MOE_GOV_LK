@@ -143,30 +143,23 @@
 
     <!-- Body Content Starts -->
     <main class="DF PR FD-C">
-
-        <!-- Login PopUp -->
-        <div class="login-background_container DF PR center">
-
-            <form class="login-form PR center" action="../PHP/login.php" method="post">
-
-                <div class="login_row DG PR center">
-                    <label for="username">Username</label>
-                    <input id="username" name="username" type="text" required>
-                </div>
-
-                <div class="login_row DG PR center">
-                    <label for="password">Password</label>
-                    <input id="password" name="password" type="password" required>
-                </div>
-
-                <div class="login_row DG PR">
-                    <a href="">Forgot Password</a>
-                    <button type="submit">Login</button>
-                </div>
-
-            </form>
-        </div>
-    </main>
+    <div class="login-background_container DF PR center">
+        <form class="login-form PR center" action="login.php" method="post">
+            <div class="login_row DG PR center">
+                <label for="userinput">Username or Email</label>
+                <input id="userinput" name="userinput" type="text" required>
+            </div>
+            <div class="login_row DG PR center">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" required>
+            </div>
+            <div class="login_row DG PR">
+                <a href="forgot_password.php">Forgot Password</a>
+                <button type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+</main>
 
 
 
