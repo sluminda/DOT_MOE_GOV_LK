@@ -1,46 +1,3 @@
-<?php
-require 'db_connect.php';
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = htmlspecialchars(trim($_POST['username']));
-    $password = htmlspecialchars(trim($_POST['password']));
-    $re_password = htmlspecialchars(trim($_POST['re_password']));
-    $userType = htmlspecialchars(trim($_POST['userType']));
-    $email = htmlspecialchars(trim($_POST['email']));
-    $phoneNumber = htmlspecialchars(trim($_POST['phoneNumber']));
-
-    if ($password !== $re_password) {
-        echo "Passwords do not match!";
-        exit;
-    }
-
-    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-
-    try {
-        $sql = "INSERT INTO userlogin (userName, userPassword, userType, userEmail, userPhoneNumber) VALUES (:username, :password, :userType, :email, :phoneNumber)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':password', $hashed_password);
-        $stmt->bindParam(':userType', $userType);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':phoneNumber', $phoneNumber);
-        $stmt->execute();
-
-        echo "User registered successfully!";
-    } catch (PDOException $e) {
-        if ($e->getCode() == 23000) {
-            echo "Error: Username or email already exists. Please choose a different username or email.";
-        } else {
-            echo "Error: " . $e->getMessage();
-        }
-    }
-}
-?>
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,11 +11,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <link rel="stylesheet" href="../CSS/fonts.css">
     <link rel="stylesheet" href="../CSS/Template/header.css">
-    <link rel="stylesheet" href="../CSS/Body/register.css">
+    <link rel="stylesheet" href="../CSS/Body/user_list.css">
     <link rel="stylesheet" href="../CSS/Template/footer.css">
 
     <script defer src="../JS/header.js"></script>
-    <script src="../JS/register.js"></script>
+    <script src="../JS/user_list.js"></script>
 </head>
 
 <body>
@@ -183,49 +140,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Body Content Starts -->
     <main class="DF PR FD-C">
-        <header>- User Registration -</header>
-        <div class="login-background_container DF FD-C PR center">
-            <form class="login-form PR center" action="register.php" method="post" onsubmit="return validateForm()">
+        <h1>User List</h1>
 
-                <div id="username-error" class="error-message"></div>
-                <div class="login_row DG PR center">
-                    <label for="username">Username</label>
-                    <input id="username" name="username" type="text" required>
-                </div>
-                <div id="email-error" class="error-message"></div>
-                <div class="login_row DG PR center">
-                    <label for="email">Email</label>
-                    <input id="email" name="email" type="email" required>
-                </div>
-                <div class="login_row DG PR center">
-                    <label for="userType">User Type</label>
-                    <select id="userType" name="userType" required>
-                        <option value="Admin">Admin</option>
-                        <option value="Super Admin">Super Admin</option>
-                    </select>
-                </div>
-                <div id="phoneNumber-error" class="error-message"></div>
-                <div class="login_row DG PR center">
-                    <label for="phoneNumber">Phone Number</label>
-                    <input id="phoneNumber" name="phoneNumber" type="text" required>
-                </div>
-                <div id="password-error" class="error-message"></div>
-                <div class="login_row DG PR center">
-                    <label for="password">Password</label>
-                    <input id="password" name="password" type="password" required>
-                </div>
-                <div id="re_password-error" class="error-message"></div>
-                <div class="login_row DG PR center">
-                    <label for="re_password">Re-enter Password</label>
-                    <input id="re_password" name="re_password" type="password" required>
-                </div>
-                <div class="login_row DG PR">
-                    <button type="submit">Register</button>
-                </div>
-            </form>
+        <br>
+
+        <div class="createNew">
+            <button id="new" onclick="window.location.href='register.php'">Create New User</button>
         </div>
-    </main>
 
+        <br>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email Address</th>
+                    <th>Mobile Number</th>
+                    <th>User Type</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                // Database connection
+                require 'db_connect.php';
+
+                // Query to select data from the userlogin table using PDO
+                $sql = "SELECT userName, userEmail, userPhoneNumber, userType FROM userlogin";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                if ($results) {
+                    // Output data of each row
+                    foreach ($results as $row) {
+                        echo "<tr id='user-" . htmlspecialchars($row["userName"]) . "'>
+                        <td>" . htmlspecialchars($row["userName"]) . "</td>
+                        <td>" . htmlspecialchars($row["userEmail"]) . "</td>
+                        <td>" . htmlspecialchars($row["userPhoneNumber"]) . "</td>
+                        <td>" . htmlspecialchars($row["userType"]) . "</td>
+                        <td class='actions'><button onclick=\"removeUser('" . htmlspecialchars($row["userName"]) . "')\">Remove</button></td>
+                      </tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='6'>No records found</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </main>
 
 
     <!-- Footer Starts Here -->
@@ -291,6 +254,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 Ministry of Education.</p>
         </section>
     </footer>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body>
+
 </body>
 
 </html>

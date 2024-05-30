@@ -2,11 +2,13 @@
 session_start();
 require 'db_connect.php';
 
+$error_message = '';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $userInput = htmlspecialchars(trim($_POST['userinput'])); // Can be either username or email
+    $userInput = htmlspecialchars(trim($_POST['userinput']));
     $pass = htmlspecialchars(trim($_POST['password']));
 
-    $sql = "SELECT userID, userPassword, userType FROM userlogin WHERE userName = :userinput OR email = :userinput";
+    $sql = "SELECT userID, userPassword, userType FROM userlogin WHERE userName = :userinput OR userEmail = :userinput";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':userinput', $userInput);
     $stmt->execute();
@@ -39,15 +41,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             exit;
         } else {
-            echo "Invalid username/email or password.";
+            $error_message = "Invalid username/email or password.";
         }
     } else {
-        echo "Invalid username/email or password.";
+        $error_message = "Invalid username/email or password.";
     }
 }
 ?>
 
-<!-- HTML form for login -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,13 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
-        integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <link rel="stylesheet" href="../CSS/fonts.css">
     <link rel="stylesheet" href="../CSS/Template/header.css">
@@ -193,23 +191,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Body Content Starts -->
     <main class="DF PR FD-C">
-    <div class="login-background_container DF PR center">
-        <form class="login-form PR center" action="login.php" method="post">
-            <div class="login_row DG PR center">
-                <label for="userinput">Username or Email</label>
-                <input id="userinput" name="userinput" type="text" required>
-            </div>
-            <div class="login_row DG PR center">
-                <label for="password">Password</label>
-                <input id="password" name="password" type="password" required>
-            </div>
-            <div class="login_row DG PR">
-                <a href="forgot_password.php">Forgot Password</a>
-                <button type="submit">Login</button>
-            </div>
-        </form>
-    </div>
-</main>
+        <div class="login-background_container DF PR center">
+            <form class="login-form PR center" action="login.php" method="post">
+                <h2>Login</h2>
+                <?php if ($error_message) : ?>
+                    <div class="error-message"><?php echo $error_message; ?></div>
+                <?php endif; ?>
+                <div class="login_row DG PR center">
+                    <label for="userinput">Username or Email</label>
+                    <input id="userinput" name="userinput" type="text" required>
+                </div>
+                <div class="login_row DG PR center">
+                    <label for="password">Password</label>
+                    <input id="password" name="password" type="password" required>
+                </div>
+                <div class="login_row DG PR">
+                    <a href="forgot_password.php">Forgot Password</a>
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </main>
 
 
 
@@ -220,10 +222,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <!-- Google Map Column -->
             <div class="location DF FD-C PR center">
                 <h3>Google Map</h3>
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3960.9941086631047!2d79.930527!3d6.891307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2517dc82a9fef%3A0xa2cb100ac511407c!2sMinistry%20of%20Education!5e0!3m2!1sen!2sus!4v1712734841372!5m2!1sen!2sus"
-                    style="border:0;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3960.9941086631047!2d79.930527!3d6.891307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2517dc82a9fef%3A0xa2cb100ac511407c!2sMinistry%20of%20Education!5e0!3m2!1sen!2sus!4v1712734841372!5m2!1sen!2sus" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
 
             <div id="contact" class="contact_details DF FD-C PR">

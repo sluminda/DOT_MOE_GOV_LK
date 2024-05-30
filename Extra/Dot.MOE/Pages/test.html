@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .actions {
+            text-align: center;
+        }
+
+        .actions button {
+            margin: 0 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>User List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Email Address</th>
+                <th>Mobile Number</th>
+                <th>User Type</th>
+                <th>Password</th>
+                <th>Edit</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>John Doe</td>
+                <td>john.doe@example.com</td>
+                <td>123-456-7890</td>
+                <td>Admin</td>
+                <td>********</td>
+                <td class="actions"><button>Edit</button></td>
+                <td class="actions"><button>Remove</button></td>
+            </tr>
+            <tr>
+                <td>Jane Smith</td>
+                <td>jane.smith@example.com</td>
+                <td>098-765-4321</td>
+                <td>User</td>
+                <td>********</td>
+                <td class="actions"><button>Edit</button></td>
+                <td class="actions"><button>Remove</button></td>
+            </tr>
+            <!-- Add more user rows as needed -->
+        </tbody>
+    </table>
+</body>
+
+</html>

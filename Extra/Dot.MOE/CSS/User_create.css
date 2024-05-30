@@ -1,0 +1,9 @@
+h1 {
+  text-align: center;
+}
+
+.container {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}

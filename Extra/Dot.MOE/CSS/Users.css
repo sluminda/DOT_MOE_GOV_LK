@@ -1,0 +1,33 @@
+h1 {
+  text-align: center;
+}
+
+table {
+  justify-content: center;
+  text-align: center;
+  border-collapse: collapse;
+  width: 100%;
+  background-color: azure;
+  table-layout: auto;
+}
+
+tr {
+  text-align: center;
+}
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 5px;
+}
+
+#remove {
+  background: #e76060;
+  border-radius: 5px;
+  font-size: 15px;
+}
+#Edit {
+  background: #59b459;
+  border-radius: 5px;
+  font-size: 15px;
+}

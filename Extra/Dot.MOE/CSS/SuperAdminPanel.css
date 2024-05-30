@@ -1,0 +1,31 @@
+h1 {
+  text-align: center;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  height: auto;
+}
+
+.box {
+  border-radius: 20px;
+  display: flex;
+  padding: 20px 20px 20px 20px;
+  margin: 20px 20px 20px 20px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  width: 280px;
+  height: 150px;
+  background: #69b9df;
+}
+
+a {
+  font-size: medium;
+  color: #ffffff;
+  font: 1em sans-serif;
+}

@@ -1,12 +1,3 @@
-CREATE TABLE userlogin (
-    userID INT AUTO_INCREMENT PRIMARY KEY,
-    userName VARCHAR(255) UNIQUE,
-    userPassword VARCHAR(255) NOT NULL,
-    userType ENUM('Admin', 'Super Admin') NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE
-)ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
 CREATE TABLE password_resets (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
@@ -14,3 +5,23 @@ CREATE TABLE password_resets (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
  
+
+
+
+
+CREATE TABLE userlogin (
+    userID INT AUTO_INCREMENT PRIMARY KEY,
+    userName VARCHAR(255) UNIQUE,
+    userPassword VARCHAR(255) NOT NULL,
+    userType ENUM('Admin', 'Super Admin') NOT NULL,
+    userEmail VARCHAR(255) UNIQUE NOT NULL,
+    userPhoneNumber VARCHAR(10) NOT NULL
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE login_records (
+    recordID INT AUTO_INCREMENT PRIMARY KEY,
+    userID INT,
+    userloginTime DATETIME,
+    userIpAddress VARCHAR(45),
+    FOREIGN KEY (userID) REFERENCES userlogin(userID)
+);
