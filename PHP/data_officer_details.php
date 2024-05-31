@@ -10,10 +10,14 @@ if (!isset($_SESSION['loginTime']) || (time() - $_SESSION['loginTime'] > 259200)
 }
 
 // Check if the user is logged in and has the correct user type
-if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true || $_SESSION['userType'] !== 'Super Admin') {
+if (
+    !isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true ||
+    ($_SESSION['userType'] !== 'Admin' && $_SESSION['userType'] !== 'Super Admin')
+) {
     header("Location: login.php");
     exit;
 }
+
 
 // Reset login time on each valid request to keep session active
 $_SESSION['loginTime'] = time();
@@ -25,17 +29,18 @@ $_SESSION['loginTime'] = time();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Admin Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <link rel="stylesheet" href="../CSS/fonts.css">
     <link rel="stylesheet" href="../CSS/Template/header.css">
-    <!-- <link rel="stylesheet" href="../CSS/Body/register.css"> -->
+    <link rel="stylesheet" href="../CSS/Body/admin.css">
     <link rel="stylesheet" href="../CSS/Template/footer.css">
 
     <script defer src="../JS/header.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -158,27 +163,72 @@ $_SESSION['loginTime'] = time();
 
     </header>
 
-    <main>
-        <h1> -Super_Admin_Panel- </h1>
+    <!-- Body Content Starts -->
+    <main class="DF PR FD-C">
 
-        <div class="container">
+        <!-- Table Content Starts Here -->
+        <header class="heading DF FD-C center">
+            - Data Officer Details -
+        </header>
 
-            <div class="box">
-                <a href="#">User Account</a>
-            </div>
+        <table class="table_1">
+            <thead>
+                <tr>
+                    <th class="first_column_title">No.</th>
+                    <th class="middle_column_title province" data-province="Provinces">Sri Lankan Provinces</th>
+                    <th class="last_column_title">Links</th>
+                </tr>
+            </thead>
 
-            <div class="box">
-                <a href="#">All Province Data Officer Details</a>
-            </div>
-
-            <div class="box">
-                <a href="#">Self Registration List</a>
-            </div>
-
-        </div>
+            <tbody>
+                <tr>
+                    <td class="first_column">1</td>
+                    <td class="middle_column province" data-province="Western">Western Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">2</td>
+                    <td class="middle_column province" data-province="Central">Central Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">3</td>
+                    <td class="middle_column province" data-province="Southern">Southern Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">4</td>
+                    <td class="middle_column province" data-province="Northern">Northern Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">5</td>
+                    <td class="middle_column province" data-province="Eastern">Eastern Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">6</td>
+                    <td class="middle_column province" data-province="North Western">North Western Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">7</td>
+                    <td class="middle_column province" data-province="North Central">North Central Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">8</td>
+                    <td class="middle_column province" data-province="Uva">Uva Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+                <tr>
+                    <td class="first_column">9</td>
+                    <td class="middle_column province" data-province="Sabaragamuwa">Sabaragamuwa Province</td>
+                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                </tr>
+            </tbody>
+        </table>
     </main>
-
-
 
     <!-- Footer Starts Here -->
     <footer class="footer DF FD-C PR">

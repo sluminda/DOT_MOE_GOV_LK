@@ -1,23 +1,23 @@
-<?php
-session_start();
+<!-- <?php
+        session_start();
 
-// Check if the session is expired
-if (!isset($_SESSION['loginTime']) || (time() - $_SESSION['loginTime'] > 259200)) { // 259200 seconds = 3 days
-    session_unset();
-    session_destroy();
-    header("Location: login.php");
-    exit;
-}
+        // Check if the session is expired
+        if (!isset($_SESSION['loginTime']) || (time() - $_SESSION['loginTime'] > 259200)) { // 259200 seconds = 3 days
+            session_unset();
+            session_destroy();
+            header("Location: login.php");
+            exit;
+        }
 
-// Check if the user is logged in and has the correct user type
-if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true || $_SESSION['userType'] !== 'Admin') {
-    header("Location: login.php");
-    exit;
-}
+        // Check if the user is logged in and has the correct user type
+        if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true || $_SESSION['userType'] !== 'Super Admin') {
+            header("Location: login.php");
+            exit;
+        }
 
-// Reset login time on each valid request to keep session active
-$_SESSION['loginTime'] = time();
-?>
+        // Reset login time on each valid request to keep session active
+        $_SESSION['loginTime'] = time();
+        ?> -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,22 +25,17 @@ $_SESSION['loginTime'] = time();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
-        integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <link rel="stylesheet" href="../CSS/fonts.css">
     <link rel="stylesheet" href="../CSS/Template/header.css">
-    <link rel="stylesheet" href="../CSS/Body/admin.css">
+    <link rel="stylesheet" href="../CSS/Body/super_admin.css">
     <link rel="stylesheet" href="../CSS/Template/footer.css">
 
     <script defer src="../JS/header.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -163,72 +158,45 @@ $_SESSION['loginTime'] = time();
 
     </header>
 
-    <!-- Body Content Starts -->
-    <main class="DF PR FD-C">
+    <main class="super_admin_container DG PR">
 
-        <!-- Table Content Starts Here -->
-        <header class="heading DF FD-C center">
-            - Data Officer Details -
-        </header>
+        <header> <strong>- Super Admin Panel - </strong></header>
 
-        <table class="table_1">
-            <thead>
-                <tr>
-                    <th class="first_column_title">No.</th>
-                    <th class="middle_column_title province" data-province="Provinces">Sri Lankan Provinces</th>
-                    <th class="last_column_title">Links</th>
-                </tr>
-            </thead>
+        <div class=" admin_modules_container DG">
 
-            <tbody>
-                <tr>
-                    <td class="first_column">1</td>
-                    <td class="middle_column province" data-province="Western">Western Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">2</td>
-                    <td class="middle_column province" data-province="Central">Central Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">3</td>
-                    <td class="middle_column province" data-province="Southern">Southern Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">4</td>
-                    <td class="middle_column province" data-province="Northern">Northern Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">5</td>
-                    <td class="middle_column province" data-province="Eastern">Eastern Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">6</td>
-                    <td class="middle_column province" data-province="North Western">North Western Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">7</td>
-                    <td class="middle_column province" data-province="North Central">North Central Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">8</td>
-                    <td class="middle_column province" data-province="Uva">Uva Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-                <tr>
-                    <td class="first_column">9</td>
-                    <td class="middle_column province" data-province="Sabaragamuwa">Sabaragamuwa Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
-                </tr>
-            </tbody>
-        </table>
+            <div class="modules_container DF FD-C PR">
+                <div class="title_container DF FD-R center">
+                    <i class="fa-solid fa-lg fa-users-gear"></i>
+                    <h3>Admin Accounts</h3>
+                </div>
+                <ul class="guidline-box DF PR FD-R">
+                    <li><a href="./user_list.php">View</a></li>
+                </ul>
+            </div>
+
+            <div class="modules_container module_2 DF FD-C PR">
+                <div class="title_container DF FD-R center">
+                    <i class="fa-solid fa-lg fa-user-graduate"></i>
+                    <h3>Data Officer Details</h3>
+                </div>
+                <ul class="DF PR FD-R">
+                    <li><a href="./data_officer_details.php">View</a></li>
+                </ul>
+            </div>
+
+            <div class="modules_container DF FD-C PR">
+                <div class="title_container DF FD-R center">
+                    <i class="fa-solid fa-lg fa-address-card"></i>
+                    <h3>Self Registration List</h3>
+                </div>
+                <ul class="DF PR FD-R">
+                    <li><a href="">View</a></li>
+                </ul>
+            </div>
+        </div>
     </main>
+
+
 
     <!-- Footer Starts Here -->
     <footer class="footer DF FD-C PR">
@@ -237,10 +205,7 @@ $_SESSION['loginTime'] = time();
             <!-- Google Map Column -->
             <div class="location DF FD-C PR center">
                 <h3>Google Map</h3>
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3960.9941086631047!2d79.930527!3d6.891307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2517dc82a9fef%3A0xa2cb100ac511407c!2sMinistry%20of%20Education!5e0!3m2!1sen!2sus!4v1712734841372!5m2!1sen!2sus"
-                    style="border:0;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3960.9941086631047!2d79.930527!3d6.891307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2517dc82a9fef%3A0xa2cb100ac511407c!2sMinistry%20of%20Education!5e0!3m2!1sen!2sus!4v1712734841372!5m2!1sen!2sus" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
 
             <div id="contact" class="contact_details DF FD-C PR">

@@ -1,55 +1,83 @@
-h1 {
+/*
+===============================
+Body Section User Create Button
+===============================
+*/
+
+.create_button_container {
+  display: flex;
+  justify-content: right;
+  position: sticky;
+  right: 0;
+  left: 0;
+  margin: 0 0 1rem 0;
+}
+
+.create_button_container button {
+  padding: 0.5rem 1rem;
+  color: var(--secondary-color);
+  background-color: var(--button-color);
+  border-radius: 8px;
+  outline: 0;
+  border: 0;
+  transition: background-color 0.3s ease;
+}
+
+.create_button_container button:hover {
+  transition: background-color 0.3s ease;
+  background-color: var(--button-hover-color);
+}
+
+/*
+=========================
+Body Section User Details
+=========================
+*/
+
+.main_container {
+  margin: 3% 10% 5% 10%;
+  padding: 0 1rem 3rem 1rem;
+  background-color: var(--container-color);
+  border-radius: 8px;
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.716);
+}
+
+.main_container > header {
   text-align: center;
+  padding: 2rem 0;
+  font-size: var(--font-big-0);
+  font-family: pop-SB;
   color: var(--secondary-color);
 }
 
-#new {
-  font-size: large;
-  padding: 10px 20px;
-  background-color: var(--link-color);
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#new:hover {
-  background-color: #5757d1;
-}
-
 table {
+  position: relative;
   width: 100%;
-
   border-collapse: collapse;
-  margin-top: 20px;
+  padding-bottom: 2rem;
 }
 
 th,
 td {
-  border: 1px solid #ddd;
-  padding: 12px;
-  text-align: left;
+  border: 1px solid var(--bg-color);
+  padding: 10px;
+  text-align: center;
+  text-wrap: nowrap;
 }
 
 th {
-  background-color: #f2f2f2;
+  background-color: var(--table-heading-color);
   color: var(--secondary-color);
 }
 
-.actions {
-  text-align: center;
-}
+@media screen and (max-width: 900px) {
+  main {
+    overflow: scroll;
+    overflow: auto;
+  }
 
-.actions button {
-  margin: 0 5px;
-  padding: 5px 10px;
-  background-color: #e74c3c;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.actions button:hover {
-  background-color: #c0392b;
+  .main_container > header {
+    position: sticky;
+    left: 0;
+  }
 }

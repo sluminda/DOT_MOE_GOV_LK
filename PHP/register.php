@@ -1,5 +1,18 @@
 <?php
+session_start();
 require 'db_connect.php';
+
+// Ensure that the user is logged in
+if (!isset($_SESSION['loggedIn'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Ensure that the user is a Super Admin
+if ($_SESSION['userType'] !== 'Super Admin') {
+    echo "Access denied. You do not have permission to access this page.";
+    exit;
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = htmlspecialchars(trim($_POST['username']));

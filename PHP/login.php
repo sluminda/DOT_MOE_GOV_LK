@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $userInput = htmlspecialchars(trim($_POST['userinput']));
     $pass = htmlspecialchars(trim($_POST['password']));
 
-    $sql = "SELECT userID, userPassword, userType FROM userlogin WHERE userName = :userinput OR userEmail = :userinput";
+    $sql = "SELECT userID, userName, userPassword, userType FROM userlogin WHERE userName = :userinput OR userEmail = :userinput";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':userinput', $userInput);
     $stmt->execute();
@@ -16,10 +16,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt->rowCount() > 0) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $userID = $row['userID'];
+        $userName = $row['userName'];
         $hashed_password = $row['userPassword'];
         $userType = $row['userType'];
 
         if (password_verify($pass, $hashed_password)) {
+            $_SESSION['userID'] = $userID;
+            $_SESSION['userName'] = $userName;
             $_SESSION['userType'] = $userType;
             $_SESSION['loggedIn'] = true;
             $_SESSION['loginTime'] = time();
@@ -35,9 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $log_stmt->execute();
 
             if ($userType === "Admin") {
-                header("Location: admin.php");
+                header("Location: data_officer_details.php");
             } elseif ($userType === "Super Admin") {
-                header("Location: superadmin.php");
+                header("Location: super_admin.php");
             }
             exit;
         } else {

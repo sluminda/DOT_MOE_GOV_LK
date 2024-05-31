@@ -220,7 +220,7 @@ Main Section Training Modules
 .training_modules .modules_container ul li a {
   text-decoration: none;
   color: var(--secondary-color);
-  background-color: ;
+  background-color: var(--button-color);
   padding: 0.5rem 1rem;
   position: relative;
   box-shadow: 0 0 2px var(--secondary-color);

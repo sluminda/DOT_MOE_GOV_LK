@@ -1,3 +1,20 @@
+<?php
+session_start();
+require 'db_connect.php';
+
+// Ensure that the user is logged in
+if (!isset($_SESSION['loggedIn'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Store the logged-in username for comparison
+$loggedInUser = $_SESSION['userName'];
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,9 +22,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
+        integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <link rel="stylesheet" href="../CSS/fonts.css">
     <link rel="stylesheet" href="../CSS/Template/header.css">
@@ -139,16 +160,12 @@
     </header>
 
     <!-- Body Content Starts -->
-    <main class="DF PR FD-C">
-        <h1>User List</h1>
+    <main class="main_container DF PR FD-C">
+        <header> - User List - </header>
 
-        <br>
-
-        <div class="createNew">
-            <button id="new" onclick="window.location.href='register.php'">Create New User</button>
+        <div class="create_button_container">
+            <button onclick="window.location.href='./register.php'">Create User</button>
         </div>
-
-        <br>
 
         <table>
             <thead>
@@ -162,9 +179,6 @@
             </thead>
             <tbody>
                 <?php
-                // Database connection
-                require 'db_connect.php';
-
                 // Query to select data from the userlogin table using PDO
                 $sql = "SELECT userName, userEmail, userPhoneNumber, userType FROM userlogin";
                 $stmt = $conn->prepare($sql);
@@ -179,11 +193,18 @@
                         <td>" . htmlspecialchars($row["userEmail"]) . "</td>
                         <td>" . htmlspecialchars($row["userPhoneNumber"]) . "</td>
                         <td>" . htmlspecialchars($row["userType"]) . "</td>
-                        <td class='actions'><button onclick=\"removeUser('" . htmlspecialchars($row["userName"]) . "')\">Remove</button></td>
+                        <td class='actions'>";
+
+                        // Check if the current row's username matches the logged-in username and prevent Super Admin from deleting their own account
+                        if ($row["userName"] !== $loggedInUser || $row["userType"] !== 'Super Admin') {
+                            echo "<button onclick=\"removeUser('" . htmlspecialchars($row["userName"]) . "')\">Remove</button>";
+                        }
+
+                        echo "</td>
                       </tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='6'>No records found</td></tr>";
+                    echo "<tr><td colspan='5'>No records found</td></tr>";
                 }
                 ?>
             </tbody>
@@ -198,7 +219,10 @@
             <!-- Google Map Column -->
             <div class="location DF FD-C PR center">
                 <h3>Google Map</h3>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3960.9941086631047!2d79.930527!3d6.891307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2517dc82a9fef%3A0xa2cb100ac511407c!2sMinistry%20of%20Education!5e0!3m2!1sen!2sus!4v1712734841372!5m2!1sen!2sus" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3960.9941086631047!2d79.930527!3d6.891307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2517dc82a9fef%3A0xa2cb100ac511407c!2sMinistry%20of%20Education!5e0!3m2!1sen!2sus!4v1712734841372!5m2!1sen!2sus"
+                    style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
 
             <div id="contact" class="contact_details DF FD-C PR">
