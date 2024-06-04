@@ -2,7 +2,13 @@
 session_start();
 require 'db_connect.php';
 
-$error_message = '';
+// Clear error message on reload
+if (isset($_SESSION['error_message'])) {
+    $error_message = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
+} else {
+    $error_message = '';
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $userInput = htmlspecialchars(trim($_POST['userinput']));
@@ -44,10 +50,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             exit;
         } else {
-            $error_message = "Invalid username/email or password.";
+            $_SESSION['error_message'] = "Invalid username/email or password.";
+            header("Location: login.php");
+            exit;
         }
     } else {
-        $error_message = "Invalid username/email or password.";
+        $_SESSION['error_message'] = "Invalid username/email or password.";
+        header("Location: login.php");
+        exit;
     }
 }
 ?>
@@ -66,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <link rel="stylesheet" href="../CSS/fonts.css">
     <link rel="stylesheet" href="../CSS/Template/header.css">
-    <link rel="stylesheet" href="../CSS/Body/officer_details.css">
+    <link rel="stylesheet" href="../CSS/Body/login.css">
     <link rel="stylesheet" href="../CSS/Template/footer.css">
 
     <script defer src="../JS/header.js"></script>
@@ -194,17 +204,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Body Content Starts -->
     <main class="DF PR FD-C">
-        <div class="login-background_container DF PR center">
-            <form class="login-form PR center" action="login.php" method="post">
-                <h2>Login</h2>
-                <?php if ($error_message) : ?>
-                    <div class="error-message"><?php echo $error_message; ?></div>
-                <?php endif; ?>
-                <div class="login_row DG PR center">
+        <div class="login-background_container DF FD-C PR center">
+            <header class="DF FD-R PR center">
+                <i class="fa-solid fa-2x fa-right-to-bracket"></i>
+                <h2> Login</h2>
+            </header>
+            <?php if ($error_message) : ?>
+                <div class="error-message"><?php echo $error_message; ?></div>
+            <?php endif; ?>
+            <form class="login-form DF FD-C PR center" action="login.php" method="post">
+                <div class="login_row DG PR">
                     <label for="userinput">Username or Email</label>
                     <input id="userinput" name="userinput" type="text" required>
                 </div>
-                <div class="login_row DG PR center">
+                <div class="login_row DG PR">
                     <label for="password">Password</label>
                     <input id="password" name="password" type="password" required>
                 </div>
@@ -215,8 +228,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </form>
         </div>
     </main>
-
-
 
     <!-- Footer Starts Here -->
     <footer class="footer DF FD-C PR">

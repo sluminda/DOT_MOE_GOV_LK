@@ -15,7 +15,7 @@ Body Section User Create Button
 
 .create_button_container button {
   padding: 0.5rem 1rem;
-  color: var(--secondary-color);
+  color: var(--button-warning-color);
   background-color: var(--button-color);
   border-radius: 8px;
   outline: 0;
@@ -63,6 +63,20 @@ td {
   padding: 10px;
   text-align: center;
   text-wrap: nowrap;
+  color: var(--secondary-color);
+}
+
+table td {
+  font-size: 1rem;
+}
+
+table td button {
+  padding: 0.2rem 0.5rem;
+  background-color: var(--button-warning-bg-color);
+  color: var(--button-warning-color);
+  border-radius: 3px;
+  border: 0;
+  outline: 0;
 }
 
 th {

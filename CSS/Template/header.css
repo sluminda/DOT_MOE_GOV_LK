@@ -21,6 +21,7 @@ Default Configuration
   --button-hover-color: #264d83;
   --container-color: #e4efff;
   --icon-color: rgb(69, 214, 84);
+  --icon-color-blue: rgb(62, 107, 255);
   --close-btn-color: #ffffff;
   --close-btn-hover-color: #e3e3e3;
   --login-box-color: #ffffff;
@@ -29,6 +30,10 @@ Default Configuration
   --link-color: rgb(105, 105, 238);
   --table-heading-color: #96ceff;
   --table-body-color: #c4e3fe;
+  --button-warning-bg-color: rgb(232, 14, 14);
+  --button-warning-color: #ffffff;
+  --warning-color: rgb(227, 64, 64);
+  --white-color: #ffffff;
 
   --font-R: pop-R;
   --font-SB: pop-SB;
@@ -59,6 +64,8 @@ Default Configuration
   --link-color: #c2deff;
   --table-heading-color: #1d1d1d;
   --table-body-color: #353131ce;
+  --button-warning-bg-color: rgb(219, 53, 53);
+  --button-warning-color: #ffffff;
 }
 
 .DF {
