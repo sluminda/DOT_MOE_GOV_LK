@@ -96,12 +96,7 @@ Main Section Objectives
 /* objectives Responsive |*/
 @media (max-width: 700px) {
   .objectives {
-    gap: 2rem;
-  }
-
-  .object_container {
-    row-gap: var(--padding-small);
-    padding: 0 7%;
+    gap: 1rem;
   }
 
   .object_container p {
@@ -141,6 +136,13 @@ Main Section Objectives
   word-spacing: -0.05em;
 }
 
+@media (max-width: 700px) {
+  .object_container {
+    row-gap: var(--padding-small);
+    padding: 1rem 3%;
+  }
+}
+
 /*
 =============================
 Main Section Training Modules
@@ -149,6 +151,7 @@ Main Section Training Modules
 
 .training {
   padding: 5% 10% 2% 10%; /*Important*/
+  justify-self: center;
 
   align-items: center;
 }
@@ -167,16 +170,17 @@ Main Section Training Modules
 
 /* Training Module Cards*/
 .training_modules {
-  padding: 5%; /*Important*/
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  padding: 5% 0; /*Important*/
+  grid-template-columns: repeat(auto-fill, minmax(320px, 350px));
   gap: 2rem; /*Important*/
+  justify-content: center;
 }
 
 /* Training Modules Responsive |*/
 @media (max-width: 700px) {
   .training {
     gap: var(--font-big-2);
-    padding: 5% 8%; /*Important*/
+    padding: 10% 8%; /*Important*/
   }
 
   .training_modules {
@@ -189,7 +193,8 @@ Main Section Training Modules
 
 .modules_container {
   padding: 7%;
-  box-shadow: 0 0 3px var(--secondary-color);
+  box-shadow: 0 0 5px 0 var(--button-hover-color);
+  /* outline: 1px solid var(--button-color); */
   border-radius: 10px;
   align-items: center;
   row-gap: var(--font-big-2); /* Important */
@@ -219,7 +224,7 @@ Main Section Training Modules
 
 .training_modules .modules_container ul li a {
   text-decoration: none;
-  color: var(--secondary-color);
+  color: var(--white-color);
   background-color: var(--button-color);
   padding: 0.5rem 1rem;
   position: relative;
@@ -241,7 +246,7 @@ Main Section Programme
 */
 
 .programme article {
-  padding: 5% 10%; /*Important*/
+  padding: 5% 18%; /*Important*/
   gap: var(--font-big-2);
 }
 
@@ -285,22 +290,30 @@ Main Section Statements
 */
 
 .statements {
-  gap: 3rem;
-  padding: 5% 15%;
+  gap: 2rem;
+  padding: 5% 18%;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+@media (max-width: 1600px) {
+  .statements {
+    padding: 5% 11%;
+  }
 }
 
 .statements article {
   display: flex;
   flex-direction: column;
   background-color: var(--container-color);
+  box-shadow: 0 0 5px 0 var(--button-hover-color);
   border-radius: 15px;
   padding: 1.3rem;
   /* justify-content:; */
   align-items: center;
   row-gap: 1.5rem;
   max-width: 320px;
+  justify-content: space-between;
 }
 
 .statements article figure {
@@ -336,7 +349,7 @@ Main Section Statements
   text-decoration: none;
   padding: 0.4rem 1rem;
   background-color: var(--button-color);
-  color: var(--bg-color);
+  color: var(--white-color);
   border-radius: 50px;
 }
 

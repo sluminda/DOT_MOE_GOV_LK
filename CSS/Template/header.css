@@ -19,7 +19,7 @@ Default Configuration
   --secondary-color: #000000;
   --button-color: #508de9;
   --button-hover-color: #264d83;
-  --container-color: #e4efff;
+  --container-color: #dadada;
   --icon-color: rgb(69, 214, 84);
   --icon-color-blue: rgb(62, 107, 255);
   --close-btn-color: #ffffff;
@@ -34,6 +34,24 @@ Default Configuration
   --button-warning-color: #ffffff;
   --warning-color: rgb(227, 64, 64);
   --white-color: #ffffff;
+
+  --bg-color: #f2f2f2;
+  --secondary-color: #212121;
+  --button-color: #03a9f4;
+  --button-hover-color: #0288d1;
+  --container-color: #e0e0e0;
+  --icon-color: #4caf50;
+  --close-btn-color: #ffffff;
+  --close-btn-hover-color: #bdbdbd;
+  --login-box-color: #ffffff;
+  --login-box-textbox-color: #e0f7fa;
+  --placeholder-color: #757575;
+  --link-color: #01579b;
+  --table-heading-color: #81d4fa;
+  --table-body-color: #b3e5fc;
+  --button-warning-bg-color: #ff5252;
+  --button-warning-color: #ffffff;
+  --warning-color: #f44336;
 
   --font-R: pop-R;
   --font-SB: pop-SB;
@@ -58,14 +76,32 @@ Default Configuration
   --container-color: #44474d;
   --close-btn-color: #1f1e1e;
   --close-btn-hover-color: #000000;
-  --login-box-color: #0000005d;
-  --login-box-textbox-color: #4e4e4e62;
+  --login-box-color: #3431315d;
+  --login-box-textbox-color: #403c3c8f;
   --placeholder-color: #ffffff7f;
   --link-color: #c2deff;
   --table-heading-color: #1d1d1d;
   --table-body-color: #353131ce;
   --button-warning-bg-color: rgb(219, 53, 53);
   --button-warning-color: #ffffff;
+
+  --bg-color: #263238;
+  --secondary-color: #ffffff;
+  --button-color: #03a9f4;
+  --button-hover-color: #0288d1;
+  --container-color: #37474f;
+  --icon-color: #4caf50;
+  --close-btn-color: #263238;
+  --close-btn-hover-color: #212121;
+  --login-box-color: #37474f;
+  --login-box-textbox-color: #455a64;
+  --placeholder-color: #90a4ae;
+  --link-color: #4fc3f7;
+  --table-heading-color: #455a64;
+  --table-body-color: #607d8b;
+  --button-warning-bg-color: #ff5252;
+  --button-warning-color: #ffffff;
+  --warning-color: #f44336;
 }
 
 .DF {
@@ -331,26 +367,25 @@ body > header .wide_navigation ul li a {
 }
 
 .wide_login_container .dropdown {
-  display: none;
+  visibility: hidden;
+  opacity: 0;
   position: absolute;
   background-color: var(--container-color);
   box-shadow: 0 0 5px var(--secondary-color);
   padding: 1rem;
   border-radius: 5px;
-  top: 2.5rem;
+  top: 70px;
   right: 0;
   z-index: 1000;
   width: 200px;
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
   transform: translateY(-10px);
 }
 
 .wide_login_container .dropdown.show {
-  display: block;
+  visibility: visible;
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .user_info_container {

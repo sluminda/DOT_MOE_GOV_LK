@@ -26,3 +26,17 @@ CREATE TABLE login_records (
     userIpAddress VARCHAR(45),
     FOREIGN KEY (userID) REFERENCES userlogin(userID)
 );
+
+
+CREATE TABLE data_officers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullName VARCHAR(200) NOT NULL,
+    nameWithInitials VARCHAR(200) NOT NULL,
+    nic VARCHAR(12) NOT NULL,
+    schoolName VARCHAR(200) NOT NULL,
+    schoolSensusNo VARCHAR(7) NOT NULL,
+    district VARCHAR(50) NOT NULL,
+    province VARCHAR(50) NOT NULL,
+    zone VARCHAR(50) NOT NULL,
+    contactNo VARCHAR(10) NOT NULL
+);
