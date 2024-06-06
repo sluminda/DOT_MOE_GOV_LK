@@ -14,6 +14,13 @@ if ($_SESSION['userType'] !== 'Super Admin') {
     exit;
 }
 
+$username_error = '';
+$email_error = '';
+$general_error = '';
+$success_message = '';
+
+$username = $email = $phoneNumber = $userType = '';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = htmlspecialchars(trim($_POST['username']));
     $password = htmlspecialchars(trim($_POST['password']));
@@ -23,35 +30,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phoneNumber = htmlspecialchars(trim($_POST['phoneNumber']));
 
     if ($password !== $re_password) {
-        echo "Passwords do not match!";
-        exit;
-    }
+        $general_error = "Passwords do not match!";
+    } else {
+        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+        try {
+            $sql = "INSERT INTO userlogin (userName, userPassword, userType, userEmail, userPhoneNumber) VALUES (:username, :password, :userType, :email, :phoneNumber)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':password', $hashed_password);
+            $stmt->bindParam(':userType', $userType);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':phoneNumber', $phoneNumber);
+            $stmt->execute();
 
-    try {
-        $sql = "INSERT INTO userlogin (userName, userPassword, userType, userEmail, userPhoneNumber) VALUES (:username, :password, :userType, :email, :phoneNumber)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':password', $hashed_password);
-        $stmt->bindParam(':userType', $userType);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':phoneNumber', $phoneNumber);
-        $stmt->execute();
+            $success_message = "User registered successfully!";
+            // Clear the form values after successful registration
+            $username = $email = $phoneNumber = $password = $re_password = $userType = '';
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                // Check if the error is for username or email
+                $sql = "SELECT COUNT(*) FROM userlogin WHERE userName = :username OR userEmail = :email";
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':username', $username);
+                $stmt->bindParam(':email', $email);
+                $stmt->execute();
+                $count = $stmt->fetchColumn();
 
-        echo "User registered successfully!";
-    } catch (PDOException $e) {
-        if ($e->getCode() == 23000) {
-            echo "Error: Username or email already exists. Please choose a different username or email.";
-        } else {
-            echo "Error: " . $e->getMessage();
+                if ($count > 0) {
+                    // Check if the username already exists
+                    $sql = "SELECT COUNT(*) FROM userlogin WHERE userName = :username";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bindParam(':username', $username);
+                    $stmt->execute();
+                    if ($stmt->fetchColumn() > 0) {
+                        $username_error = "Username already exists. Please choose a different username.";
+                    }
+
+                    // Check if the email already exists
+                    $sql = "SELECT COUNT(*) FROM userlogin WHERE userEmail = :email";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bindParam(':email', $email);
+                    $stmt->execute();
+                    if ($stmt->fetchColumn() > 0) {
+                        $email_error = "Email already exists. Please choose a different email.";
+                    }
+                }
+            } else {
+                $general_error = "Error: " . $e->getMessage();
+            }
         }
     }
 }
 ?>
-
-
-
 
 
 <!DOCTYPE html>
@@ -195,47 +226,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </header>
 
     <!-- Body Content Starts -->
-    <main class="DF PR FD-C">
-        <header>- User Registration -</header>
-        <div class="login-background_container DF FD-C PR center">
-            <form class="login-form PR center" action="register.php" method="post" onsubmit="return validateForm()">
-
-                <div id="username-error" class="error-message"></div>
-                <div class="login_row DG PR center">
+    <main class="login-background_container DF PR FD-C">
+        <div class="DF FD-C PR center">
+            <header class="DF FD-R PR center">
+                <i class="fa-solid fa-2x fa-user-plus"></i>
+                <h2> Register</h2>
+            </header>
+            <?php if ($general_error) : ?>
+                <div id="general-error" class="message error-message"><?php echo $general_error; ?></div>
+            <?php endif; ?>
+            <?php if ($username_error) : ?>
+                <div id="username-error" class="message error-message"><?php echo $username_error; ?></div>
+            <?php endif; ?>
+            <?php if ($email_error) : ?>
+                <div id="email-error" class="message error-message"><?php echo $email_error; ?></div>
+            <?php endif; ?>
+            <?php if ($success_message) : ?>
+                <div id="success-message" class="message success-message"><?php echo $success_message; ?></div>
+            <?php endif; ?>
+            <form class="login-form DF FD-C PR center" action="register.php" method="post" onsubmit="return validateForm();">
+                <div class="login_row DG PR">
                     <label for="username">Username</label>
-                    <input id="username" name="username" type="text" required>
+                    <input id="username" name="username" type="text" value="<?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?>" required>
+                    <div id="username-error" class="message error-message" style="display: none;"></div>
                 </div>
 
-                <div id="email-error" class="error-message"></div>
-                <div class="login_row DG PR center">
+                <div class="login_row DG PR">
                     <label for="email">Email</label>
-                    <input id="email" name="email" type="email" required>
+                    <input id="email" name="email" type="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" required>
+                    <div id="email-error" class="message error-message" style="display: none;"></div>
                 </div>
 
-                <div class="login_row DG PR center">
+                <div class="login_row DG PR">
                     <label for="userType">User Type</label>
                     <select id="userType" name="userType" required>
-                        <option value="Admin">Admin</option>
-                        <option value="Super Admin">Super Admin</option>
+                        <option value="Admin" <?php echo ($userType === 'Admin') ? 'selected' : ''; ?>>Admin</option>
+                        <option value="Super Admin" <?php echo ($userType === 'Super Admin') ? 'selected' : ''; ?>>Super Admin</option>
                     </select>
                 </div>
 
-                <div id="phoneNumber-error" class="error-message"></div>
-                <div class="login_row DG PR center">
+                <div class="login_row DG PR">
                     <label for="phoneNumber">Phone Number</label>
-                    <input id="phoneNumber" name="phoneNumber" type="text" required>
+                    <input id="phoneNumber" name="phoneNumber" type="text" value="<?php echo htmlspecialchars($phoneNumber, ENT_QUOTES, 'UTF-8'); ?>" required>
+                    <div id="phoneNumber-error" class="message error-message" style="display: none;"></div>
                 </div>
 
-                <div id="password-error" class="error-message"></div>
-                <div class="login_row DG PR center">
+                <div class="login_row DG PR">
                     <label for="password">Password</label>
                     <input id="password" name="password" type="password" required>
+                    <div id="password-error" class="message error-message" style="display: none;"></div>
                 </div>
 
-                <div id="re_password-error" class="error-message"></div>
-                <div class="login_row DG PR center">
+                <div class="login_row DG PR">
                     <label for="re_password">Re-enter Password</label>
                     <input id="re_password" name="re_password" type="password" required>
+                    <div id="re_password-error" class="message error-message" style="display: none;"></div>
                 </div>
 
                 <div class="login_row DG PR">
@@ -245,7 +290,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </form>
         </div>
     </main>
-
 
     <!-- Footer Starts Here -->
     <footer class="footer DF FD-C PR">

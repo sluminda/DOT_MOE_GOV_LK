@@ -18,6 +18,7 @@ CREATE TABLE userlogin (
     userPhoneNumber VARCHAR(10) NOT NULL
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
 CREATE TABLE login_records (
     recordID INT AUTO_INCREMENT PRIMARY KEY,
     userID INT,

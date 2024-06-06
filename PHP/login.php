@@ -2,6 +2,32 @@
 session_start();
 require 'db_connect.php';
 
+// Check if the user is already logged in
+if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
+    // Redirect the user based on their user type
+    if ($_SESSION['userType'] === "Admin") {
+        header("Location: data_officer_details.php");
+        exit;
+    } elseif ($_SESSION['userType'] === "Super Admin") {
+        header("Location: super_admin.php");
+        exit;
+    }
+}
+
+function getUserIpAddr()
+{
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        // Check IP from internet
+        return $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        // Check IP from proxy
+        return $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        // Check IP from remote address
+        return $_SERVER['REMOTE_ADDR'];
+    }
+}
+
 // Clear error message on reload
 if (isset($_SESSION['error_message'])) {
     $error_message = $_SESSION['error_message'];
@@ -33,10 +59,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['loggedIn'] = true;
             $_SESSION['loginTime'] = time();
 
+            // Get the user's IP address
+            $ipAddress = getUserIpAddr();
+
             // Log the login details
             $loginTime = date('Y-m-d H:i:s');
-            $ipAddress = $_SERVER['REMOTE_ADDR'];
-            $log_sql = "INSERT INTO userlogin_log (userID, loginTime, ipAddress) VALUES (:userID, :loginTime, :ipAddress)";
+            $log_sql = "INSERT INTO login_records (userID, loginTime, ipAddress) VALUES (:userID, :loginTime, :ipAddress)";
             $log_stmt = $conn->prepare($log_sql);
             $log_stmt->bindParam(':userID', $userID);
             $log_stmt->bindParam(':loginTime', $loginTime);
@@ -61,6 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
+
 
 
 <!DOCTYPE html>

@@ -1,23 +1,37 @@
-<!-- <?php
-        session_start();
+<?php
+session_start();
 
-        // Check if the session is expired
-        if (!isset($_SESSION['loginTime']) || (time() - $_SESSION['loginTime'] > 259200)) { // 259200 seconds = 3 days
-            session_unset();
-            session_destroy();
-            header("Location: login.php");
-            exit;
-        }
+// Check if the session is expired
+if (!isset($_SESSION['loginTime']) || (time() - $_SESSION['loginTime'] > 259200)) { // 259200 seconds = 3 days
+    session_unset();
+    session_destroy();
+    header("Location: login.php");
+    exit;
+}
 
-        // Check if the user is logged in and has the correct user type
-        if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true || $_SESSION['userType'] !== 'Super Admin') {
-            header("Location: login.php");
-            exit;
-        }
+// Check if the user is logged in and has the correct user type
+if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true) {
+    header("Location: login.php");
+    exit;
+}
 
-        // Reset login time on each valid request to keep session active
-        $_SESSION['loginTime'] = time();
-        ?> -->
+// Check user type for accessing Super Admin pages
+if (basename($_SERVER['PHP_SELF']) === 'super_admin.php' && $_SESSION['userType'] !== 'Super Admin') {
+    header("Location: login.php");
+    exit;
+}
+
+// Reset login time on each valid request to keep session active
+$_SESSION['loginTime'] = time();
+
+// User is logged in, set user details
+$userLoggedIn = true;
+$userName = $_SESSION['userName'];
+$userType = $_SESSION['userType'];
+?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,6 +50,7 @@
     <link rel="stylesheet" href="../CSS/Template/footer.css">
 
     <script defer src="../JS/header.js"></script>
+    <script defer src="../JS/super_admin.js"></script>
 </head>
 
 <body>
@@ -55,6 +70,22 @@
         <!-- Mobile Navigation -->
         <nav class="mobile-nav hidden-effect">
             <ul>
+                <?php if ($userLoggedIn) : ?>
+                    <li class="mobile_login_container">
+                        <div class="user_info_container">
+                            <img src="../Images/Header/profile.png" alt="User Image" class="user_image">
+                            <div class="user_info">
+                                <span class="user_name"><?php echo htmlspecialchars("Hello " . $userName); ?></span>
+                                <span class="user_type"><?php echo htmlspecialchars($userType); ?></span>
+                            </div>
+                            <form class="DF PR" action="logout.php" method="post">
+                                <button type="submit" class="logout_btn">Log Out</button>
+                            </form>
+                        </div>
+
+                    </li>
+                <?php endif; ?>
+
                 <li><a href="../index.html">
                         <div><i class="fa-solid fa-house"></i></div>
                         <h3>Home</h3>
@@ -136,6 +167,32 @@
                 </li>
             </ul>
         </nav>
+
+
+        <!-- Wide Login Container -->
+        <div class="wide_login_container <?php echo $userLoggedIn ? '' : 'hidden'; ?>">
+            <div class="user_icon_container">
+                <i class="fa-solid fa-user"></i>
+                <span class="greeting_text">Hello, <br><em><?php echo htmlspecialchars($userName); ?></em></span>
+                <i class="fa-solid fa-caret-down"></i>
+            </div>
+            <?php if ($userLoggedIn) : ?>
+                <div class="dropdown">
+                    <div class="user_info_container">
+                        <img src="../Images/Header/profile.png" alt="User Image" class="user_image">
+                        <div class="user_info">
+                            <span class="user_name"><?php echo htmlspecialchars($userName); ?></span>
+                            <span class="user_type"><?php echo htmlspecialchars($userType); ?></span>
+                        </div>
+                    </div>
+                    <form action="logout.php" method="post">
+                        <button type="submit" class="logout_btn">Log Out</button>
+                    </form>
+                </div>
+            <?php endif; ?>
+        </div>
+
+
 
         <!-- Data Officer Logo -->
         <div class="data-officer-logo-container DF PR dolc1">
