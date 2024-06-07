@@ -16,16 +16,12 @@ require 'db_connect.php';
 
 // Sample data for 20 users
 $sampleUsers = [
-    ["username" => "user1", "password" => "password1", "userType" => "Admin", "email" => "user1@example.com", "phoneNumber" => "0234567890"],
-    ["username" => "user2", "password" => "password2", "userType" => "Super Admin", "email" => "user2@example.com", "phoneNumber" => "0234567891"],
+    ["username" => "lumi", "password" => "123456", "userType" => "Admin", "email" => "user1@example.com", "phoneNumber" => "0234567890"],
+    ["username" => "sanda", "password" => "123456", "userType" => "Super Admin", "email" => "user2@example.com", "phoneNumber" => "0234567891"],
     ["username" => "user3", "password" => "password3", "userType" => "Admin", "email" => "user3@example.com", "phoneNumber" => "0234567892"],
     ["username" => "user4", "password" => "password4", "userType" => "Super Admin", "email" => "user4@example.com", "phoneNumber" => "0234567893"],
     ["username" => "user5", "password" => "password2", "userType" => "Super Admin", "email" => "user5@example.com", "phoneNumber" => "0234567891"],
-    ["username" => "user6", "password" => "password3", "userType" => "Admin", "email" => "user6@example.com", "phoneNumber" => "0234567892"],
-    ["username" => "user7", "password" => "password4", "userType" => "Super Admin", "email" => "user7@example.com", "phoneNumber" => "0234567893"],
-    ["username" => "user8", "password" => "password2", "userType" => "Super Admin", "email" => "user8@example.com", "phoneNumber" => "0234567891"],
-    ["username" => "user9", "password" => "password3", "userType" => "Admin", "email" => "user9@example.com", "phoneNumber" => "0234567892"],
-    ["username" => "user10", "password" => "password4", "userType" => "Super Admin", "email" => "user10@example.com", "phoneNumber" => "0234567893"]
+
 ];
 
 foreach ($sampleUsers as $user) {

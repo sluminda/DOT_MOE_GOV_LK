@@ -6,9 +6,6 @@ CREATE TABLE password_resets (
 );
  
 
-
-
-
 CREATE TABLE userlogin (
     userID INT AUTO_INCREMENT PRIMARY KEY,
     userName VARCHAR(255) UNIQUE,
@@ -20,12 +17,13 @@ CREATE TABLE userlogin (
 
 
 CREATE TABLE login_records (
-    recordID INT AUTO_INCREMENT PRIMARY KEY,
-    userID INT,
-    userloginTime DATETIME,
-    userIpAddress VARCHAR(45),
+    logID INT AUTO_INCREMENT PRIMARY KEY,
+    userID INT NOT NULL,
+    loginTime DATETIME NOT NULL,
+    ipAddress VARCHAR(45) NOT NULL,
     FOREIGN KEY (userID) REFERENCES userlogin(userID)
 );
+
 
 
 CREATE TABLE data_officers (
