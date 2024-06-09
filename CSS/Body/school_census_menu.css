@@ -1,0 +1,33 @@
+.census_container {
+  margin: 10vh 0 55vh 0;
+}
+
+.census_container header {
+  margin: 0 auto;
+  font-size: var(--font-big-0);
+  font-weight: 800;
+  color: var(--secondary-color);
+}
+
+.census_container .census_menu_container {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 200px));
+}
+.census_container .census_menu_container .census_menu_left {
+  display: flex;
+  gap: 1rem;
+}
+
+.census_container .census_modules_container {
+  padding: 7%;
+  box-shadow: 0 0 5px 0 var(--button-hover-color);
+  border-radius: 10px;
+  align-items: center;
+  row-gap: var(--font-big-2); /* Important */
+  justify-content: space-between;
+  background-color: var(--container-color);
+  cursor: pointer;
+}
+
+.census_container .census_modules_container h3 {
+  color: var(--secondary-color);
+}
