@@ -1,5 +1,5 @@
 .census_container {
-  margin: 10vh 0 55vh 0;
+  margin: 10vh 0 10vh 0;
 }
 
 .census_container header {
@@ -9,25 +9,131 @@
   color: var(--secondary-color);
 }
 
-.census_container .census_menu_container {
-  grid-template-columns: repeat(auto-fill, minmax(150px, 200px));
+.census_container .census_menu_left {
+  flex-direction: column;
 }
+
+.census_container .census_menu_container {
+  margin: 1rem 15%;
+  grid-template-columns: 2fr 4fr;
+  background-color: var(--container-color);
+  border-radius: 15px;
+}
+
 .census_container .census_menu_container .census_menu_left {
   display: flex;
   gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.census_container .census_menu_container .census_menu_right {
+  background-color: var(--table--color);
+  margin: 0 1rem;
+  border-radius: 10px;
+  flex-direction: column;
+}
+
+.census_container .census_menu_container .census_menu_right header {
+  margin: 0 auto 2rem auto;
+  color: var(--secondary-color);
+  margin-top: 2rem;
+}
+
+.census_container .census_menu_container .census_btns_container {
+  gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem;
+  margin: 2rem 2rem 2rem 0;
+  border-radius: 10px;
+  /* box-shadow: 0 0 2px 0 var(--secondary-color); */
+}
+
+.census_container .census_menu_container .census_menu_right::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 10px;
+  height: 100px;
+  background-color: black;
+}
+
+.census_container .census_menu_container .census_btns_container .btn_box_1 a,
+.census_container .census_menu_container .census_btns_container .btn_box_2 a,
+.census_container .census_menu_container .census_btns_container .btn_box_3 a,
+.census_container .census_menu_container .census_btns_container .btn_box_4 a {
+  background-color: var(--table-heading-color);
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  width: 200px;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--secondary-color);
+  font-size: 1.05rem;
 }
 
 .census_container .census_modules_container {
-  padding: 7%;
-  box-shadow: 0 0 5px 0 var(--button-hover-color);
+  padding: 0.7rem 35%;
   border-radius: 10px;
   align-items: center;
-  row-gap: var(--font-big-2); /* Important */
+  row-gap: var(--font-big-2);
   justify-content: space-between;
-  background-color: var(--container-color);
+  background-color: var(--button-color);
   cursor: pointer;
 }
 
-.census_container .census_modules_container h3 {
-  color: var(--secondary-color);
+.census_container h4 {
+  color: var(--white-color);
+}
+
+/* Responsive Area */
+@media (max-width: 1000px) {
+  .census_container .census_menu_container {
+    margin: 1rem 15%;
+    grid-template-columns: 1fr;
+    margin: 2rem;
+    border-radius: 15px;
+    padding: 0 0 2rem 0;
+  }
+
+  .census_container .census_modules_container {
+    padding: 1rem 20%;
+    justify-content: space-between;
+    border-radius: 0;
+  }
+
+  .census_container .AA {
+    border-top-left-radius: 15px;
+    width: 50%;
+  }
+
+  .census_container .BB {
+    border-top-right-radius: 15px;
+    width: 50%;
+  }
+
+  .census_container .census_menu_container .census_menu_left {
+    gap: 0.1rem;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .census_container .census_menu_container .census_menu_right {
+    background-color: var(--container-color);
+  }
+
+  .census_container .census_menu_container .census_btns_container {
+    gap: 1.5rem;
+    flex-direction: column;
+    margin: 2rem 2rem 0 2rem;
+  }
+
+  .census_container .census_menu_container .census_menu_right header {
+    margin: 0 auto 0.5rem auto;
+  }
 }
