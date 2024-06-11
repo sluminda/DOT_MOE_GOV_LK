@@ -14,10 +14,21 @@
 }
 
 .census_container .census_menu_container {
-  margin: 1rem 15%;
-  grid-template-columns: 2fr 4fr;
+  margin: 1rem 25%;
+  grid-template-columns: 1fr 2fr;
   background-color: var(--container-color);
   border-radius: 15px;
+}
+
+.census_menu_container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 38%;
+  width: 2px;
+  background-color: var(--button-hover-color);
+  transform: translateX(-50%);
 }
 
 .census_container .census_menu_container .census_menu_left {
@@ -26,17 +37,18 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  margin: 0 1rem 0 3rem;
 }
 
 .census_container .census_menu_container .census_menu_right {
   background-color: var(--table--color);
-  margin: 0 1rem;
+  margin: 0;
   border-radius: 10px;
   flex-direction: column;
 }
 
 .census_container .census_menu_container .census_menu_right header {
-  margin: 0 auto 2rem auto;
+  margin: 0 auto 1rem auto;
   color: var(--secondary-color);
   margin-top: 2rem;
 }
@@ -45,20 +57,9 @@
   gap: 1.5rem;
   display: flex;
   flex-direction: column;
-  padding: 2rem 1rem;
-  margin: 2rem 2rem 2rem 0;
+  padding: 0 0 2rem 0;
   border-radius: 10px;
-  /* box-shadow: 0 0 2px 0 var(--secondary-color); */
-}
-
-.census_container .census_menu_container .census_menu_right::before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 10px;
-  height: 100px;
-  background-color: black;
+  align-items: center;
 }
 
 .census_container .census_menu_container .census_btns_container .btn_box_1 a,
@@ -74,7 +75,7 @@
   justify-content: center;
   text-decoration: none;
   color: var(--secondary-color);
-  font-size: 1.05rem;
+  font-size: 1.1rem;
 }
 
 .census_container .census_modules_container {
@@ -101,8 +102,12 @@
     padding: 0 0 2rem 0;
   }
 
+  .census_menu_container::before {
+    display: none;
+  }
+
   .census_container .census_modules_container {
-    padding: 1rem 20%;
+    padding: 1rem 18%;
     justify-content: space-between;
     border-radius: 0;
   }
@@ -121,10 +126,13 @@
     gap: 0.1rem;
     flex-direction: row;
     justify-content: space-between;
+    margin: 0;
   }
 
   .census_container .census_menu_container .census_menu_right {
     background-color: var(--container-color);
+    margin: 0;
+    border-radius: 0;
   }
 
   .census_container .census_menu_container .census_btns_container {
@@ -135,5 +143,39 @@
 
   .census_container .census_menu_container .census_menu_right header {
     margin: 0 auto 0.5rem auto;
+    text-align: center;
   }
+}
+
+/* Adding transitions for #year2022 and #year2023 */
+#year2022,
+#year2023 {
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+
+/* Hover effect */
+#year2022:hover,
+#year2023:hover {
+  background-color: var(--button-hover-color);
+  color: var(--white-color);
+}
+
+/* Selected effect */
+.selected {
+  background-color: var(--button-hover-color);
+  color: var(--white-color);
+  font-weight: bold;
+  box-shadow: 0 0 6px 2px var(--button-hover-color);
+  border: 2px solid var(--white-color);
+}
+
+.census_header {
+  transition: color 0.3s, font-size 0.3s;
+}
+
+.census_header.selected {
+  color: var(--button-hover-color);
+  font-size: 1.2em;
+  font-weight: bold;
 }
