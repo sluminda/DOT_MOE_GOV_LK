@@ -1,12 +1,13 @@
 .census_container {
-  margin: 10vh 0 10vh 0;
+  margin: 13vh 0 15vh 0;
 }
 
-.census_container header {
+.census_container > header {
   margin: 0 auto;
-  font-size: var(--font-big-0);
+  font-size: var(--font-big-2);
   font-weight: 800;
   color: var(--secondary-color);
+  text-align: center;
 }
 
 .census_container .census_menu_left {
@@ -51,6 +52,7 @@
   margin: 0 auto 1rem auto;
   color: var(--secondary-color);
   margin-top: 2rem;
+  font-size: var(--font-big-0);
 }
 
 .census_container .census_menu_container .census_btns_container {
@@ -94,6 +96,10 @@
 
 /* Responsive Area */
 @media (max-width: 1000px) {
+  .census_container {
+    margin: 10vh 0 10vh 0;
+  }
+
   .census_container .census_menu_container {
     margin: 1rem 15%;
     grid-template-columns: 1fr;
@@ -147,21 +153,19 @@
   }
 }
 
-/* Adding transitions for #year2022 and #year2023 */
+/* transitions for #year2022 and #year2023 */
 #year2022,
 #year2023 {
   transition: background-color 0.3s, color 0.3s;
   cursor: pointer;
 }
 
-/* Hover effect */
 #year2022:hover,
 #year2023:hover {
   background-color: var(--button-hover-color);
   color: var(--white-color);
 }
 
-/* Selected effect */
 .selected {
   background-color: var(--button-hover-color);
   color: var(--white-color);

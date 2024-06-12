@@ -222,7 +222,8 @@ Main Section Training Modules
   display: flex;
 }
 
-.training_modules .modules_container ul li a {
+.training_modules .modules_container ul li a,
+.training_modules .modules_container ul li button {
   text-decoration: none;
   color: var(--white-color);
   background-color: var(--button-color);
@@ -231,10 +232,13 @@ Main Section Training Modules
   box-shadow: 0 0 2px var(--secondary-color);
   border-radius: 5px;
   transition: background-color 0.3s ease;
+  border: 0;
 }
 
 .training_modules .modules_container ul li a:hover,
-.training_modules .modules_container ul li a:focus {
+.training_modules .modules_container ul li button:hover,
+.training_modules .modules_container ul li a:focus,
+.training_modules .modules_container ul li button:focus {
   background-color: var(--button-hover-color);
   transition: background-color 0.3s ease;
 }

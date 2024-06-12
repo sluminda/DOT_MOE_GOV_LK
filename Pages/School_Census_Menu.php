@@ -1,29 +1,55 @@
+<?php
+session_start();
+
+if (isset($_POST['language'])) {
+    $_SESSION['language'] = $_POST['language'];
+}
+
+$language = isset($_SESSION['language']) ? $_SESSION['language'] : 'sinhala';
+
+
+$sinhalaTranslations = [
+    'header' => '- වාර්ෂික පාසල් සංගණනය -',
+    'census2023' => 'පාසල් සංගණනය 2023',
+    'censusRecords' => 'සංගණන ලේඛන',
+    'trainingMaterials' => 'පුහුණු ආධාරක',
+    'census2022Records' => 'පාසල් සංගණන ලේඛන 2022'
+];
+
+$tamilTranslations = [
+    'header' => '- வருடாந்த பாடசாலை கணக்கெடுப்பு -',
+    'census2023' => ' பாடசாலை கணக்கெடுப்பு 2023',
+    'censusRecords' => 'கணக்கெடுப்பு ஆவணங்கள்',
+    'trainingMaterials' => 'பயிற்சி உதவிச் சாதனங்கள்',
+    'census2022Records' => 'பாடசாலை கணக்கெடுப்பு 2022'
+];
+
+$translations = $language === 'tamil' ? $tamilTranslations : $sinhalaTranslations;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Annual School Census 2022 (පාසල් සංගණනය 2022 පුහුණු ආධාරක)</title>
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
-        integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <link rel="stylesheet" href="../CSS/fonts.css">
     <link rel="stylesheet" href="../CSS/Template/header.css">
-    <link rel="stylesheet" href="../CSS/Body/annual_school_census.css">
+    <link rel="stylesheet" href="../CSS/Body/school_census_menu.css">
     <link rel="stylesheet" href="../CSS/Template/footer.css">
 
     <script defer src="../JS/header.js"></script>
-
+    <script defer src="../JS/census_menu.js"></script>
+    <script defer src="../JS/census_translate.js"></script>
 </head>
 
 <body>
+
     <!-- Header Section -->
 
     <header class="DF PR">
@@ -141,45 +167,48 @@
         </div>
 
     </header>
-    <main>
-        <header>පාසල් සංගණනය 2022 පුහුණු ආධාරක</header>
-        <div class="container">
 
-            <div class="video">
-                <h2>Introduce Google Sheet</h2>
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/3R4C2mB0S7Q?si=S2e_od88A0p4iKjc"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+    <main class="census_container DF PR FD-C">
+        <header><?php echo $translations['header']; ?></header>
+        <section class="census_menu_container DG PR">
+            <div class="census_menu_left DF PR center">
+                <div id="year2023" class="census_modules_container AA DF selected">
+                    <h4>2023</h4>
+                </div>
+                <div id="year2022" class="census_modules_container BB DF">
+                    <h4>2022</h4>
+                </div>
             </div>
 
-            <div class="video">
-                <h2>Introduce Google Sheet</h2>
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/nlr7phoJfi0?si=xKv48Y8yAAQfh5Uj"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <div class="census_menu_right DF FD-C PR">
+                <div class="census_btns_container CC PR">
+                    <header><?php echo $translations['census2023']; ?></header>
+                    <div class="btn_box_1 DF FD-R PR">
+                        <a href="#"><?php echo $translations['censusRecords']; ?></a>
+                    </div>
+                    <div class="btn_box_2 DF FD-R PR">
+                        <a href="#"><?php echo $translations['trainingMaterials']; ?></a>
+                    </div>
+                </div>
+                <div class="census_btns_container DD PR center hidden">
+                    <header><?php echo $translations['census2022Records']; ?></header>
+                    <div class="btn_box_3 DF FD-R PR">
+                        <a href="#"><?php echo $translations['censusRecords']; ?></a>
+                    </div>
+                    <div class="btn_box_4 DF FD-R PR">
+                        <a href="#"><?php echo $translations['trainingMaterials']; ?></a>
+                    </div>
+                </div>
             </div>
 
-            <div class="video">
-                <h2>Introduce Google Sheet</h2>
-                <iframe src="https://www.youtube.com/embed/wV7zAL4wqMs?si=d9Mj9Uj3IxA3wbGJ" frameborder="0"
-                    allowfullscreen></iframe>
-            </div>
-
-            <div class="video">
-                <h2>Introduce Google Sheet</h2>
-                <iframe src="https://www.youtube.com/embed/CbkNE2zhNYc?si=UMnt9clNj2-zvRID" frameborder="0"
-                    allowfullscreen></iframe>
-            </div>
-
-            <div class="video">
-                <h2>Introduce Google Sheet</h2>
-                <iframe src="https://www.youtube.com/embed/3R4C2mB0S7Q?si=ZXZyurlZaT64hb_d" frameborder="0"
-                    allowfullscreen></iframe>
-            </div>
-        </div>
+        </section>
     </main>
+
+
+
+
+
 
     <!-- Footer Starts Here -->
     <footer class="footer DF FD-C PR">
@@ -188,10 +217,7 @@
             <!-- Google Map Column -->
             <div class="location DF FD-C PR center">
                 <h3>Google Map</h3>
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3960.9941086631047!2d79.930527!3d6.891307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2517dc82a9fef%3A0xa2cb100ac511407c!2sMinistry%20of%20Education!5e0!3m2!1sen!2sus!4v1712734841372!5m2!1sen!2sus"
-                    style="border:0;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3960.9941086631047!2d79.930527!3d6.891307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2517dc82a9fef%3A0xa2cb100ac511407c!2sMinistry%20of%20Education!5e0!3m2!1sen!2sus!4v1712734841372!5m2!1sen!2sus" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
 
             <div id="contact" class="contact_details DF FD-C PR">
@@ -231,8 +257,7 @@
                 <ul class="DF FD-C PR ">
                     <li><a target="_blank" href="https://moe.gov.lk/">Ministry of Education</a></li>
                     <li><a target="_blank" href="https://www.doenets.lk/">Department of Examinations</a></li>
-                    <li><a target="_blank" href="http://www.edupub.gov.lk/">Education Publication Department</a>
-                    </li>
+                    <li><a target="_blank" href="http://www.edupub.gov.lk/">Education Publication Department</a></li>
                     <li><a target="_blank" href="http://www.statistics.gov.lk/">Department of Census and Statics</a>
                     </li>
                 </ul>
@@ -248,7 +273,6 @@
                 Ministry of Education.</p>
         </section>
     </footer>
-
 </body>
 
 </html>
