@@ -1,123 +1,31 @@
-<?php
-session_start();
-require 'db_connect.php';
-
-// Check if the user is already logged in
-if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
-    // Redirect the user based on their user type
-    if ($_SESSION['userType'] === "Admin") {
-        header("Location: data_officer_details.php");
-        exit;
-    } elseif ($_SESSION['userType'] === "Super Admin") {
-        header("Location: super_admin.php");
-        exit;
-    }
-}
-
-function getUserIpAddr()
-{
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-        // Check IP from internet
-        return $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        // Check IP from proxy
-        return $_SERVER['HTTP_X_FORWARDED_FOR'];
-    } else {
-        // Check IP from remote address
-        return $_SERVER['REMOTE_ADDR'];
-    }
-}
-
-// Clear error message on reload
-if (isset($_SESSION['error_message'])) {
-    $error_message = $_SESSION['error_message'];
-    unset($_SESSION['error_message']);
-} else {
-    $error_message = '';
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $userInput = htmlspecialchars(trim($_POST['userinput']));
-    $pass = htmlspecialchars(trim($_POST['password']));
-
-    $sql = "SELECT userID, userName, userPassword, userType FROM userlogin WHERE userName = :userinput OR userEmail = :userinput";
-    $sql = "SELECT userID, userName, userPassword, userType FROM userlogin WHERE userName = :userinput OR userEmail = :userinput";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':userinput', $userInput);
-    $stmt->execute();
-
-    if ($stmt->rowCount() > 0) {
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $userID = $row['userID'];
-        $userName = $row['userName'];
-        $hashed_password = $row['userPassword'];
-        $userType = $row['userType'];
-
-        if (password_verify($pass, $hashed_password)) {
-            $_SESSION['userID'] = $userID;
-            $_SESSION['userName'] = $userName;
-            $_SESSION['userType'] = $userType;
-            $_SESSION['loggedIn'] = true;
-            $_SESSION['loginTime'] = time();
-
-            // Get the user's IP address
-            $ipAddress = getUserIpAddr();
-
-            // Log the login details
-            $loginTime = date('Y-m-d H:i:s');
-            $log_sql = "INSERT INTO login_records (userID, loginTime, ipAddress) VALUES (:userID, :loginTime, :ipAddress)";
-            $log_stmt = $conn->prepare($log_sql);
-            $log_stmt->bindParam(':userID', $userID);
-            $log_stmt->bindParam(':loginTime', $loginTime);
-            $log_stmt->bindParam(':ipAddress', $ipAddress);
-            $log_stmt->execute();
-
-            if ($userType === "Admin") {
-                header("Location: data_officer_details.php");
-            } elseif ($userType === "Super Admin") {
-                header("Location: super_admin.php");
-            }
-            exit;
-        } else {
-            $_SESSION['error_message'] = "Invalid username/email or password.";
-            header("Location: login.php");
-            exit;
-        }
-    } else {
-        $_SESSION['error_message'] = "Invalid username/email or password.";
-        header("Location: login.php");
-        exit;
-    }
-}
-?>
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Annual School Census 2022 (පාසල් සංගණනය 2022 පුහුණු ආධාරක)</title>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
+        integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <link rel="stylesheet" href="../CSS/fonts.css">
     <link rel="stylesheet" href="../CSS/Template/header.css">
-    <link rel="stylesheet" href="../CSS/Body/login.css">
+    <link rel="stylesheet" href="../CSS/Body/annual_school_census_tutorial.css">
     <link rel="stylesheet" href="../CSS/Template/footer.css">
 
     <script defer src="../JS/header.js"></script>
+
 </head>
 
 <body>
-
     <!-- Header Section -->
     <header class="DF PR">
-
         <!-- Mobile Navigation Icon-->
         <div class="mobile-nav-container open">
             <i class="fa-solid fa-2x fa-bars"></i>
@@ -232,31 +140,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
     </header>
+    <main class="school_census_tutorial_container DF FD-C">
+        <div class="vid_container">
+            <header class="DF FD-C">பாடசாலை கணக்கெடுப்பு 2022<br>- පුහුණු ආධාරක -</header>
+            <div class="census_video_container DG PR">
+                <div class="video">
+                    <h2>கூகுல் பத்திர அறிமுகம்</h2>
+                    <iframe class="youtube-video" src="https://www.youtube.com/embed/3R4C2mB0S7Q?si=S2e_od88A0p4iKjc"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
 
-    <!-- Body Content Starts -->
-    <main class="DF PR FD-C">
-        <div class="login-background_container DF FD-C PR center">
-            <header class="DF FD-R PR center">
-                <i class="fa-solid fa-2x fa-right-to-bracket"></i>
-                <h2> Login</h2>
-            </header>
-            <?php if ($error_message) : ?>
-                <div class="error-message"><?php echo $error_message; ?></div>
-            <?php endif; ?>
-            <form class="login-form DF FD-C PR center" action="login.php" method="post">
-                <div class="login_row DG PR">
-                    <label for="userinput">Username or Email</label>
-                    <input id="userinput" name="userinput" type="text" required>
+                <div class="video">
+                    <h2>கூகுல் பத்திர அறிமுகம்</h2>
+                    <iframe class="youtube-video" src="https://www.youtube.com/embed/nlr7phoJfi0?si=xKv48Y8yAAQfh5Uj"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
-                <div class="login_row DG PR">
-                    <label for="password">Password</label>
-                    <input id="password" name="password" type="password" required>
+
+                <div class="video">
+                    <h2>கூகுல் பத்திர அறிமுகம்</h2>
+                    <iframe class="youtube-video" src="https://www.youtube.com/embed/wV7zAL4wqMs?si=EtOhNUqYl0InS4Vq"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
-                <div class="login_row DG PR">
-                    <a href="forgot_password.php">Forgot Password</a>
-                    <button type="submit">Login</button>
+
+                <div class="video">
+                    <h2>கூகுல் பத்திர அறிமுகம்</h2>
+                    <iframe class="youtube-video" src="https://www.youtube.com/embed/CbkNE2zhNYc?si=FA8Ed3CyQGLsJc7h"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
-            </form>
+
+                <div class="video">
+                    <h2>கூகுல் பத்திர அறிமுகம்</h2>
+                    <iframe class="youtube-video" src="https://www.youtube.com/embed/3R4C2mB0S7Q?si=aZJV2jNxRV5gbGTi"
+                        width="auto" height="auto" title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -267,7 +194,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <!-- Google Map Column -->
             <div class="location DF FD-C PR center">
                 <h3>Google Map</h3>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3960.9941086631047!2d79.930527!3d6.891307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2517dc82a9fef%3A0xa2cb100ac511407c!2sMinistry%20of%20Education!5e0!3m2!1sen!2sus!4v1712734841372!5m2!1sen!2sus" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3960.9941086631047!2d79.930527!3d6.891307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2517dc82a9fef%3A0xa2cb100ac511407c!2sMinistry%20of%20Education!5e0!3m2!1sen!2sus!4v1712734841372!5m2!1sen!2sus"
+                    style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
 
             <div id="contact" class="contact_details DF FD-C PR">
@@ -307,7 +237,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <ul class="DF FD-C PR ">
                     <li><a target="_blank" href="https://moe.gov.lk/">Ministry of Education</a></li>
                     <li><a target="_blank" href="https://www.doenets.lk/">Department of Examinations</a></li>
-                    <li><a target="_blank" href="http://www.edupub.gov.lk/">Education Publication Department</a></li>
+                    <li><a target="_blank" href="http://www.edupub.gov.lk/">Education Publication Department</a>
+                    </li>
                     <li><a target="_blank" href="http://www.statistics.gov.lk/">Department of Census and Statics</a>
                     </li>
                 </ul>
@@ -323,6 +254,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 Ministry of Education.</p>
         </section>
     </footer>
+
 </body>
 
 </html>

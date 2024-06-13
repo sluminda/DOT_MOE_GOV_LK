@@ -234,6 +234,7 @@ Main Section Training Modules
   transition: background-color 0.3s ease;
   border: 0;
   font-size: 1.1rem;
+  cursor: pointer;
 }
 
 .training_modules .modules_container ul li a:hover,

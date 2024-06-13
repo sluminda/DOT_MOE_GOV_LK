@@ -2,18 +2,20 @@
   margin: 0 10%;
 }
 
-.school_census_tutorial_container > header {
+.school_census_tutorial_container .vid_container > header {
   margin: 10vh auto;
   color: var(--secondary-color);
-  font-size: var(--font-big-3);
+  font-size: var(--font-big-2);
   font-weight: 800;
+  text-align: center;
 }
 
 .school_census_tutorial_container .census_video_container {
   grid-template-columns: 1fr 1fr;
   background-color: var(--container-color);
   border-radius: 15px;
-  margin: 10% 0;
+  margin: 5% 0;
+  color: var(--secondary-color);
 }
 
 .school_census_tutorial_container .video {
@@ -25,6 +27,7 @@
 
 .school_census_tutorial_container .video h2 {
   color: var(--secondary-color);
+  font-size: var(--font-big-1);
   text-align: center;
   padding: 0 0 2rem 0;
 }
@@ -33,10 +36,11 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  height: 400px;
+  height: 600px;
   border-radius: 10px;
 }
 
+/* Responsive Area */
 @media (max-width: 1400px) {
   .school_census_tutorial_container .census_video_container {
     grid-template-columns: 1fr;
@@ -44,6 +48,14 @@
 }
 
 @media (max-width: 900px) {
+  .school_census_tutorial_container .video h2 {
+    padding: 4rem 0 2rem 0;
+  }
+
+  .school_census_tutorial_container .census_video_container {
+    padding-bottom: 4rem;
+  }
+
   .school_census_tutorial_container .video {
     display: flex;
     flex-direction: column;
@@ -60,8 +72,18 @@
     position: relative;
     height: 500px;
     border-radius: 10px;
-    width: 90%;
+    width: 100%;
     justify-self: center;
     align-self: center;
+  }
+}
+
+@media (max-width: 550px) {
+  .school_census_tutorial_container .video {
+    height: 300px;
+  }
+
+  .school_census_tutorial_container .youtube-video {
+    height: 300px;
   }
 }

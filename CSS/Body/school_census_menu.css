@@ -69,7 +69,7 @@
 .census_container .census_menu_container .census_btns_container .btn_box_3 a,
 .census_container .census_menu_container .census_btns_container .btn_box_4 a {
   background-color: var(--table-heading-color);
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 10px;
   text-align: center;
   width: 200px;
@@ -78,6 +78,7 @@
   text-decoration: none;
   color: var(--secondary-color);
   font-size: 1.1rem;
+  transition: background-color 0.3s ease;
 }
 
 .census_container .census_modules_container {
@@ -182,4 +183,16 @@
   color: var(--button-hover-color);
   font-size: 1.2em;
   font-weight: bold;
+}
+
+.census_container .census_btns_container .btn_box_1 a:hover,
+.census_container .census_btns_container .btn_box_2 a:hover,
+.census_container .census_btns_container .btn_box_3 a:hover,
+.census_container .census_btns_container .btn_box_4 a:hover,
+.census_container .census_btns_container .btn_box_1 a:focus,
+.census_container .census_btns_container .btn_box_2 a:focus,
+.census_container .census_btns_container .btn_box_3 a:focus,
+.census_container .census_btns_container .btn_box_4 a:focus {
+  background-color: var(--table-body-color);
+  transition: background-color 0.3s;
 }
