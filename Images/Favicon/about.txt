@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Carattere
+- Font Author: Copyright 2020 The Carattere Project Authors (https://github.com/googlefonts/carattere)
+- Font Source: https://fonts.gstatic.com/s/carattere/v7/4iCv6Kp1b9dXlgt_CkvTt2aMH4V_gg.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))

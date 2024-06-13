@@ -1,0 +1,100 @@
+.other_training_container {
+  margin: 0 10%;
+}
+
+.other_training_container .vid_container > header {
+  margin: 10vh auto;
+  color: var(--secondary-color);
+  font-size: var(--font-big-2);
+  font-weight: 800;
+  text-align: center;
+}
+
+.other_training_container .video_container {
+  grid-template-columns: 1fr;
+  background-color: var(--container-color);
+  border-radius: 15px;
+  margin: 5% 0;
+  color: var(--secondary-color);
+}
+
+.other_training_container .video {
+  display: flex;
+  flex-direction: column;
+  padding: var(--padding-2);
+  /* height: 600px; */
+  /* width: 80%; */
+  justify-content: center;
+}
+
+.other_training_container .video h2 {
+  color: var(--secondary-color);
+  font-size: var(--font-big-1);
+  text-align: center;
+  padding: 0 0 2rem 0;
+}
+
+.other_training_container .youtube-video {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 600px;
+  border-radius: 10px;
+}
+
+/* Responsive Area */
+@media (max-width: 1400px) {
+  .other_training_container .video_container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .other_training_container .video h2 {
+    padding: 4rem 0 2rem 0;
+  }
+
+  .other_training_container .video_container {
+    padding-bottom: 4rem;
+    margin: 5rem 0;
+  }
+
+  .other_training_container .video {
+    display: flex;
+    flex-direction: column;
+    padding: var(--padding-2);
+    width: 90%;
+    height: 500px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .other_training_container .youtube-video {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 500px;
+    border-radius: 10px;
+    width: 100%;
+    justify-self: center;
+    align-self: center;
+  }
+}
+
+@media (max-width: 550px) {
+  .other_training_container .video h2 {
+    padding: 2rem 0 2rem 0;
+  }
+
+  .other_training_container {
+    margin: 3vh 8%;
+  }
+
+  .other_training_container .video {
+    height: 300px;
+  }
+
+  .school_census_tutorial_container .youtube-video {
+    height: 300px;
+  }
+}
