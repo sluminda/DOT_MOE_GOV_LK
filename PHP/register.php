@@ -82,6 +82,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+
+// User is logged in, set user details
+$userLoggedIn = true;
+$userName = $_SESSION['userName'];
+$userType = $_SESSION['userType'];
 ?>
 
 
@@ -91,7 +96,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>User Registration</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../Images/Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../Images/Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../Images/Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../Images/Favicon/site.webmanifest">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -122,6 +133,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- Mobile Navigation -->
         <nav class="mobile-nav hidden-effect">
             <ul>
+                <?php if ($userLoggedIn) : ?>
+                    <li class="mobile_login_container">
+                        <div class="user_info_container">
+                            <img src="../Images/Header/profile.png" alt="User Image" class="user_image">
+                            <div class="user_info">
+                                <span class="user_name"><?php echo htmlspecialchars("Hello " . $userName); ?></span>
+                                <span class="user_type"><?php echo htmlspecialchars($userType); ?></span>
+                            </div>
+                            <form class="DF PR" action="logout.php" method="post">
+                                <button type="submit" class="logout_btn">Log Out</button>
+                            </form>
+                        </div>
+                    </li>
+                <?php endif; ?>
                 <li><a href="../index.html">
                         <div><i class="fa-solid fa-house"></i></div>
                         <h3>Home</h3>
@@ -203,6 +228,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </li>
             </ul>
         </nav>
+
+        <!-- Wide Login Container -->
+        <div class="wide_login_container <?php echo $userLoggedIn ? '' : 'hidden'; ?>">
+            <div class="user_icon_container">
+                <i class="fa-solid fa-user"></i>
+                <span class="greeting_text">Hello, <br><em><?php echo htmlspecialchars($userName); ?></em></span>
+                <i class="fa-solid fa-caret-down"></i>
+            </div>
+            <?php if ($userLoggedIn) : ?>
+                <div class="dropdown">
+                    <div class="user_info_container">
+                        <img src="../Images/Header/profile.png" alt="User Image" class="user_image">
+                        <div class="user_info">
+                            <span class="user_name"><?php echo htmlspecialchars($userName); ?></span>
+                            <span class="user_type"><?php echo htmlspecialchars($userType); ?></span>
+                        </div>
+                    </div>
+                    <form action="logout.php" method="post">
+                        <button type="submit" class="logout_btn">Log Out</button>
+                    </form>
+                </div>
+            <?php endif; ?>
+        </div>
 
         <!-- Data Officer Logo -->
         <div class="data-officer-logo-container DF PR dolc1">

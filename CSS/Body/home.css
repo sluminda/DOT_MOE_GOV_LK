@@ -25,7 +25,8 @@ Main Section Hero
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 320px;
+  /* width: 75%; */
+  width: 360px;
   justify-self: center;
   align-self: center;
 }
@@ -44,6 +45,12 @@ Main Section Hero
 }
 
 /* Hero Responsive */
+@media (max-width: 1200px) {
+  .hero figure {
+    width: 320px;
+  }
+}
+
 @media (max-width: 700px) {
   .hero {
     padding: 2rem 0%;
@@ -385,7 +392,7 @@ Main Section Notice & News
 }
 
 .noticeboard article {
-  gap: 2rem;
+  gap: 4rem;
   /* padding: var(--padding-small); */
   align-items: center;
   /* justify-content: space-around; */
@@ -402,8 +409,12 @@ Main Section Notice & News
 }
 
 .noticeboard article ul {
-  gap: 1rem;
+  gap: 2rem;
   text-align: justify;
+}
+
+.noticeboard article .notice_container {
+  gap: 0.5rem;
 }
 
 .noticeboard article ul li,
@@ -542,6 +553,7 @@ Main Section Notice & News
 
   .noticeboard article {
     padding: 0 0%;
+    gap: 2rem;
   }
 
   .noticeboard article ul p {

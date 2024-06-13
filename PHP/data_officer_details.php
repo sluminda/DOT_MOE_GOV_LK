@@ -18,10 +18,17 @@ if (
     exit;
 }
 
-
 // Reset login time on each valid request to keep session active
 $_SESSION['loginTime'] = time();
+
+// User is logged in, set user details
+$userLoggedIn = true;
+$userName = $_SESSION['userName'];
+$userType = $_SESSION['userType'];
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +36,13 @@ $_SESSION['loginTime'] = time();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Page</title>
+    <title>Data Officer Details</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../Images/Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../Images/Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../Images/Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../Images/Favicon/site.webmanifest">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -60,6 +73,21 @@ $_SESSION['loginTime'] = time();
         <!-- Mobile Navigation -->
         <nav class="mobile-nav hidden-effect">
             <ul>
+                <?php if ($userLoggedIn) : ?>
+                    <li class="mobile_login_container">
+                        <div class="user_info_container">
+                            <img src="../Images/Header/profile.png" alt="User Image" class="user_image">
+                            <div class="user_info">
+                                <span class="user_name"><?php echo htmlspecialchars("Hello " . $userName); ?></span>
+                                <span class="user_type"><?php echo htmlspecialchars($userType); ?></span>
+                            </div>
+                            <form class="DF PR" action="logout.php" method="post">
+                                <button type="submit" class="logout_btn">Log Out</button>
+                            </form>
+                        </div>
+                    </li>
+                <?php endif; ?>
+
                 <li><a href="../index.html">
                         <div><i class="fa-solid fa-house"></i></div>
                         <h3>Home</h3>
@@ -142,6 +170,29 @@ $_SESSION['loginTime'] = time();
             </ul>
         </nav>
 
+        <!-- Wide Login Container -->
+        <div class="wide_login_container <?php echo $userLoggedIn ? '' : 'hidden'; ?>">
+            <div class="user_icon_container">
+                <i class="fa-solid fa-user"></i>
+                <span class="greeting_text">Hello, <br><em><?php echo htmlspecialchars($userName); ?></em></span>
+                <i class="fa-solid fa-caret-down"></i>
+            </div>
+            <?php if ($userLoggedIn) : ?>
+                <div class="dropdown">
+                    <div class="user_info_container">
+                        <img src="../Images/Header/profile.png" alt="User Image" class="user_image">
+                        <div class="user_info">
+                            <span class="user_name"><?php echo htmlspecialchars($userName); ?></span>
+                            <span class="user_type"><?php echo htmlspecialchars($userType); ?></span>
+                        </div>
+                    </div>
+                    <form action="logout.php" method="post">
+                        <button type="submit" class="logout_btn">Log Out</button>
+                    </form>
+                </div>
+            <?php endif; ?>
+        </div>
+
         <!-- Data Officer Logo -->
         <div class="data-officer-logo-container DF PR dolc1">
             <img loading="lazy" class="PR" src="../Images/Header/Data_Officer Logo White.png" alt="Data_officer_Logo">
@@ -184,47 +235,47 @@ $_SESSION['loginTime'] = time();
                 <tr>
                     <td class="first_column">1</td>
                     <td class="middle_column province" data-province="Western">Western Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                    <td class="last_column"><a href="https://docs.google.com/spreadsheets/d/1O0QLFphXM2bSMFeq5LdFC2k4nOhKLO9H/edit?usp=drive_link&ouid=114491345004740906947&rtpof=true&sd=true" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">2</td>
                     <td class="middle_column province" data-province="Central">Central Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                    <td class="last_column"><a href="https://docs.google.com/spreadsheets/d/1UMlAIoHZEp4L9OIgKy2Zgh10i-1BCIYV/edit?usp=drive_link" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">3</td>
                     <td class="middle_column province" data-province="Southern">Southern Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                    <td class="last_column"><a href="https://docs.google.com/spreadsheets/d/15ypQQLAAESLw8rAdQE49ytd0nQEVP9fy/edit?usp=drive_link" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">4</td>
                     <td class="middle_column province" data-province="Northern">Northern Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                    <td class="last_column"><a href="https://docs.google.com/spreadsheets/d/1M2Mm13dMrHUR0TpjFN7BY5Uzi5HZXa3E/edit?usp=drive_link" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">5</td>
                     <td class="middle_column province" data-province="Eastern">Eastern Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                    <td class="last_column"><a href="https://docs.google.com/spreadsheets/d/175_zTeYlWS4Qnr61r4X0f1g_6KYaUD-K/edit?usp=drive_link" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">6</td>
                     <td class="middle_column province" data-province="North Western">North Western Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                    <td class="last_column"><a href="https://docs.google.com/spreadsheets/d/1-DN26XkwXB3GOrvBQOwXkLVHEwbYZkOz/edit?usp=drive_link" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">7</td>
                     <td class="middle_column province" data-province="North Central">North Central Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                    <td class="last_column"><a href="https://docs.google.com/spreadsheets/d/1AHuKPUhPfIu20uiqBRfC2r3_OvXQVd4q/edit?usp=drive_link" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">8</td>
                     <td class="middle_column province" data-province="Uva">Uva Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                    <td class="last_column"><a href="https://docs.google.com/spreadsheets/d/1LF6XeFoGWy00ehXA1-qpzbflrjlx2dog/edit?usp=drive_link&ouid=114491345004740906947&rtpof=true&sd=true" target="_blank">Visit</a></td>
                 </tr>
                 <tr>
                     <td class="first_column">9</td>
                     <td class="middle_column province" data-province="Sabaragamuwa">Sabaragamuwa Province</td>
-                    <td class="last_column"><a href="" target="_blank">Visit</a></td>
+                    <td class="last_column"><a href="https://docs.google.com/spreadsheets/d/1140kQJWsziv-oCgnuOKmCZpConPK1pzV/edit?usp=drive_link" target="_blank">Visit</a></td>
                 </tr>
             </tbody>
         </table>
