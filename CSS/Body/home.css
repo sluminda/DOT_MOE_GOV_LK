@@ -200,7 +200,7 @@ Main Section Training Modules
 
 .modules_container {
   padding: 7%;
-  box-shadow: 0 0 5px 0 var(--button-hover-color);
+  box-shadow: 0 0 3px 0 var(--button-hover-color);
   /* outline: 1px solid var(--button-color); */
   border-radius: 10px;
   align-items: center;
@@ -319,7 +319,7 @@ Main Section Statements
   display: flex;
   flex-direction: column;
   background-color: var(--container-color);
-  box-shadow: 0 0 5px 0 var(--button-hover-color);
+  box-shadow: 0 0 3px 0 var(--button-hover-color);
   border-radius: 15px;
   padding: 1.3rem;
   /* justify-content:; */

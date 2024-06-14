@@ -1,76 +1,79 @@
 <?php
-session_start();
-require 'db_connect.php';
+/*
+    session_start();
+    require 'db_connect.php';
 
-$fullName_error = '';
-$nameWithInitials_error = '';
-$nic_error = '';
-$contactNo_error = '';
-$general_error = '';
-$success_message = '';
+    $fullName_error = '';
+    $nameWithInitials_error = '';
+    $nic_error = '';
+    $contactNo_error = '';
+    $general_error = '';
+    $success_message = '';
 
-$fullName = $nameWithInitials = $nic = $schoolName = $schoolSensusNo = $district = $province = $zone = $contactNo = '';
+    $fullName = $nameWithInitials = $nic = $schoolName = $schoolSensusNo = $district = $province = $zone = $contactNo = '';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $fullName = htmlspecialchars(trim($_POST['fullName']));
-    $nameWithInitials = htmlspecialchars(trim($_POST['nameWithInitials']));
-    $nic = htmlspecialchars(trim($_POST['nic']));
-    $schoolName = htmlspecialchars(trim($_POST['schoolName']));
-    $schoolSensusNo = htmlspecialchars(trim($_POST['schoolSensusNo']));
-    $district = htmlspecialchars(trim($_POST['district']));
-    $province = htmlspecialchars(trim($_POST['province']));
-    $zone = htmlspecialchars(trim($_POST['zone']));
-    $contactNo = htmlspecialchars(trim($_POST['contactNo']));
-    $recaptchaResponse = $_POST['g-recaptcha-response'];
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $fullName = htmlspecialchars(trim($_POST['fullName']));
+        $nameWithInitials = htmlspecialchars(trim($_POST['nameWithInitials']));
+        $nic = htmlspecialchars(trim($_POST['nic']));
+        $schoolName = htmlspecialchars(trim($_POST['schoolName']));
+        $schoolSensusNo = htmlspecialchars(trim($_POST['schoolSensusNo']));
+        $district = htmlspecialchars(trim($_POST['district']));
+        $province = htmlspecialchars(trim($_POST['province']));
+        $zone = htmlspecialchars(trim($_POST['zone']));
+        $contactNo = htmlspecialchars(trim($_POST['contactNo']));
+        $recaptchaResponse = $_POST['g-recaptcha-response'];
 
-    // Verify reCAPTCHA
-    $secretKey = "YOUR_SECRET_KEY";
-    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$recaptchaResponse");
-    $responseKeys = json_decode($response, true);
+        // Verify reCAPTCHA
+        $secretKey = "YOUR_SECRET_KEY";
+        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$recaptchaResponse");
+        $responseKeys = json_decode($response, true);
 
-    if (intval($responseKeys["success"]) !== 1) {
-        $general_error = "Please complete the CAPTCHA.";
-    } else {
-        // Validate fields
-        if (!preg_match("/^[a-zA-Z ]*$/", $fullName)) {
-            $fullName_error = "Only letters and white space allowed in Full Name.";
-        }
-        if (!preg_match("/^[a-zA-Z. ]*$/", $nameWithInitials)) {
-            $nameWithInitials_error = "Only letters and white space allowed in Name with Initials.";
-        }
-        if (!preg_match("/^[0-9A-Za-z]{9,12}$/", $nic)) {
+        if (intval($responseKeys["success"]) !== 1) {
+            $general_error = "Please complete the CAPTCHA.";
+        } else {
+            // Validate fields
+            if (!preg_match("/^[a-zA-Z ]*$/", $fullName)) {
+                $fullName_error = "Only letters and white space allowed in Full Name.";
+            }
+            if (!preg_match("/^[a-zA-Z. ]*$/", $nameWithInitials)) {
+                $nameWithInitials_error = "Only letters and white space allowed in Name with Initials.";
+            }
+            if (!preg_match("/^[0-9A-Za-z]{9,12}$/", $nic)) {
 
 
-            $nic_error = "NIC must be 9-12 letters and numbers.";
-        }
-        if (!preg_match("/^0[0-9]{9}$/", $contactNo)) {
-            $contactNo_error = "Contact number must be 10 digits and start with 0.";
-        }
+                $nic_error = "NIC must be 9-12 letters and numbers.";
+            }
+            if (!preg_match("/^0[0-9]{9}$/", $contactNo)) {
+                $contactNo_error = "Contact number must be 10 digits and start with 0.";
+            }
 
-        if (empty($fullName_error) && empty($nameWithInitials_error) && empty($nic_error) && empty($contactNo_error)) {
-            try {
-                $sql = "INSERT INTO data_officers (fullName, nameWithInitials, nic, schoolName, schoolSensusNo, district, province, zone, contactNo) VALUES (:fullName, :nameWithInitials, :nic, :schoolName, :schoolSensusNo, :district, :province, :zone, :contactNo)";
-                $stmt = $conn->prepare($sql);
-                $stmt->bindParam(':fullName', $fullName);
-                $stmt->bindParam(':nameWithInitials', $nameWithInitials);
-                $stmt->bindParam(':nic', $nic);
-                $stmt->bindParam(':schoolName', $schoolName);
-                $stmt->bindParam(':schoolSensusNo', $schoolSensusNo);
-                $stmt->bindParam(':district', $district);
-                $stmt->bindParam(':province', $province);
-                $stmt->bindParam(':zone', $zone);
-                $stmt->bindParam(':contactNo', $contactNo);
-                $stmt->execute();
+            if (empty($fullName_error) && empty($nameWithInitials_error) && empty($nic_error) && empty($contactNo_error)) {
+                try {
+                    $sql = "INSERT INTO data_officers (fullName, nameWithInitials, nic, schoolName, schoolSensusNo, district, province, zone, contactNo) VALUES (:fullName, :nameWithInitials, :nic, :schoolName, :schoolSensusNo, :district, :province, :zone, :contactNo)";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bindParam(':fullName', $fullName);
+                    $stmt->bindParam(':nameWithInitials', $nameWithInitials);
+                    $stmt->bindParam(':nic', $nic);
+                    $stmt->bindParam(':schoolName', $schoolName);
+                    $stmt->bindParam(':schoolSensusNo', $schoolSensusNo);
+                    $stmt->bindParam(':district', $district);
+                    $stmt->bindParam(':province', $province);
+                    $stmt->bindParam(':zone', $zone);
+                    $stmt->bindParam(':contactNo', $contactNo);
+                    $stmt->execute();
 
-                $success_message = "Data Officer registered successfully!";
-                // Clear the form values after successful registration
-                $fullName = $nameWithInitials = $nic = $schoolName = $schoolSensusNo = $district = $province = $zone = $contactNo = '';
-            } catch (PDOException $e) {
-                $general_error = "Error: " . $e->getMessage();
+                    $success_message = "Data Officer registered successfully!";
+                    // Clear the form values after successful registration
+                    $fullName = $nameWithInitials = $nic = $schoolName = $schoolSensusNo = $district = $province = $zone = $contactNo = '';
+                } catch (PDOException $e) {
+                    $general_error = "Error: " . $e->getMessage();
+                }
             }
         }
     }
-}
+
+    */
 ?>
 
 
@@ -100,6 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script defer src="../JS/header.js"></script>
     <script defer src="../JS/data_officer_registration.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="../JS/jquery-3.7.1.min.js"></script>
 </head>
 
 <body>
@@ -223,102 +227,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </header>
 
     <!-- Body Content Starts -->
-    <main class="login-background_container DF PR FD-C">
-        <div class="DF FD-C PR center">
-            <header class="DF FD-R PR center">
-                <i class="fa-solid fa-2x fa-user-plus"></i>
-                <h2> Data Officer Registration</h2>
-            </header>
-            <?php if ($general_error) : ?>
-                <div id="general-error" class="message error-message"><?php echo $general_error; ?></div>
-            <?php endif; ?>
-            <?php if ($fullName_error) : ?>
-                <div id="fullName-error" class="message error-message"><?php echo $fullName_error; ?></div>
-            <?php endif; ?>
-            <?php if ($nameWithInitials_error) : ?>
-                <div id="nameWithInitials-error" class="message error-message"><?php echo $nameWithInitials_error; ?></div>
-            <?php endif; ?>
-            <?php if ($nic_error) : ?>
-                <div id="nic-error" class="message error-message"><?php echo $nic_error; ?></div>
-            <?php endif; ?>
-            <?php if ($contactNo_error) : ?>
-                <div id="contactNo-error" class="message error-message"><?php echo $contactNo_error; ?></div>
-            <?php endif; ?>
-            <?php if ($success_message) : ?>
-                <div id="success-message" class="message success-message"><?php echo $success_message; ?></div>
-            <?php endif; ?>
-            <form class="login-form DF FD-C PR center" action="./data_officer_registration.php" method="post" onsubmit="return validateForm();">
-                <div class="login_row DG PR">
-                    <label for="fullName">Full Name</label>
-                    <input id="fullName" name="fullName" type="text" value="<?php echo htmlspecialchars($fullName, ENT_QUOTES, 'UTF-8'); ?>" required>
-                    <div id="fullName-error" class="message error-message" style="display: none;"></div>
-                </div>
+    <main>
 
-                <div class="login_row DG PR">
-                    <label for="nameWithInitials">Name with Initials</label>
-                    <input id="nameWithInitials" name="nameWithInitials" type="text" value="<?php echo htmlspecialchars($nameWithInitials, ENT_QUOTES, 'UTF-8'); ?>" required>
-                    <div id="nameWithInitials-error" class="message error-message" style="display: none;"></div>
-                </div>
+        <form id="registrationForm" action="submit.php" method="POST">
+            <h2>Personal Details</h2>
+            <label for="fullName">Full Name:</label><br>
+            <input type="text" id="fullName" name="fullName"><br><br>
 
-                <div class="login_row DG PR">
-                    <label for="nic">NIC</label>
-                    <input id="nic" name="nic" type="text" value="<?php echo htmlspecialchars($nic, ENT_QUOTES, 'UTF-8'); ?>" required>
-                    <div id="nic-error" class="message error-message" style="display: none;"></div>
-                </div>
+            <label for="initialsName">Name with Initials:</label><br>
+            <input type="text" id="initialsName" name="initialsName"><br><br>
 
-                <div class="login_row DG PR">
-                    <label for="schoolName">School Name</label>
-                    <textarea rows="3" name="schoolName" id="schoolName" value="<?php echo htmlspecialchars($schoolName, ENT_QUOTES, 'UTF-8'); ?>" required></textarea>
+            <label for="nic">NIC:</label><br>
+            <input type="text" id="nic" name="nic"><br><br>
 
-                </div>
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email"><br><br>
 
-                <div class="login_row DG PR">
-                    <label for="schoolSensusNo">School Sensus No</label>
-                    <input id="schoolSensusNo" name="schoolSensusNo" type="text" value="<?php echo htmlspecialchars($schoolSensusNo, ENT_QUOTES, 'UTF-8'); ?>" required>
-                    <div id="schoolSensusNo-error" class="message error-message" style="display: none;"></div>
-                </div>
+            <label for="whatsapp">Whatsapp Number:</label><br>
+            <input type="text" id="whatsapp" name="whatsapp"><br><br>
 
+            <label for="mobile">Mobile Number:</label><br>
+            <input type="text" id="mobile" name="mobile"><br><br>
 
-                <div class="login_row DG PR">
-                    <label for="province">Province</label>
-                    <select id="province" name="province" required>
-                        <option value="" disabled selected>Select Province</option>
-                        <option value="Central Province">Central Province</option>
-                        <option value="Eastern Province">Eastern Province</option>
-                        <option value="Northern Province">Northern Province</option>
-                        <option value="Southern Province">Southern Province</option>
-                        <option value="Western Province">Western Province</option>
-                        <option value="North Western Province">North Western Province</option>
-                        <option value="North Central Province">North Central Province</option>
-                        <option value="Uva Province">Uva Province</option>
-                        <option value="Sabaragamuwa Province">Sabaragamuwa Province</option>
-                    </select>
-                </div>
+            <h2>Workplace Details</h2>
+            <label for="workingPlace">Current Working Place:</label><br>
+            <select id="workingPlace" name="workingPlace">
+                <option value="School">School</option>
+                <option value="Provincial Office">Provincial Office</option>
+                <option value="Divisional Office">Divisional Office</option>
+                <option value="Zonal Office">Zonal Office</option>
+            </select><br><br>
 
-                <div class="login_row DG PR">
-                    <label for="district">District</label>
-                    <select id="district" name="district" required disabled>
-                        <option value="" disabled selected>Select District</option>
-                    </select>
-                </div>
+            <div id="schoolDetails" style="display:none;">
+                <label for="schoolName">School Name:</label><br>
+                <input type="text" id="schoolName" name="schoolName"><br><br>
 
-                <div class="login_row DG PR">
-                    <label for="zone">Zone</label>
-                    <input id="zone" name="zone" type="text" value="<?php echo htmlspecialchars($zone, ENT_QUOTES, 'UTF-8'); ?>" required>
-                </div>
+                <label for="division">Division:</label><br>
+                <input type="text" id="division" name="division"><br><br>
 
-                <div class="login_row DG PR">
-                    <label for="contactNo">Contact No</label>
-                    <input id="contactNo" name="contactNo" type="text" value="<?php echo htmlspecialchars($contactNo, ENT_QUOTES, 'UTF-8'); ?>" required>
-                    <div id="contactNo-error" class="message error-message" style="display: none;"></div>
-                </div>
-                <br>
-                <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
-                <div class="login_row DG PR"><br>
-                    <button type="submit">Register</button>
-                </div>
-            </form>
-        </div>
+                <label for="zone">Zone:</label><br>
+                <input type="text" id="zone" name="zone" readonly><br><br>
+
+                <label for="province">Province:</label><br>
+                <input type="text" id="province" name="province" readonly><br><br>
+
+                <label for="principalName">Principal Name:</label><br>
+                <input type="text" id="principalName" name="principalName"><br><br>
+
+                <label for="principalContact">Principal Contact Number:</label><br>
+                <input type="text" id="principalContact" name="principalContact"><br><br>
+            </div>
+
+            <input type="submit" value="Submit">
+        </form>
     </main>
 
     <!-- Footer Starts Here -->

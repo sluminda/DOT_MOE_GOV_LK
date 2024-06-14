@@ -1,149 +1,36 @@
-.login-background_container {
-  margin: 10vh auto;
-  row-gap: 2rem;
-  background-color: var(--container-color);
-  padding: 1.5rem 2rem;
-  border-radius: 10px;
-  /* box-shadow: 0 0 3px 0 var(--secondary-color); */
-  outline: 0;
-  border: 0;
-  width: 100%;
-  max-width: 500px;
-  display: flex;
-  flex-direction: column;
-  /* align-items: center; */
-}
-
-.login-background_container header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.login-background_container header .fa-user-plus {
-  color: var(--icon-color-blue);
-}
-
-.login-background_container header h2 {
-  color: var(--secondary-color);
-  margin: 0;
-}
-
-.login-background_container .error-message,
-.login-background_container .success-message {
-  color: var(--white-color);
-  padding: 1rem;
+form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  margin-bottom: 1rem;
-  width: 100%;
-  text-align: center;
+  background-color: #f9f9f9;
 }
 
-.login-background_container .error-message {
-  background-color: var(--warning-color);
-}
-
-.login-background_container .success-message {
-  background-color: var(--icon-color);
-}
-
-.login-background_container .login-form {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.login-background_container .login-form .login_row {
-  margin-bottom: 1rem;
-}
-
-.login-background_container .login-form .login_row label {
-  color: var(--secondary-color);
-  margin-bottom: 0.5rem;
+label {
   display: block;
-  font-weight: bold;
+  margin-top: 10px;
 }
 
-.login-background_container .login-form .login_row input,
-.login-background_container .login-form .login_row select,
-.login-background_container .login-form .login_row textarea {
-  width: 270px;
-  padding: 0.3rem 0.4rem;
-  border: 0;
-  box-shadow: 0 0 1px 0;
-  border-radius: 5px;
-  background-color: var(--login-box-textbox-color);
-  font-size: 1rem;
-  color: var(--secondary-color);
-  resize: vertical;
-}
-
-.login-background_container .login-form .login_row select option {
-  background-color: var(--bg-color);
-  color: var(--secondary-color);
-}
-
-.login-background_container .login-form .login_row input::placeholder {
-  color: var(--placeholder-color);
-}
-
-.login-background_container .login-form .login_row input:focus,
-.login-background_container .login-form .login_row select:focus {
-  border-color: var(--button-color);
-  outline: none;
-}
-
-.login-background_container .g-recaptcha {
-  transform: scale(0.9);
-}
-
-.login-background_container .login-form .login_row button {
+input[type="text"],
+input[type="email"],
+select {
   width: 100%;
-  padding: 0.75rem;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+input[type="submit"] {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
   border: none;
   border-radius: 5px;
-  background-color: var(--button-color);
-  color: var(--button-warning-color);
-  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-weight: bold;
 }
 
-.login-background_container .login-form .login_row button:hover,
-.login-background_container .login-form .login_row button:focus {
-  background-color: var(--button-hover-color);
-}
-
-@media (max-width: 700px) {
-  .login-background_container main {
-    padding: 1rem;
-  }
-
-  .login-background_container main {
-    width: 100%;
-    max-width: 300px;
-  }
-
-  .login-background_container .login-form .login_row input,
-  .login-background_container .login-form .login_row select,
-  .login-background_container .login-form .login_row textarea {
-    width: 240px;
-  }
-}
-
-@media (max-width: 600px) {
-  .login-background_container main {
-    padding: 1rem;
-  }
-
-  .login-background_container .error-message {
-    background-color: var(--warning-color);
-    max-width: 260px;
-  }
-
-  .login-background_container {
-    max-width: 300px;
-  }
+input[type="submit"]:hover {
+  background-color: #45a049;
 }
