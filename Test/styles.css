@@ -1,46 +1,73 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Roboto", sans-serif;
   margin: 0;
   padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f4f4f4;
+  background: linear-gradient(135deg, #74ebd5, #acb6e5);
+  transition: all 0.3s ease-in-out;
 }
 
-form {
+.form-container {
   background-color: #fff;
-  padding: 20px;
+  padding: 40px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+
+h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 24px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
 }
 
 label {
   display: block;
   margin-bottom: 8px;
   font-weight: bold;
+  color: #333;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="email"],
+select {
   width: 100%;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+select:focus {
+  border-color: #007bff;
 }
 
 input[type="submit"] {
-  padding: 10px 20px;
-  background-color: #28a745;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease-in-out;
 }
 
 input[type="submit"]:hover {
-  background-color: #218838;
+  background-color: #0056b3;
 }
 
 #suggestions {
@@ -51,12 +78,17 @@ input[type="submit"]:hover {
   background-color: white;
   max-height: 150px;
   overflow-y: auto;
-  width: 100%;
+  width: calc(100% - 22px);
+  margin-top: -10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 8px 8px;
+  transition: all 0.3s ease-in-out;
 }
 
 #suggestions div {
   padding: 10px;
   cursor: pointer;
+  font-size: 16px;
 }
 
 #suggestions div:hover {
@@ -66,4 +98,18 @@ input[type="submit"]:hover {
 .highlight {
   background-color: yellow;
   font-weight: bold;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  display: none;
+  margin-top: -10px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.hidden {
+  display: none;
+  transition: all 0.3s ease-in-out;
 }
