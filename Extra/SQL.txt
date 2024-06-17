@@ -38,3 +38,20 @@ CREATE TABLE data_officers (
     zone VARCHAR(50) NOT NULL,
     contactNo VARCHAR(10) NOT NULL
 );
+
+
+
+
+-- Create the institutes table
+CREATE TABLE institutes (
+    cencode VARCHAR(10) PRIMARY KEY,
+    institutionname VARCHAR(255) NOT NULL,
+    schooltype INT NOT NULL
+);
+
+-- Create the otp_verification table
+CREATE TABLE otp_verification (
+    email VARCHAR(255) PRIMARY KEY,
+    otp VARCHAR(6) NOT NULL,
+    expiry INT NOT NULL
+);
