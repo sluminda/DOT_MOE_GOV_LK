@@ -3,78 +3,76 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Form</title>
-    <link rel="stylesheet" href="./styles.css">
-    <script src="../JS/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <form id="registration-form">
-        <h2>Personal Information</h2>
-        <label for="fullname">Full Name:</label>
-        <input type="text" id="fullname" name="fullname" required>
+    <div class="form-container">
+        <form id="registrationForm" onsubmit="submitForm(event)">
+            <h2>Personal Information</h2>
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" required>
 
-        <label for="name_with_initials">Name with Initials:</label>
-        <input type="text" id="name_with_initials" name="name_with_initials" required>
+            <label for="initials">Name with Initials:</label>
+            <input type="text" id="initials" name="initials" required>
 
-        <label for="nic">NIC:</label>
-        <input type="text" id="nic" name="nic" required pattern="\d{9}[Vv]|\d{12}">
+            <label for="nic">NIC:</label>
+            <input type="text" id="nic" name="nic" required>
 
-        <label for="email">Email Address:</label>
-        <input type="email" id="email" name="email" required>
-        <button type="button" id="send-otp">Send OTP</button>
-        <input type="text" id="otp" name="otp" placeholder="Enter OTP" required>
-        <button type="button" id="verify-otp">Verify OTP</button>
-        <div id="otp-status"></div>
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" required>
+            <button type="button" id="sendOtpBtn" onclick="sendOtp()">Send OTP</button>
+            <div id="otpMessage" class="message"></div>
 
-        <label for="whatsapp_number">WhatsApp Number:</label>
-        <input type="text" id="whatsapp_number" name="whatsapp_number" required pattern="0\d{9}">
+            <div id="otpSection" class="hidden">
+                <label for="otp">Enter OTP:</label>
+                <input type="text" id="otp" name="otp" required>
+                <button type="button" onclick="verifyOtp()">Verify OTP</button>
+            </div>
 
-        <label for="phone_number">Phone Number:</label>
-        <input type="text" id="phone_number" name="phone_number" required pattern="0\d{9}">
+            <label for="whatsapp">WhatsApp Number:</label>
+            <input type="text" id="whatsapp" name="whatsapp" required>
 
-        <h2>WorkPlace Information</h2>
-        <label for="working_place">Current Working Place:</label>
-        <select id="working_place" name="working_place" required>
-            <option value="">Select</option>
-            <option value="School">School</option>
-            <option value="Provincial Office">Provincial Office</option>
-            <option value="Divisional Office">Divisional Office</option>
-            <option value="Zonal Office">Zonal Office</option>
-        </select>
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" name="phone" required>
 
-        <div id="school-section" class="hidden">
-            <label for="school_search">School:</label>
-            <input type="text" id="school_search" name="school_search">
-            <ul id="autocomplete-results" class="autocomplete-results"></ul>
+            <h2>Workplace Information</h2>
+            <label for="workplace">Current Working Place:</label>
+            <select id="workplace" name="workplace" onchange="handleWorkplaceChange()" required>
+                <option value="">Select...</option>
+                <option value="school">School</option>
+                <option value="provincial">Provincial Office</option>
+                <option value="divisional">Divisional Office</option>
+                <option value="zonal">Zonal Office</option>
+            </select>
 
-            <label for="officer_in_charge">Name of the Officer in Charge:</label>
-            <input type="text" id="officer_in_charge" name="officer_in_charge">
+            <div id="schoolFields" class="hidden">
+                <label for="school">School Name or Code:</label>
+                <input type="text" id="school" name="school" autocomplete="off" onkeyup="fetchSuggestions(this.value)"
+                    required>
+                <div id="suggestions"></div>
+                <div id="error-message" class="error-message"></div>
+                <!-- Additional sample textboxes for School -->
+                <label for="sample1">Sample Field 1:</label>
+                <input type="text" id="sample1" name="sample1">
+                <label for="sample2">Sample Field 2:</label>
+                <input type="text" id="sample2" name="sample2">
+            </div>
 
-            <label for="designation">Designation:</label>
-            <input type="text" id="designation" name="designation">
+            <div id="officeFields" class="hidden">
+                <label for="office1">Office Field 1:</label>
+                <input type="text" id="office1" name="office1">
+                <label for="office2">Office Field 2:</label>
+                <input type="text" id="office2" name="office2">
+                <label for="office3">Office Field 3:</label>
+                <input type="text" id="office3" name="office3">
+            </div>
 
-            <label for="school_contact_number">Contact Number:</label>
-            <input type="text" id="school_contact_number" name="school_contact_number" pattern="0\d{9}">
-        </div>
-
-        <!-- Sections for other offices (Provincial, Divisional, Zonal) -->
-        <div id="office-section" class="hidden">
-            <label for="officer_in_charge_office">Name of the Officer in Charge:</label>
-            <input type="text" id="officer_in_charge_office" name="officer_in_charge_office">
-
-            <label for="designation_office">Designation:</label>
-            <input type="text" id="designation_office" name="designation_office">
-
-            <label for="office_contact_number">Contact Number:</label>
-            <input type="text" id="office_contact_number" name="office_contact_number" pattern="0\d{9}">
-        </div>
-
-        <button type="submit">Register</button>
-    </form>
-
-    <script src="form.js"></script>
+            <input type="submit" value="Register" id="submitBtn" disabled>
+        </form>
+    </div>
+    <script src="script.js"></script>
 </body>
 
 </html>

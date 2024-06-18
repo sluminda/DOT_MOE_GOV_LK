@@ -1,56 +1,61 @@
-
 <?php
+include 'db_connect.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require '../vendor/autoload.php';
-require './db_config.php';
+
+function generateOtp()
+{
+    return rand(100000, 999999);
+}
+
+function hashOtp($otp)
+{
+    $salt = bin2hex(random_bytes(32));
+    $hash = hash('sha256', $otp . $salt);
+    return [$hash, $salt];
+}
 
 $email = $_POST['email'];
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(["success" => false, "message" => "Invalid email address"]);
-    exit;
-}
+$otp = generateOtp();
+list($otpHash, $salt) = hashOtp($otp);
 
-$otp = strval(mt_rand(100000, 999999));
-$expiry = time() + (10 * 60);
+// Save OTP hash and salt in the database
+$stmt = $conn->prepare("INSERT INTO otp_verification (email, otp_hash, salt, created_at) VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE otp_hash = ?, salt = ?, created_at = NOW()");
+$stmt->bind_param("sssss", $email, $otpHash, $salt, $otpHash, $salt);
+$stmt->execute();
 
-$sql = "INSERT INTO otp_verification (email, otp, expiry) VALUES (?, ?, ?)
-        ON DUPLICATE KEY UPDATE otp = VALUES(otp), expiry = VALUES(expiry)";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param('ssi', $email, $otp, $expiry);
-
-if ($stmt->execute()) {
+if ($stmt->affected_rows > 0) {
+    // Send OTP via email
     $mail = new PHPMailer(true);
     try {
+        // Server settings
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'sluminda@gmail.com';
-        $mail->Password = ' ';
+        $mail->Host       = 'smtp.gmail.com'; // Set the SMTP server to send through
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'dotmoegov@gmail.com'; // SMTP username
+        $mail->Password   = ' '; // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+        $mail->Port       = 587;
 
-        $mail->setFrom('sluminda@gmail.com', 'DOT_MOE_GOV_LK');
+        // Recipients
+        $mail->setFrom('dotmoegov@gmail.com', 'Mailer');
         $mail->addAddress($email);
 
+        // Content
         $mail->isHTML(true);
-        $mail->Subject = 'OTP Verification Code';
-        $mail->Body = "Your OTP code is: <b>$otp</b>";
-        $mail->AltBody = "Your OTP code is: $otp";
+        $mail->Subject = 'Your OTP Code';
+        $mail->Body    = 'Your OTP code is ' . $otp;
 
         $mail->send();
-        $response = ["success" => true];
+        echo json_encode(['success' => true]);
     } catch (Exception $e) {
-        $response = ["success" => false, "message" => "Failed to send OTP. Mailer Error: {$mail->ErrorInfo}"];
+        echo json_encode(['success' => false, 'message' => $mail->ErrorInfo]);
     }
 } else {
-    $response = ["success" => false, "message" => "Failed to generate OTP. Please try again later."];
+    echo json_encode(['success' => false, 'message' => 'Failed to save OTP.']);
 }
 
-$stmt->close();
 $conn->close();
-
-echo json_encode($response);
-?>

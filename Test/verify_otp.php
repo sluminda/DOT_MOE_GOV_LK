@@ -1,26 +1,30 @@
 <?php
-require 'db_config.php';
+// verify_otp.php
+include 'db_connect.php';
 
+$email = $_POST['email'];
 $otp = $_POST['otp'];
-if (!preg_match('/^[0-9]{6}$/', $otp)) {
-    echo json_encode(["success" => false, "message" => "Invalid OTP format"]);
-    exit;
-}
 
-$current_time = time();
-$sql = "SELECT * FROM otp_verification WHERE otp = ? AND expiry > ?";
+// Retrieve the OTP hash and salt from the database
+$sql = "SELECT otp_hash, salt, created_at FROM otp_verification WHERE email = ? AND created_at > NOW() - INTERVAL 15 MINUTE";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param('si', $otp, $current_time);
+$stmt->bind_param("s", $email);
 $stmt->execute();
-$result = $stmt->get_result();
+$stmt->bind_result($otp_hash, $salt, $created_at);
 
-if ($result->num_rows > 0) {
-    $response = ["success" => true];
+if ($stmt->fetch()) {
+    $stmt->close();
+    $conn->close();
+
+    // Validate the OTP
+    $otp_to_verify = hash('sha256', $otp . $salt);
+    if ($otp_to_verify === $otp_hash) {
+        echo json_encode(["success" => true]);
+    } else {
+        echo json_encode(["success" => false, "message" => "Invalid OTP."]);
+    }
 } else {
-    $response = ["success" => false, "message" => "Invalid or expired OTP"];
+    echo json_encode(["success" => false, "message" => "OTP expired or not found."]);
+    $stmt->close();
+    $conn->close();
 }
-
-$stmt->close();
-$conn->close();
-
-echo json_encode($response);
