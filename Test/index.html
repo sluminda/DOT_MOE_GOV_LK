@@ -43,29 +43,64 @@
                 <option value="">Select...</option>
                 <option value="school">School</option>
                 <option value="provincial">Provincial Office</option>
-                <option value="divisional">Divisional Office</option>
                 <option value="zonal">Zonal Office</option>
+                <option value="divisional">Divisional Office</option>
             </select>
 
+
+            <!-- This is School Area  -->
             <div id="schoolFields" class="hidden">
                 <label for="school">School Name or Code:</label>
                 <input type="text" id="school" name="school" autocomplete="off" onkeyup="fetchSuggestions(this.value)"
                     required>
                 <div id="suggestions"></div>
                 <div id="error-message" class="error-message"></div>
-                <!-- Additional sample textboxes for School -->
-                <label for="sample1">Sample Field 1:</label>
+
+                <label for="sample1">Principle Name:</label>
                 <input type="text" id="sample1" name="sample1">
-                <label for="sample2">Sample Field 2:</label>
+                <label for="sample2">Principle Contact No:</label>
                 <input type="text" id="sample2" name="sample2">
             </div>
 
-            <div id="officeFields" class="hidden">
-                <label for="office1">Office Field 1:</label>
-                <input type="text" id="office1" name="office1">
-                <label for="office2">Office Field 2:</label>
+            <!-- This is Provinces Area -->
+            <div id="ProvincesFields" class="hidden">
+                <label for="province">Provincial Office Name or Code:</label>
+                <div id="error-message-province" class="error-message"></div>
+                <input type="text" id="province" name="province" autocomplete="off"
+                    onkeyup="fetchSuggestions_Province(this.value)" required>
+                <div id="provincial-suggestions"></div>
+
+                <label for="office2">Head of Institute Name:</label>
                 <input type="text" id="office2" name="office2">
-                <label for="office3">Office Field 3:</label>
+                <label for="office3">Head of Institute Contact No:</label>
+                <input type="text" id="office3" name="office3">
+            </div>
+
+            <!-- This is Zonal Area -->
+            <div id="ZonalFields" class="hidden">
+                <label for="zone">Zonal Office Name or Code:</label>
+                <input type="text" id="zone" name="zone" autocomplete="off" onkeyup="fetchSuggestions_Zone(this.value)"
+                    required>
+                <div id="zonal-suggestions"></div>
+                <div id="error-message-zone" class="error-message"></div>
+
+                <label for="office2">Head of Institute Name:</label>
+                <input type="text" id="office2" name="office2">
+                <label for="office3">Head of Institute Contact No:</label>
+                <input type="text" id="office3" name="office3">
+            </div>
+
+            <!-- This is Divisional Area -->
+            <div id="DivisionalFields" class="hidden">
+                <label for="division">Divisional Office Name or Code:</label>
+                <input type="text" id="division" name="division" autocomplete="off"
+                    onkeyup="fetchSuggestions_Division(this.value)" required>
+                <div id="divisional-suggestions"></div>
+                <div id="error-message-division" class="error-message"></div>
+
+                <label for="office2">Head of Institute Name:</label>
+                <input type="text" id="office2" name="office2">
+                <label for="office3">Head of Institute Contact No:</label>
                 <input type="text" id="office3" name="office3">
             </div>
 
@@ -73,6 +108,9 @@
         </form>
     </div>
     <script src="script.js"></script>
+    <script src="province.js"></script>
+    <script src="zone.js"></script>
+    <script src="scriptdivisional.js"></script>
 </body>
 
 </html>

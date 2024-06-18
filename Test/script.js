@@ -78,19 +78,23 @@ function showErrorMessage() {
 function handleWorkplaceChange() {
   var workplace = document.getElementById("workplace").value;
   var schoolFields = document.getElementById("schoolFields");
-  var officeFields = document.getElementById("officeFields");
+  var ProvincesFields = document.getElementById("ProvincesFields");
+  var ZonalFields = document.getElementById("ZonalFields");
+  var DivisionalFields = document.getElementById("DivisionalFields");
 
   schoolFields.classList.add("hidden");
-  officeFields.classList.add("hidden");
+  ProvincesFields.classList.add("hidden");
+  ZonalFields.classList.add("hidden");
+  DivisionalFields.classList.add("hidden");
 
   if (workplace === "school") {
     schoolFields.classList.remove("hidden");
-  } else if (
-    workplace === "provincial" ||
-    workplace === "divisional" ||
-    workplace === "zonal"
-  ) {
-    officeFields.classList.remove("hidden");
+  } else if (workplace === "provincial") {
+    ProvincesFields.classList.remove("hidden");
+  } else if (workplace === "divisional") {
+    DivisionalFields.classList.remove("hidden");
+  } else if (workplace === "zonal") {
+    ZonalFields.classList.remove("hidden");
   }
 }
 
