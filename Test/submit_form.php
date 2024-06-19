@@ -9,23 +9,54 @@ $email = $_POST['email'];
 $whatsapp = $_POST['whatsapp'];
 $phone = $_POST['phone'];
 $workplace = $_POST['workplace'];
-$school = $_POST['school'];
-$sample1 = $_POST['sample1'];
-$sample2 = $_POST['sample2'];
-$office1 = $_POST['office1'];
-$office2 = $_POST['office2'];
-$office3 = $_POST['office3'];
+$schoolName = $_POST['schoolName'] ?? null;
+$principleName = $_POST['principleName'] ?? null;
+$principleContactNo = $_POST['principleContactNo'] ?? null;
+$provinceName = $_POST['provinceName'] ?? null;
+$headOfInstituteName = $_POST['headOfInstituteName'] ?? null;
+$headOfInstituteContactNo = $_POST['headOfInstituteContactNo'] ?? null;
+$zone = $_POST['zone'] ?? null;
+$division = $_POST['division'] ?? null;
 $ip_address = $_SERVER['REMOTE_ADDR'];
 
-// Insert or update form data
-$sql = "INSERT INTO form_submissions (fullName, initials, nic, email, whatsapp, phone, workplace, school, sample1, sample2, office1, office2, office3, ip_address, submitted_at) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-        ON DUPLICATE KEY UPDATE 
-        fullName = VALUES(fullName), initials = VALUES(initials), nic = VALUES(nic), whatsapp = VALUES(whatsapp), phone = VALUES(phone), workplace = VALUES(workplace), school = VALUES(school), 
-        sample1 = VALUES(sample1), sample2 = VALUES(sample2), office1 = VALUES(office1), office2 = VALUES(office2), office3 = VALUES(office3), ip_address = VALUES(ip_address), 
-        submitted_at = NOW()";
+$schoolName = $schoolName ?: null;
+$principleName = $principleName ?: null;
+$principleContactNo = $principleContactNo ?: null;
+$provinceName = $provinceName ?: null;
+$headOfInstituteName = $headOfInstituteName ?: null;
+$headOfInstituteContactNo = $headOfInstituteContactNo ?: null;
+$zone = $zone ?: null;
+$division = $division ?: null;
+
+$sql = "INSERT INTO form_submissions 
+    (fullName, initials, nic, email, whatsapp, phone, workplace, schoolName, principleName, principleContactNo, provinceName, headOfInstituteName, headOfInstituteContactNo, zone, division, ip_address, submitted_at) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+    ON DUPLICATE KEY UPDATE 
+    fullName = VALUES(fullName), initials = VALUES(initials), nic = VALUES(nic), email = VALUES(email), whatsapp = VALUES(whatsapp), phone = VALUES(phone), workplace = VALUES(workplace), 
+    schoolName = VALUES(schoolName), principleName = VALUES(principleName), principleContactNo = VALUES(principleContactNo), provinceName = VALUES(provinceName), 
+    headOfInstituteName = VALUES(headOfInstituteName), headOfInstituteContactNo = VALUES(headOfInstituteContactNo), zone = VALUES(zone), division = VALUES(division), 
+    ip_address = VALUES(ip_address), submitted_at = NOW()";
+
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ssssssssssssss", $fullName, $initials, $nic, $email, $whatsapp, $phone, $workplace, $school, $sample1, $sample2, $office1, $office2, $office3, $ip_address);
+$stmt->bind_param(
+    "ssssssssssssssss",
+    $fullName,
+    $initials,
+    $nic,
+    $email,
+    $whatsapp,
+    $phone,
+    $workplace,
+    $schoolName,
+    $principleName,
+    $principleContactNo,
+    $provinceName,
+    $headOfInstituteName,
+    $headOfInstituteContactNo,
+    $zone,
+    $division,
+    $ip_address
+);
 
 if ($stmt->execute()) {
     echo json_encode(["success" => true]);
@@ -34,11 +65,30 @@ if ($stmt->execute()) {
 }
 $stmt->close();
 
-// Insert record into form_submissions_history
-$sql = "INSERT INTO form_submissions_history (fullName, initials, nic, email, whatsapp, phone, workplace, school, sample1, sample2, office1, office2, office3, ip_address, submitted_at) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+$sql = "INSERT INTO form_submissions_history 
+    (fullName, initials, nic, email, whatsapp, phone, workplace, schoolName, principleName, principleContactNo, provinceName, headOfInstituteName, headOfInstituteContactNo, zone, division, ip_address, submitted_at) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ssssssssssssss", $fullName, $initials, $nic, $email, $whatsapp, $phone, $workplace, $school, $sample1, $sample2, $office1, $office2, $office3, $ip_address);
+$stmt->bind_param(
+    "ssssssssssssssss",
+    $fullName,
+    $initials,
+    $nic,
+    $email,
+    $whatsapp,
+    $phone,
+    $workplace,
+    $schoolName,
+    $principleName,
+    $principleContactNo,
+    $provinceName,
+    $headOfInstituteName,
+    $headOfInstituteContactNo,
+    $zone,
+    $division,
+    $ip_address
+);
 
 $stmt->execute();
 $stmt->close();

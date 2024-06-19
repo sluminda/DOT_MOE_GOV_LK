@@ -55,3 +55,45 @@ CREATE TABLE otp_verification (
     otp VARCHAR(6) NOT NULL,
     expiry INT NOT NULL
 );
+
+
+CREATE TABLE form_submissions (
+    fullName VARCHAR(255) NOT NULL,
+    initials VARCHAR(255) NOT NULL,
+    nic VARCHAR(20) NOT NULL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    whatsapp VARCHAR(20) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    workplace VARCHAR(50) NOT NULL,
+    schoolName VARCHAR(255),
+    principleName VARCHAR(255),
+    principleContactNo VARCHAR(20),
+    provinceName VARCHAR(255),
+    headOfInstituteName VARCHAR(255),
+    headOfInstituteContactNo VARCHAR(20),
+    zone VARCHAR(255),
+    division VARCHAR(255),
+    ip_address VARCHAR(45) NOT NULL,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE form_submissions_history (
+    fullName VARCHAR(255) NOT NULL,
+    initials VARCHAR(255) NOT NULL,
+    nic VARCHAR(20) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    whatsapp VARCHAR(20) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    workplace VARCHAR(50) NOT NULL,
+    schoolName VARCHAR(255),
+    principleName VARCHAR(255),
+    principleContactNo VARCHAR(20),
+    provinceName VARCHAR(255),
+    headOfInstituteName VARCHAR(255),
+    headOfInstituteContactNo VARCHAR(20),
+    zone VARCHAR(255),
+    division VARCHAR(255),
+    ip_address VARCHAR(45) NOT NULL,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+

@@ -1,41 +1,40 @@
-let selectedProvince = false;
+let selectedSchool = false;
 
-function fetchSuggestions_Province(query) {
+function fetchSuggestions(query) {
   if (query.length === 0) {
-    document.getElementById("provincial-suggestions").style.display = "none";
+    document.getElementById("school-suggestions").style.display = "none";
     document.getElementById("submitBtn").disabled = true;
-    document.getElementById("error-message-province").style.display = "none";
-    selectedProvince = false;
+    document.getElementById("error-message-school").style.display = "none";
+    selectedSchool = false;
     return;
   }
 
   var xhr = new XMLHttpRequest();
   xhr.open(
     "GET",
-    "fetch_suggestions_province.php?q=" + encodeURIComponent(query),
+    "fetch_suggestions_school.php?q=" + encodeURIComponent(query),
     true
   );
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       var response = JSON.parse(xhr.responseText);
-      var suggestions = document.getElementById("provincial-suggestions");
+      var suggestions = document.getElementById("school-suggestions");
       suggestions.innerHTML = "";
-      selectedProvince = false;
+      selectedSchool = false;
       if (response.length > 0) {
         response.forEach(function (item) {
           var div = document.createElement("div");
           div.innerHTML =
-            highlightMatch(item.procode, query) +
+            highlightMatch(item.cencode, query) +
             " - " +
-            highlightMatch(item.province, query) +
-            " Department of Education";
+            highlightMatch(item.institutionname, query);
           div.onclick = function () {
-            document.getElementById("provinceName").value =
-              item.procode + " - " + item.province + " Department of Education";
+            document.getElementById("schoolName").value =
+              item.cencode + " - " + item.institutionname;
             suggestions.style.display = "none";
-            selectedProvince = true;
+            selectedSchool = true;
             document.getElementById("submitBtn").disabled = false;
-            document.getElementById("error-message-province").style.display =
+            document.getElementById("error-message-school").style.display =
               "none";
           };
           suggestions.appendChild(div);
@@ -56,18 +55,18 @@ function highlightMatch(text, query) {
   return text.replace(regex, "<span class='highlight'>$1</span>");
 }
 
-document.getElementById("provinceName").addEventListener("input", function () {
-  if (!selectedProvince) {
+document.getElementById("schoolName").addEventListener("input", function () {
+  if (!selectedSchool) {
     document.getElementById("submitBtn").disabled = true;
     showErrorMessage();
   }
 });
 
 document.addEventListener("click", function (event) {
-  var suggestions = document.getElementById("provincial-suggestions");
-  var provinceInput = document.getElementById("provinceName");
+  var suggestions = document.getElementById("school-suggestions");
+  var schoolInput = document.getElementById("schoolName");
   if (
-    !provinceInput.contains(event.target) &&
+    !schoolInput.contains(event.target) &&
     !suggestions.contains(event.target)
   ) {
     suggestions.style.display = "none";
@@ -75,8 +74,7 @@ document.addEventListener("click", function (event) {
 });
 
 function showErrorMessage() {
-  var errorMessage = document.getElementById("error-message-province");
-  errorMessage.innerText =
-    "Please select a valid Province from the suggestions.";
+  var errorMessage = document.getElementById("error-message-school");
+  errorMessage.innerText = "Please select a valid school from the suggestions.";
   errorMessage.style.display = "block";
 }

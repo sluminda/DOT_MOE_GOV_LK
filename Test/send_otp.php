@@ -36,7 +36,7 @@ if ($stmt->affected_rows > 0) {
         $mail->Host       = 'smtp.gmail.com'; // Set the SMTP server to send through
         $mail->SMTPAuth   = true;
         $mail->Username   = 'dotmoegov@gmail.com'; // SMTP username
-        $mail->Password   = ' '; // SMTP password
+        $mail->Password   = 'zjxkoytcmtkrocjq'; // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 

@@ -50,30 +50,30 @@
 
             <!-- This is School Area  -->
             <div id="schoolFields" class="hidden">
-                <label for="school">School Name or Code:</label>
-                <input type="text" id="school" name="school" autocomplete="off" onkeyup="fetchSuggestions(this.value)"
-                    required>
-                <div id="suggestions"></div>
-                <div id="error-message" class="error-message"></div>
+                <label for="schoolName">School Name or Code:</label>
+                <input type="text" id="schoolName" name="schoolName" autocomplete="off"
+                    onkeyup="fetchSuggestions(this.value)" required>
+                <div id="school-suggestions"></div>
+                <div id="error-message-school" class="error-message"></div>
 
-                <label for="sample1">Principle Name:</label>
-                <input type="text" id="sample1" name="sample1">
-                <label for="sample2">Principle Contact No:</label>
-                <input type="text" id="sample2" name="sample2">
+                <label for="principleName">Principle Name:</label>
+                <input type="text" id="principleName" name="principleName">
+                <label for="principleContactNo">Principle Contact No:</label>
+                <input type="text" id="principleContactNo" name="principleContactNo">
             </div>
 
             <!-- This is Provinces Area -->
             <div id="ProvincesFields" class="hidden">
-                <label for="province">Provincial Office Name or Code:</label>
+                <label for="provinceName">Provincial Office Name or Code:</label>
                 <div id="error-message-province" class="error-message"></div>
-                <input type="text" id="province" name="province" autocomplete="off"
+                <input type="text" id="provinceName" name="provinceName" autocomplete="off"
                     onkeyup="fetchSuggestions_Province(this.value)" required>
                 <div id="provincial-suggestions"></div>
 
-                <label for="office2">Head of Institute Name:</label>
-                <input type="text" id="office2" name="office2">
-                <label for="office3">Head of Institute Contact No:</label>
-                <input type="text" id="office3" name="office3">
+                <label for="headOfInstituteName">Head of Institute Name:</label>
+                <input type="text" id="headOfInstituteName" name="headOfInstituteName">
+                <label for="headOfInstituteContactNo">Head of Institute Contact No:</label>
+                <input type="text" id="headOfInstituteContactNo" name="headOfInstituteContactNo">
             </div>
 
             <!-- This is Zonal Area -->
@@ -84,10 +84,10 @@
                 <div id="zonal-suggestions"></div>
                 <div id="error-message-zone" class="error-message"></div>
 
-                <label for="office2">Head of Institute Name:</label>
-                <input type="text" id="office2" name="office2">
-                <label for="office3">Head of Institute Contact No:</label>
-                <input type="text" id="office3" name="office3">
+                <label for="headOfInstituteName">Head of Institute Name:</label>
+                <input type="text" id="headOfInstituteName" name="headOfInstituteName">
+                <label for="headOfInstituteContactNo">Head of Institute Contact No:</label>
+                <input type="text" id="headOfInstituteContactNo" name="headOfInstituteContactNo">
             </div>
 
             <!-- This is Divisional Area -->
@@ -98,19 +98,20 @@
                 <div id="divisional-suggestions"></div>
                 <div id="error-message-division" class="error-message"></div>
 
-                <label for="office2">Head of Institute Name:</label>
-                <input type="text" id="office2" name="office2">
-                <label for="office3">Head of Institute Contact No:</label>
-                <input type="text" id="office3" name="office3">
+                <label for="headOfInstituteName">Head of Institute Name:</label>
+                <input type="text" id="headOfInstituteName" name="headOfInstituteName">
+                <label for="headOfInstituteContactNo">Head of Institute Contact No:</label>
+                <input type="text" id="headOfInstituteContactNo" name="headOfInstituteContactNo">
             </div>
 
             <input type="submit" value="Register" id="submitBtn" disabled>
         </form>
     </div>
-    <script src="script.js"></script>
+    <script src="school.js"></script>
     <script src="province.js"></script>
     <script src="zone.js"></script>
-    <script src="scriptdivisional.js"></script>
+    <script src="division.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

@@ -1,79 +1,4 @@
-let selectedSchool = false;
 let otpRequestedTime = null;
-
-function fetchSuggestions(query) {
-  if (query.length === 0) {
-    document.getElementById("suggestions").style.display = "none";
-    document.getElementById("submitBtn").disabled = true;
-    document.getElementById("error-message").style.display = "none";
-    selectedSchool = false;
-    return;
-  }
-
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "fetch_suggestions.php?q=" + encodeURIComponent(query), true);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      var response = JSON.parse(xhr.responseText);
-      var suggestions = document.getElementById("suggestions");
-      suggestions.innerHTML = "";
-      selectedSchool = false;
-      if (response.length > 0) {
-        response.forEach(function (item) {
-          var div = document.createElement("div");
-          div.innerHTML =
-            highlightMatch(item.cencode, query) +
-            " - " +
-            highlightMatch(item.institutionname, query);
-          div.onclick = function () {
-            document.getElementById("school").value =
-              item.cencode + " - " + item.institutionname;
-            suggestions.style.display = "none";
-            selectedSchool = true;
-            document.getElementById("submitBtn").disabled = false;
-            document.getElementById("error-message").style.display = "none";
-          };
-          suggestions.appendChild(div);
-        });
-        suggestions.style.display = "block";
-      } else {
-        suggestions.style.display = "none";
-        document.getElementById("submitBtn").disabled = true;
-        showErrorMessage();
-      }
-    }
-  };
-  xhr.send();
-}
-
-function highlightMatch(text, query) {
-  var regex = new RegExp(`(${query})`, "gi");
-  return text.replace(regex, "<span class='highlight'>$1</span>");
-}
-
-document.getElementById("school").addEventListener("input", function () {
-  if (!selectedSchool) {
-    document.getElementById("submitBtn").disabled = true;
-    showErrorMessage();
-  }
-});
-
-document.addEventListener("click", function (event) {
-  var suggestions = document.getElementById("suggestions");
-  var schoolInput = document.getElementById("school");
-  if (
-    !schoolInput.contains(event.target) &&
-    !suggestions.contains(event.target)
-  ) {
-    suggestions.style.display = "none";
-  }
-});
-
-function showErrorMessage() {
-  var errorMessage = document.getElementById("error-message");
-  errorMessage.innerText = "Please select a valid school from the suggestions.";
-  errorMessage.style.display = "block";
-}
 
 function handleWorkplaceChange() {
   var workplace = document.getElementById("workplace").value;
@@ -82,20 +7,52 @@ function handleWorkplaceChange() {
   var ZonalFields = document.getElementById("ZonalFields");
   var DivisionalFields = document.getElementById("DivisionalFields");
 
+  // Hide all fields and remove required attributes
   schoolFields.classList.add("hidden");
   ProvincesFields.classList.add("hidden");
   ZonalFields.classList.add("hidden");
   DivisionalFields.classList.add("hidden");
 
+  // Clear all input fields
+  clearFields(schoolFields);
+  clearFields(ProvincesFields);
+  clearFields(ZonalFields);
+  clearFields(DivisionalFields);
+
+  var fieldsToMakeRequired = [];
   if (workplace === "school") {
     schoolFields.classList.remove("hidden");
+    fieldsToMakeRequired = ["schoolName"];
   } else if (workplace === "provincial") {
     ProvincesFields.classList.remove("hidden");
-  } else if (workplace === "divisional") {
-    DivisionalFields.classList.remove("hidden");
+    fieldsToMakeRequired = ["provinceName"];
   } else if (workplace === "zonal") {
     ZonalFields.classList.remove("hidden");
+    fieldsToMakeRequired = ["zone"];
+  } else if (workplace === "divisional") {
+    DivisionalFields.classList.remove("hidden");
+    fieldsToMakeRequired = ["division"];
   }
+
+  // Add required attributes to visible fields and remove from hidden fields
+  document
+    .querySelectorAll(
+      "#schoolFields input, #ProvincesFields input, #ZonalFields input, #DivisionalFields input"
+    )
+    .forEach(function (input) {
+      if (fieldsToMakeRequired.includes(input.id)) {
+        input.setAttribute("required", "required");
+      } else {
+        input.removeAttribute("required");
+      }
+    });
+}
+
+function clearFields(container) {
+  var inputs = container.querySelectorAll("input");
+  inputs.forEach(function (input) {
+    input.value = "";
+  });
 }
 
 function sendOtp() {
@@ -155,6 +112,32 @@ function submitForm(event) {
   var form = document.getElementById("registrationForm");
   var formData = new FormData(form);
 
+  var workplace = document.getElementById("workplace").value;
+
+  if (workplace !== "school") {
+    formData.set("schoolName", null);
+    formData.set("principleName", null);
+    formData.set("principleContactNo", null);
+  }
+
+  if (workplace !== "provincial") {
+    formData.set("provinceName", null);
+    formData.set("headOfInstituteName", null);
+    formData.set("headOfInstituteContactNo", null);
+  }
+
+  if (workplace !== "zonal") {
+    formData.set("zone", null);
+    formData.set("headOfInstituteName", null);
+    formData.set("headOfInstituteContactNo", null);
+  }
+
+  if (workplace !== "divisional") {
+    formData.set("division", null);
+    formData.set("headOfInstituteName", null);
+    formData.set("headOfInstituteContactNo", null);
+  }
+
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "submit_form.php", true);
   xhr.onreadystatechange = function () {
@@ -180,3 +163,11 @@ function showMessage(message, type) {
   otpMessage.className = "message " + type;
   otpMessage.style.display = "block";
 }
+
+// Debugging to check form submission
+document
+  .getElementById("registrationForm")
+  .addEventListener("submit", function (event) {
+    console.log("Form submitted");
+    submitForm(event);
+  });
