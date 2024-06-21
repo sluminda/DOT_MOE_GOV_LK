@@ -1,6 +1,13 @@
 <?php
-// submit_form.php
+session_start();
 include 'db_connect.php';
+
+if (isset($_SESSION['form_submitted']) && $_SESSION['form_submitted']) {
+    echo json_encode(["success" => false, "message" => "Form already submitted."]);
+    exit;
+}
+
+$_SESSION['form_submitted'] = true;
 
 $fullName = $_POST['fullName'];
 $initials = $_POST['initials'];
@@ -19,20 +26,12 @@ $zone = $_POST['zone'] ?? null;
 $division = $_POST['division'] ?? null;
 $ip_address = $_SERVER['REMOTE_ADDR'];
 
-$schoolName = $schoolName ?: null;
-$principleName = $principleName ?: null;
-$principleContactNo = $principleContactNo ?: null;
-$provinceName = $provinceName ?: null;
-$headOfInstituteName = $headOfInstituteName ?: null;
-$headOfInstituteContactNo = $headOfInstituteContactNo ?: null;
-$zone = $zone ?: null;
-$division = $division ?: null;
 
-$sql = "INSERT INTO form_submissions 
+$sql = "INSERT INTO data_officer_registration 
     (fullName, initials, nic, email, whatsapp, phone, workplace, schoolName, principleName, principleContactNo, provinceName, headOfInstituteName, headOfInstituteContactNo, zone, division, ip_address, submitted_at) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
     ON DUPLICATE KEY UPDATE 
-    fullName = VALUES(fullName), initials = VALUES(initials), nic = VALUES(nic), email = VALUES(email), whatsapp = VALUES(whatsapp), phone = VALUES(phone), workplace = VALUES(workplace), 
+    fullName = VALUES(fullName), initials = VALUES(initials), email = VALUES(email), whatsapp = VALUES(whatsapp), phone = VALUES(phone), workplace = VALUES(workplace), 
     schoolName = VALUES(schoolName), principleName = VALUES(principleName), principleContactNo = VALUES(principleContactNo), provinceName = VALUES(provinceName), 
     headOfInstituteName = VALUES(headOfInstituteName), headOfInstituteContactNo = VALUES(headOfInstituteContactNo), zone = VALUES(zone), division = VALUES(division), 
     ip_address = VALUES(ip_address), submitted_at = NOW()";
@@ -65,7 +64,7 @@ if ($stmt->execute()) {
 }
 $stmt->close();
 
-$sql = "INSERT INTO form_submissions_history 
+$sql = "INSERT INTO data_officer_registration_history 
     (fullName, initials, nic, email, whatsapp, phone, workplace, schoolName, principleName, principleContactNo, provinceName, headOfInstituteName, headOfInstituteContactNo, zone, division, ip_address, submitted_at) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
@@ -94,3 +93,6 @@ $stmt->execute();
 $stmt->close();
 
 $conn->close();
+
+// Reset the session form submission flag after some time (optional)
+unset($_SESSION['form_submitted']);

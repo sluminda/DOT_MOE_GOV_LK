@@ -12,16 +12,21 @@
         <form id="registrationForm" onsubmit="submitForm(event)">
             <h2>Personal Information</h2>
             <label for="fullName">Full Name:</label>
-            <input type="text" id="fullName" name="fullName" required>
+            <input type="text" id="fullName" name="fullName" oninput="validateFullName()" required>
+            <div id="fullName-error" class="error-message"></div>
 
             <label for="initials">Name with Initials:</label>
-            <input type="text" id="initials" name="initials" required>
+            <input type="text" id="initials" name="initials" oninput="validateInitials()" required>
+            <div id="initials-error" class="error-message"></div>
 
             <label for="nic">NIC:</label>
-            <input type="text" id="nic" name="nic" required>
+            <input type="text" id="nic" name="nic" oninput="validateNic()" required>
+            <div id="nic-error" class="error-message"></div>
 
             <label for="email">Email Address:</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" oninput="validateEmail()" autocomplete="email" required>
+            <div id="email-error" class="error-message"></div>
+
             <button type="button" id="sendOtpBtn" onclick="sendOtp()">Send OTP</button>
             <div id="otpMessage" class="message"></div>
 
@@ -32,10 +37,13 @@
             </div>
 
             <label for="whatsapp">WhatsApp Number:</label>
-            <input type="text" id="whatsapp" name="whatsapp" required>
+            <input type="text" id="whatsapp" name="whatsapp" oninput="validatePhoneNumber('whatsapp')" required>
+            <div id="whatsapp-error" class="error-message"></div>
 
             <label for="phone">Phone Number:</label>
-            <input type="text" id="phone" name="phone" required>
+            <input type="text" id="phone" name="phone" oninput="validatePhoneNumber('phone')" autocomplete="tel"
+                required>
+            <div id="phone-error" class="error-message"></div>
 
             <h2>Workplace Information</h2>
             <label for="workplace">Current Working Place:</label>
@@ -47,7 +55,6 @@
                 <option value="divisional">Divisional Office</option>
             </select>
 
-
             <!-- This is School Area  -->
             <div id="schoolFields" class="hidden">
                 <label for="schoolName">School Name or Code:</label>
@@ -57,9 +64,13 @@
                 <div id="error-message-school" class="error-message"></div>
 
                 <label for="principleName">Principle Name:</label>
-                <input type="text" id="principleName" name="principleName">
+                <input type="text" id="principleName" name="principleName" oninput="validatePrincipleName()">
+                <div id="principleName-error" class="error-message"></div>
+
                 <label for="principleContactNo">Principle Contact No:</label>
-                <input type="text" id="principleContactNo" name="principleContactNo">
+                <input type="text" id="principleContactNo" name="principleContactNo"
+                    oninput="validatePhoneNumber('principleContactNo')">
+                <div id="principleContactNo-error" class="error-message"></div>
             </div>
 
             <!-- This is Provinces Area -->
@@ -71,9 +82,14 @@
                 <div id="provincial-suggestions"></div>
 
                 <label for="headOfInstituteName">Head of Institute Name:</label>
-                <input type="text" id="headOfInstituteName" name="headOfInstituteName">
+                <input type="text" id="headOfInstituteName" name="headOfInstituteName"
+                    oninput="validateHeadOfInstituteName()">
+                <div id="headOfInstituteName-error" class="error-message"></div>
+
                 <label for="headOfInstituteContactNo">Head of Institute Contact No:</label>
-                <input type="text" id="headOfInstituteContactNo" name="headOfInstituteContactNo">
+                <input type="text" id="headOfInstituteContactNo" name="headOfInstituteContactNo"
+                    oninput="validatePhoneNumber('headOfInstituteContactNo')">
+                <div id="headOfInstituteContactNo-error" class="error-message"></div>
             </div>
 
             <!-- This is Zonal Area -->
@@ -85,9 +101,14 @@
                 <div id="error-message-zone" class="error-message"></div>
 
                 <label for="headOfInstituteName">Head of Institute Name:</label>
-                <input type="text" id="headOfInstituteName" name="headOfInstituteName">
+                <input type="text" id="headOfInstituteName" name="headOfInstituteName"
+                    oninput="validateHeadOfInstituteName()">
+                <div id="headOfInstituteName-error" class="error-message"></div>
+
                 <label for="headOfInstituteContactNo">Head of Institute Contact No:</label>
-                <input type="text" id="headOfInstituteContactNo" name="headOfInstituteContactNo">
+                <input type="text" id="headOfInstituteContactNo" name="headOfInstituteContactNo"
+                    oninput="validatePhoneNumber('headOfInstituteContactNo')">
+                <div id="headOfInstituteContactNo-error" class="error-message"></div>
             </div>
 
             <!-- This is Divisional Area -->
@@ -99,9 +120,14 @@
                 <div id="error-message-division" class="error-message"></div>
 
                 <label for="headOfInstituteName">Head of Institute Name:</label>
-                <input type="text" id="headOfInstituteName" name="headOfInstituteName">
+                <input type="text" id="headOfInstituteName" name="headOfInstituteName"
+                    oninput="validateHeadOfInstituteName()">
+                <div id="headOfInstituteName-error" class="error-message"></div>
+
                 <label for="headOfInstituteContactNo">Head of Institute Contact No:</label>
-                <input type="text" id="headOfInstituteContactNo" name="headOfInstituteContactNo">
+                <input type="text" id="headOfInstituteContactNo" name="headOfInstituteContactNo"
+                    oninput="validatePhoneNumber('headOfInstituteContactNo')">
+                <div id="headOfInstituteContactNo-error" class="error-message"></div>
             </div>
 
             <input type="submit" value="Register" id="submitBtn" disabled>
@@ -112,6 +138,11 @@
     <script src="zone.js"></script>
     <script src="division.js"></script>
     <script src="script.js"></script>
+    <script src="form_validation.js"></script>
+    <script src="save_form_data.js"></script>
 </body>
+
+
+
 
 </html>

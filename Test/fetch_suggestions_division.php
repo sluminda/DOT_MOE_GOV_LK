@@ -1,34 +1,26 @@
 <?php
-// fetch_suggestions.php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dot_moe_gov_lk";
-$port = 3306;
-
-$conn = new mysqli($servername, $username, $password, $dbname, $port);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// fetch_suggestions_division.php
+include 'db_connect.php';
 
 $query = $_GET['q'];
-$sql = "
-        SELECT divcode, divisionname 
-        FROM division 
-        WHERE divcode LIKE ? OR divisionname LIKE ? 
-        LIMIT 10
-        ";
+
+$sql = "SELECT institutionname 
+FROM institutes 
+WHERE institutionname LIKE ? 
+AND schooltype = 8 
+AND institutionname LIKE '%DIVISIONAL EDUCATION OFFICE%' 
+LIMIT 10";
+
 $stmt = $conn->prepare($sql);
-$like_query = "%{$query}%";
-$stmt->bind_param('ss', $like_query, $like_query);
+$like_query = "%{$query}%"; // This line is correct for preparing LIKE query
+$stmt->bind_param('s', $like_query); // Only one parameter is needed here
 $stmt->execute();
 $result = $stmt->get_result();
 
 $suggestions = array();
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $suggestions[] = $row;
+        $suggestions[] = $row['institutionname']; // Only push institutionname to suggestions array
     }
 }
 

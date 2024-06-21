@@ -24,14 +24,9 @@ function fetchSuggestions_Division(query) {
       if (response.length > 0) {
         response.forEach(function (item) {
           var div = document.createElement("div");
-          div.innerHTML =
-            highlightMatch(item.divcode, query) +
-            " - " +
-            highlightMatch(item.divisionname, query) +
-            " Divisional Office";
+          div.innerHTML = highlightMatch(item, query);
           div.onclick = function () {
-            document.getElementById("division").value =
-              item.divcode + " - " + item.divisionname + " Divisional Office";
+            document.getElementById("division").value = item;
             suggestions.style.display = "none";
             selectedDivision = true;
             document.getElementById("submitBtn").disabled = false;

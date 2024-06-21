@@ -24,14 +24,9 @@ function fetchSuggestions_Province(query) {
       if (response.length > 0) {
         response.forEach(function (item) {
           var div = document.createElement("div");
-          div.innerHTML =
-            highlightMatch(item.procode, query) +
-            " - " +
-            highlightMatch(item.province, query) +
-            " Department of Education";
+          div.innerHTML = highlightMatch(item, query);
           div.onclick = function () {
-            document.getElementById("provinceName").value =
-              item.procode + " - " + item.province + " Department of Education";
+            document.getElementById("provinceName").value = item;
             suggestions.style.display = "none";
             selectedProvince = true;
             document.getElementById("submitBtn").disabled = false;
@@ -57,6 +52,7 @@ function highlightMatch(text, query) {
 }
 
 document.getElementById("provinceName").addEventListener("input", function () {
+  fetchSuggestions_Province(this.value); // Fetch suggestions on input change
   if (!selectedProvince) {
     document.getElementById("submitBtn").disabled = true;
     showErrorMessage();

@@ -8,10 +8,7 @@ function handleWorkplaceChange() {
   var DivisionalFields = document.getElementById("DivisionalFields");
 
   // Hide all fields and remove required attributes
-  schoolFields.classList.add("hidden");
-  ProvincesFields.classList.add("hidden");
-  ZonalFields.classList.add("hidden");
-  DivisionalFields.classList.add("hidden");
+  hideFields([schoolFields, ProvincesFields, ZonalFields, DivisionalFields]);
 
   // Clear all input fields
   clearFields(schoolFields);
@@ -20,38 +17,55 @@ function handleWorkplaceChange() {
   clearFields(DivisionalFields);
 
   var fieldsToMakeRequired = [];
-  if (workplace === "school") {
-    schoolFields.classList.remove("hidden");
-    fieldsToMakeRequired = ["schoolName"];
-  } else if (workplace === "provincial") {
-    ProvincesFields.classList.remove("hidden");
-    fieldsToMakeRequired = ["provinceName"];
-  } else if (workplace === "zonal") {
-    ZonalFields.classList.remove("hidden");
-    fieldsToMakeRequired = ["zone"];
-  } else if (workplace === "divisional") {
-    DivisionalFields.classList.remove("hidden");
-    fieldsToMakeRequired = ["division"];
+  switch (workplace) {
+    case "school":
+      schoolFields.classList.remove("hidden");
+      fieldsToMakeRequired = ["schoolName"];
+      break;
+    case "provincial":
+      ProvincesFields.classList.remove("hidden");
+      fieldsToMakeRequired = ["provinceName"];
+      break;
+    case "zonal":
+      ZonalFields.classList.remove("hidden");
+      fieldsToMakeRequired = ["zone"];
+      break;
+    case "divisional":
+      DivisionalFields.classList.remove("hidden");
+      fieldsToMakeRequired = ["division"];
+      break;
+    default:
+      break;
   }
 
   // Add required attributes to visible fields and remove from hidden fields
-  document
-    .querySelectorAll(
-      "#schoolFields input, #ProvincesFields input, #ZonalFields input, #DivisionalFields input"
-    )
-    .forEach(function (input) {
-      if (fieldsToMakeRequired.includes(input.id)) {
-        input.setAttribute("required", "required");
-      } else {
-        input.removeAttribute("required");
-      }
-    });
+  toggleRequiredFields(fieldsToMakeRequired);
+}
+
+function hideFields(fields) {
+  fields.forEach(function (field) {
+    field.classList.add("hidden");
+  });
 }
 
 function clearFields(container) {
   var inputs = container.querySelectorAll("input");
   inputs.forEach(function (input) {
     input.value = "";
+  });
+}
+
+function toggleRequiredFields(requiredIds) {
+  var allInputs = document.querySelectorAll(
+    "#schoolFields input, #ProvincesFields input, #ZonalFields input, #DivisionalFields input"
+  );
+
+  allInputs.forEach(function (input) {
+    if (requiredIds.includes(input.id)) {
+      input.setAttribute("required", "required");
+    } else {
+      input.removeAttribute("required");
+    }
   });
 }
 
@@ -70,17 +84,28 @@ function sendOtp() {
   xhr.open("POST", "send_otp.php", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      var response = JSON.parse(xhr.responseText);
-      if (response.success) {
-        showMessage("OTP sent successfully.", "success");
-        document.getElementById("otpSection").classList.remove("hidden");
-        document.getElementById("submitBtn").disabled = true;
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        try {
+          var response = JSON.parse(xhr.responseText);
+          if (response.success) {
+            showMessage("OTP sent successfully.", "success");
+            document.getElementById("otpSection").classList.remove("hidden");
+            document.getElementById("submitBtn").disabled = true;
+          } else {
+            showMessage("Failed to send OTP.", "error");
+          }
+        } catch (e) {
+          console.error("Error parsing JSON response:", e);
+          showMessage("Unexpected server response.", "error");
+        }
       } else {
-        showMessage("Failed to send OTP.", "error");
+        console.error("Request failed. Status:", xhr.status);
+        showMessage("Request failed. Please try again.", "error");
       }
     }
   };
+
   xhr.send("email=" + encodeURIComponent(email));
 }
 
@@ -92,13 +117,18 @@ function verifyOtp() {
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
-      var response = JSON.parse(xhr.responseText);
-      if (response.success) {
-        showMessage("OTP verified successfully.", "success");
-        document.getElementById("submitBtn").disabled = false;
-      } else {
-        showMessage("Invalid OTP. Please try again.", "error");
-        document.getElementById("submitBtn").disabled = true;
+      try {
+        var response = JSON.parse(xhr.responseText);
+        if (response.success) {
+          showMessage("OTP verified successfully.", "success");
+          document.getElementById("submitBtn").disabled = false;
+        } else {
+          showMessage("Invalid OTP. Please try again.", "error");
+          document.getElementById("submitBtn").disabled = true;
+        }
+      } catch (e) {
+        console.error("Error parsing JSON response:", e);
+        showMessage("Unexpected server response.", "error");
       }
     }
   };
@@ -141,16 +171,28 @@ function submitForm(event) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "submit_form.php", true);
   xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      var response = JSON.parse(xhr.responseText);
-      if (response.success) {
-        alert("Form submitted successfully!");
-        form.reset();
-        document.getElementById("otpSection").classList.add("hidden");
-        document.getElementById("otpMessage").style.display = "none";
-        document.getElementById("submitBtn").disabled = true;
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        try {
+          var response = JSON.parse(xhr.responseText);
+          if (response.success) {
+            showMessage("Form submitted successfully!", "success");
+            form.reset();
+            document.getElementById("otpSection").classList.add("hidden");
+            document.getElementById("submitBtn").disabled = true;
+          } else {
+            showMessage(
+              "Failed to submit the form. Please try again.",
+              "error"
+            );
+          }
+        } catch (e) {
+          console.error("Error parsing JSON response:", e);
+          showMessage("Unexpected server response.", "error");
+        }
       } else {
-        alert("Failed to submit the form. Please try again.");
+        console.error("Request failed. Status:", xhr.status);
+        showMessage("Request failed. Please try again.", "error");
       }
     }
   };
@@ -163,11 +205,3 @@ function showMessage(message, type) {
   otpMessage.className = "message " + type;
   otpMessage.style.display = "block";
 }
-
-// Debugging to check form submission
-document
-  .getElementById("registrationForm")
-  .addEventListener("submit", function (event) {
-    console.log("Form submitted");
-    submitForm(event);
-  });

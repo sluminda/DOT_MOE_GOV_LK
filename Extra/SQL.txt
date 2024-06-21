@@ -51,16 +51,19 @@ CREATE TABLE institutes (
 
 -- Create the otp_verification table
 CREATE TABLE otp_verification (
-    email VARCHAR(255) PRIMARY KEY,
-    otp VARCHAR(6) NOT NULL,
-    expiry INT NOT NULL
-);
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    otp_hash VARCHAR(64) NOT NULL,
+    salt VARCHAR(64) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-CREATE TABLE form_submissions (
+
+CREATE TABLE data_officer_registration (
     fullName VARCHAR(255) NOT NULL,
     initials VARCHAR(255) NOT NULL,
-    nic VARCHAR(20) NOT NULL PRIMARY KEY,
+    nic VARCHAR(20) NOT NULL,
     email VARCHAR(255) NOT NULL,
     whatsapp VARCHAR(20) NOT NULL,
     phone VARCHAR(20) NOT NULL,
@@ -74,10 +77,12 @@ CREATE TABLE form_submissions (
     zone VARCHAR(255),
     division VARCHAR(255),
     ip_address VARCHAR(45) NOT NULL,
-    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (email, nic)
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE form_submissions_history (
+CREATE TABLE data_officer_registration_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     fullName VARCHAR(255) NOT NULL,
     initials VARCHAR(255) NOT NULL,
     nic VARCHAR(20) NOT NULL,
@@ -95,5 +100,7 @@ CREATE TABLE form_submissions_history (
     division VARCHAR(255),
     ip_address VARCHAR(45) NOT NULL,
     submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 

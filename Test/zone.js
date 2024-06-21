@@ -24,14 +24,9 @@ function fetchSuggestions_Zone(query) {
       if (response.length > 0) {
         response.forEach(function (item) {
           var div = document.createElement("div");
-          div.innerHTML =
-            highlightMatch(item.zonecode, query) +
-            " - " +
-            highlightMatch(item.zonename, query) +
-            " Zonal Office";
+          div.innerHTML = highlightMatch(item, query);
           div.onclick = function () {
-            document.getElementById("zone").value =
-              item.zonecode + " - " + item.zonename + " Zonal Office";
+            document.getElementById("zone").value = item;
             suggestions.style.display = "none";
             selectedZone = true;
             document.getElementById("submitBtn").disabled = false;
