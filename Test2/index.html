@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <form id="detailsForm">
+        <h2>Personal Details</h2>
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" required>
+        <div class="error" id="fullNameError"></div>
+
+        <label for="initialsName">Name with Initials</label>
+        <input type="text" id="initialsName" name="initialsName" required>
+        <div class="error" id="initialsNameError"></div>
+
+        <label for="nic">NIC</label>
+        <input type="text" id="nic" name="nic" required>
+        <div class="error" id="nicError"></div>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        <div class="error" id="emailError"></div>
+        <button type="button" id="requestOtp">Send OTP</button>
+
+        <div id="otpSection" style="display: none;">
+            <label for="otp">OTP</label>
+            <input type="text" id="otp" name="otp" required>
+            <div class="message" id="otpMessage"></div>
+            <button type="button" id="verifyOtp">Verify OTP</button>
+        </div>
+
+        <label for="whatsappNumber">WhatsApp Number</label>
+        <input type="text" id="whatsappNumber" name="whatsappNumber" required>
+        <div class="error" id="whatsappNumberError"></div>
+
+        <label for="mobileNumber">Mobile Number</label>
+        <input type="text" id="mobileNumber" name="mobileNumber" required>
+        <div class="error" id="mobileNumberError"></div>
+
+        <h2>Workplace Details</h2>
+        <label for="currentWorkingPlace">Current Working Place</label>
+        <select id="currentWorkingPlace" name="currentWorkingPlace" required>
+            <option value="">Select</option>
+            <option value="school">School</option>
+            <option value="provincialOffice">Provincial Office</option>
+            <option value="zonalOffice">Zonal Office</option>
+            <option value="divisionalOffice">Divisional Office</option>
+        </select>
+
+        <div id="schoolDetails" style="display: none;">
+            <label for="schoolName">School Name</label>
+            <input type="text" id="schoolName" name="schoolName" autocomplete="off">
+            <input type="hidden" id="selectedSchoolCencode" name="selectedSchoolCencode">
+            <div id="autocompleteSuggestions" class="autocomplete-suggestions"></div>
+            <div class="error" id="schoolNameError"></div>
+
+            <label for="principleName">Principle Name</label>
+            <input type="text" id="principleName" name="principleName" required>
+            <div class="error" id="principleNameError"></div>
+
+            <label for="principleContact">Principle Contact No</label>
+            <input type="text" id="principleContact" name="principleContact" required>
+            <div class="error" id="principleContactError"></div>
+        </div>
+
+        <div id="officeDetails" style="display: none;">
+            <label for="instituteName">Institute Name</label>
+            <input type="text" id="instituteName" name="instituteName" autocomplete="off">
+            <div id="autocompleteSuggestionsOffice" class="autocomplete-suggestions"></div>
+            <div class="error" id="instituteNameError"></div>
+
+            <label for="headName">Head of Institute Name</label>
+            <input type="text" id="headName" name="headName" required>
+            <div class="error" id="headNameError"></div>
+
+            <label for="headContact">Head of Institute Contact No</label>
+            <input type="text" id="headContact" name="headContact" required>
+            <div class="error" id="headContactError"></div>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

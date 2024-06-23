@@ -142,32 +142,6 @@ function submitForm(event) {
   var form = document.getElementById("registrationForm");
   var formData = new FormData(form);
 
-  var workplace = document.getElementById("workplace").value;
-
-  if (workplace !== "school") {
-    formData.set("schoolName", null);
-    formData.set("principleName", null);
-    formData.set("principleContactNo", null);
-  }
-
-  if (workplace !== "provincial") {
-    formData.set("provinceName", null);
-    formData.set("headOfInstituteName", null);
-    formData.set("headOfInstituteContactNo", null);
-  }
-
-  if (workplace !== "zonal") {
-    formData.set("zone", null);
-    formData.set("headOfInstituteName", null);
-    formData.set("headOfInstituteContactNo", null);
-  }
-
-  if (workplace !== "divisional") {
-    formData.set("division", null);
-    formData.set("headOfInstituteName", null);
-    formData.set("headOfInstituteContactNo", null);
-  }
-
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "submit_form.php", true);
   xhr.onreadystatechange = function () {

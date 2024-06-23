@@ -104,3 +104,35 @@ CREATE TABLE data_officer_registration_history (
 
 
 
+===============================
+
+
+CREATE DATABASE IF NOT EXISTS dot_moe_gov_lk;
+USE dot_moe_gov_lk;
+
+-- Users table to store user details
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(255) NOT NULL,
+    name_with_initials VARCHAR(255) NOT NULL,
+    nic VARCHAR(12) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    whatsapp_number VARCHAR(10) NOT NULL,
+    mobile_number VARCHAR(10) NOT NULL,
+    current_working_place ENUM('School', 'Provincial Office', 'Zonal Office', 'Divisional Office') NOT NULL,
+    principle_name VARCHAR(255),
+    principle_contact_no VARCHAR(10),
+    head_name VARCHAR(255),
+    head_contact_no VARCHAR(10),
+    submit_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- OTPs table to store OTPs
+CREATE TABLE IF NOT EXISTS otps (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    otp_hash VARCHAR(255) NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
+

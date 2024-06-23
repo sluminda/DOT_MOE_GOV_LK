@@ -62,15 +62,6 @@
                     onkeyup="fetchSuggestions(this.value)" required>
                 <div id="school-suggestions"></div>
                 <div id="error-message-school" class="error-message"></div>
-
-                <label for="principleName">Principle Name:</label>
-                <input type="text" id="principleName" name="principleName" oninput="validatePrincipleName()">
-                <div id="principleName-error" class="error-message"></div>
-
-                <label for="principleContactNo">Principle Contact No:</label>
-                <input type="text" id="principleContactNo" name="principleContactNo"
-                    oninput="validatePhoneNumber('principleContactNo')">
-                <div id="principleContactNo-error" class="error-message"></div>
             </div>
 
             <!-- This is Provinces Area -->
@@ -80,16 +71,6 @@
                 <input type="text" id="provinceName" name="provinceName" autocomplete="off"
                     onkeyup="fetchSuggestions_Province(this.value)" required>
                 <div id="provincial-suggestions"></div>
-
-                <label for="headOfInstituteName">Head of Institute Name:</label>
-                <input type="text" id="headOfInstituteName" name="headOfInstituteName"
-                    oninput="validateHeadOfInstituteName()">
-                <div id="headOfInstituteName-error" class="error-message"></div>
-
-                <label for="headOfInstituteContactNo">Head of Institute Contact No:</label>
-                <input type="text" id="headOfInstituteContactNo" name="headOfInstituteContactNo"
-                    oninput="validatePhoneNumber('headOfInstituteContactNo')">
-                <div id="headOfInstituteContactNo-error" class="error-message"></div>
             </div>
 
             <!-- This is Zonal Area -->
@@ -99,16 +80,6 @@
                     required>
                 <div id="zonal-suggestions"></div>
                 <div id="error-message-zone" class="error-message"></div>
-
-                <label for="headOfInstituteName">Head of Institute Name:</label>
-                <input type="text" id="headOfInstituteName" name="headOfInstituteName"
-                    oninput="validateHeadOfInstituteName()">
-                <div id="headOfInstituteName-error" class="error-message"></div>
-
-                <label for="headOfInstituteContactNo">Head of Institute Contact No:</label>
-                <input type="text" id="headOfInstituteContactNo" name="headOfInstituteContactNo"
-                    oninput="validatePhoneNumber('headOfInstituteContactNo')">
-                <div id="headOfInstituteContactNo-error" class="error-message"></div>
             </div>
 
             <!-- This is Divisional Area -->
@@ -118,17 +89,18 @@
                     onkeyup="fetchSuggestions_Division(this.value)" required>
                 <div id="divisional-suggestions"></div>
                 <div id="error-message-division" class="error-message"></div>
-
-                <label for="headOfInstituteName">Head of Institute Name:</label>
-                <input type="text" id="headOfInstituteName" name="headOfInstituteName"
-                    oninput="validateHeadOfInstituteName()">
-                <div id="headOfInstituteName-error" class="error-message"></div>
-
-                <label for="headOfInstituteContactNo">Head of Institute Contact No:</label>
-                <input type="text" id="headOfInstituteContactNo" name="headOfInstituteContactNo"
-                    oninput="validatePhoneNumber('headOfInstituteContactNo')">
-                <div id="headOfInstituteContactNo-error" class="error-message"></div>
             </div>
+
+            <!-- Common Head/Principle Name Field -->
+            <label for="headOrPrincipleName">Head/Principle Name:</label>
+            <input type="text" id="headOrPrincipleName" name="headOrPrincipleName"
+                oninput="validateName('headOrPrincipleName')" required>
+            <div id="headOrPrincipleName-error" class="error-message"></div>
+
+            <!-- Common Contact No Field -->
+            <label for="contactNo">Contact No:</label>
+            <input type="text" id="contactNo" name="contactNo" oninput="validatePhoneNumber('contactNo')" required>
+            <div id="contactNo-error" class="error-message"></div>
 
             <input type="submit" value="Register" id="submitBtn" disabled>
         </form>
@@ -141,6 +113,8 @@
     <script src="form_validation.js"></script>
     <script src="save_form_data.js"></script>
 </body>
+
+
 
 
 
