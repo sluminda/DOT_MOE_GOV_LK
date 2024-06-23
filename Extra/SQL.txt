@@ -130,9 +130,46 @@ CREATE TABLE IF NOT EXISTS users (
 -- OTPs table to store OTPs
 CREATE TABLE IF NOT EXISTS otps (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
-    otp_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(200) NOT NULL,
+    otp_hash VARCHAR(200) NOT NULL,
     expires_at TIMESTAMP NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+CREATE TABLE main_submission (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullName VARCHAR(200) NOT NULL,
+    nameWithInitials VARCHAR(200) NOT NULL,
+    nic VARCHAR(12) NOT NULL,
+    email VARCHAR(200) NOT NULL,
+    whatsappNumber VARCHAR(20) NOT NULL,
+    mobileNumber VARCHAR(20) NOT NULL,
+    currentWorkingPlace VARCHAR(50) NOT NULL,
+    WorkPlaceName VARCHAR(200) NOT NULL,
+    headOfInstituteName VARCHAR(200) NOT NULL,
+    headOfInstituteContact VARCHAR(20) NOT NULL,
+    ipAddress VARCHAR(50) NOT NULL,
+    submittedDate DATE NOT NULL,
+    submittedTime TIME NOT NULL,
+    UNIQUE KEY unique_nic_email (nic, email)
+);
+
+CREATE TABLE submission_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mainSubmissionId INT NOT NULL,
+    fullName VARCHAR(200) NOT NULL,
+    nameWithInitials VARCHAR(200) NOT NULL,
+    nic VARCHAR(12) NOT NULL,
+    email VARCHAR(200) NOT NULL,
+    whatsappNumber VARCHAR(20) NOT NULL,
+    mobileNumber VARCHAR(20) NOT NULL,
+    currentWorkingPlace VARCHAR(50) NOT NULL,
+    WorkPlaceName VARCHAR(200) NOT NULL,
+    headOfInstituteName VARCHAR(200) NOT NULL,
+    headOfInstituteContact VARCHAR(20) NOT NULL,
+    ipAddress VARCHAR(50) NOT NULL,
+    submittedDate DATE NOT NULL,
+    submittedTime TIME NOT NULL,
+    FOREIGN KEY (mainSubmissionId) REFERENCES main_submission(id)
+);

@@ -1,5 +1,233 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const requestOtpButton = document.getElementById("requestOtp");
+  /*
+  ======================
+  Auto Complete Area
+  ======================
+  */
+  const currentWorkingPlace = document.getElementById("currentWorkingPlace");
+  const schoolDetails = document.getElementById("schoolDetails");
+  const provincialDetails = document.getElementById("provincialDetails");
+  const zonalDetails = document.getElementById("zonalDetails");
+  const divisionalDetails = document.getElementById("divisionalDetails");
+  const schoolNameInput = document.getElementById("schoolName");
+  const selectedSchoolCencode = document.getElementById(
+    "selectedSchoolCencode"
+  );
+  const autocompleteSuggestions = document.getElementById(
+    "autocompleteSuggestions"
+  );
+  const schoolNameError = document.getElementById("schoolNameError");
+  const provincialNameInput = document.getElementById("provincialName");
+  const autocompleteSuggestionsProvincial = document.getElementById(
+    "autocompleteSuggestionsProvincial"
+  );
+  const provincialNameError = document.getElementById("provincialNameError");
+  const zonalNameInput = document.getElementById("zonalName");
+  const autocompleteSuggestionsZonal = document.getElementById(
+    "autocompleteSuggestionsZonal"
+  );
+  const zonalNameError = document.getElementById("zonalNameError");
+  const divisionalNameInput = document.getElementById("divisionalName");
+  const autocompleteSuggestionsDivisional = document.getElementById(
+    "autocompleteSuggestionsDivisional"
+  );
+  const divisionalNameError = document.getElementById("divisionalNameError");
+  let selectedSchool = null;
+  let selectedProvincial = null;
+  let selectedZonal = null;
+  let selectedDivisional = null;
+
+  currentWorkingPlace.addEventListener("change", () => {
+    // Remove 'required' attribute from all inputs initially
+    const inputs = document.querySelectorAll(
+      '.workplaceDetails input[type="text"]'
+    );
+    inputs.forEach((input) => input.removeAttribute("required"));
+
+    // Hide all details sections initially
+    schoolDetails.classList.remove("show");
+    provincialDetails.classList.remove("show");
+    zonalDetails.classList.remove("show");
+    divisionalDetails.classList.remove("show");
+
+    // Show details section based on selected value and add 'required' attribute to relevant inputs
+    const value = currentWorkingPlace.value;
+    if (value === "school") {
+      schoolDetails.classList.add("show");
+      document
+        .getElementById("schoolName")
+        .setAttribute("required", "required");
+      document
+        .getElementById("principleName")
+        .setAttribute("required", "required");
+      document
+        .getElementById("principleContact")
+        .setAttribute("required", "required");
+    } else if (value === "provincialOffice") {
+      provincialDetails.classList.add("show");
+      document
+        .getElementById("provincialName")
+        .setAttribute("required", "required");
+      document
+        .getElementById("headOfInstituteNameProvincial")
+        .setAttribute("required", "required");
+      document
+        .getElementById("headOfInstituteContactProvincial")
+        .setAttribute("required", "required");
+    } else if (value === "zonalOffice") {
+      zonalDetails.classList.add("show");
+      document.getElementById("zonalName").setAttribute("required", "required");
+      document
+        .getElementById("headOfInstituteNameZonal")
+        .setAttribute("required", "required");
+      document
+        .getElementById("headOfInstituteContactZonal")
+        .setAttribute("required", "required");
+    } else if (value === "divisionalOffice") {
+      divisionalDetails.classList.add("show");
+      document
+        .getElementById("divisionalName")
+        .setAttribute("required", "required");
+      document
+        .getElementById("headOfInstituteNameDivisional")
+        .setAttribute("required", "required");
+      document
+        .getElementById("headOfInstituteContactDivisional")
+        .setAttribute("required", "required");
+    }
+  });
+
+  const autocompleteHandler = (
+    input,
+    suggestionsContainer,
+    errorContainer,
+    type
+  ) => {
+    input.addEventListener("input", () => {
+      const query = input.value;
+      if (query.length > 0) {
+        fetch("autocomplete.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ query: query, type: type }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            suggestionsContainer.innerHTML = "";
+            data.forEach((item) => {
+              const div = document.createElement("div");
+              div.classList.add("autocomplete-suggestion");
+              div.textContent = `${item.cencode || ""} ${item.institutionname}`;
+              div.addEventListener("click", () => {
+                input.value = item.institutionname;
+                if (type === "school") selectedSchool = item;
+                if (type === "provincial") selectedProvincial = item;
+                if (type === "zonal") selectedZonal = item;
+                if (type === "divisional") selectedDivisional = item;
+                suggestionsContainer.innerHTML = "";
+              });
+              suggestionsContainer.appendChild(div);
+            });
+            suggestionsContainer.style.display = "block";
+          });
+      } else {
+        suggestionsContainer.innerHTML = "";
+        suggestionsContainer.style.display = "none";
+      }
+    });
+
+    input.addEventListener("blur", () => {
+      setTimeout(() => {
+        if (
+          (type === "school" &&
+            (!selectedSchool ||
+              input.value !== selectedSchool.institutionname)) ||
+          (type === "provincial" &&
+            (!selectedProvincial ||
+              input.value !== selectedProvincial.institutionname)) ||
+          (type === "zonal" &&
+            (!selectedZonal ||
+              input.value !== selectedZonal.institutionname)) ||
+          (type === "divisional" &&
+            (!selectedDivisional ||
+              input.value !== selectedDivisional.institutionname))
+        ) {
+          errorContainer.textContent =
+            "Please select a valid option from the suggestions.";
+          errorContainer.style.display = "block";
+          if (type === "school") selectedSchoolCencode.value = "";
+        } else {
+          errorContainer.textContent = "";
+          errorContainer.style.display = "none";
+        }
+        suggestionsContainer.style.display = "none";
+      }, 200);
+    });
+  };
+
+  autocompleteHandler(
+    schoolNameInput,
+    autocompleteSuggestions,
+    schoolNameError,
+    "school"
+  );
+  autocompleteHandler(
+    provincialNameInput,
+    autocompleteSuggestionsProvincial,
+    provincialNameError,
+    "provincial"
+  );
+  autocompleteHandler(
+    zonalNameInput,
+    autocompleteSuggestionsZonal,
+    zonalNameError,
+    "zonal"
+  );
+  autocompleteHandler(
+    divisionalNameInput,
+    autocompleteSuggestionsDivisional,
+    divisionalNameError,
+    "divisional"
+  );
+
+  document.getElementById("detailsForm").addEventListener("submit", (event) => {
+    if (currentWorkingPlace.value === "school" && !selectedSchool) {
+      event.preventDefault();
+      schoolNameError.textContent =
+        "Please select a valid school from the suggestions.";
+      schoolNameError.style.display = "block";
+    } else if (
+      currentWorkingPlace.value === "provincialOffice" &&
+      !selectedProvincial
+    ) {
+      event.preventDefault();
+      provincialNameError.textContent =
+        "Please select a valid institute from the suggestions.";
+      provincialNameError.style.display = "block";
+    } else if (currentWorkingPlace.value === "zonalOffice" && !selectedZonal) {
+      event.preventDefault();
+      zonalNameError.textContent =
+        "Please select a valid institute from the suggestions.";
+      zonalNameError.style.display = "block";
+    } else if (
+      currentWorkingPlace.value === "divisionalOffice" &&
+      !selectedDivisional
+    ) {
+      event.preventDefault();
+      divisionalNameError.textContent =
+        "Please select a valid institute from the suggestions.";
+      divisionalNameError.style.display = "block";
+    }
+  });
+
+  /*
+  ======================
+  OTP Verification area
+  ======================
+  */
+  const requestOtpButton = document.getElementById("sendOtp");
   const verifyOtpButton = document.getElementById("verifyOtp");
   const otpSection = document.getElementById("otpSection");
   const otpMessage = document.getElementById("otpMessage");
@@ -21,7 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (data.success) {
               otpMessage.textContent = "OTP sent to your email.";
               otpMessage.className = "message success";
-              otpSection.style.display = "block";
+              otpSection.style.display = "block"; // Display the OTP section
               otpMessage.style.display = "block";
               canRequestOtp = false;
               setTimeout(() => (canRequestOtp = true), 60000); // 1 minute timeout
@@ -29,18 +257,21 @@ document.addEventListener("DOMContentLoaded", () => {
               otpMessage.textContent = "Error sending OTP: " + data.message;
               otpMessage.className = "message error";
               otpMessage.style.display = "block";
+              otpSection.style.display = "none"; // Ensure OTP section is hidden on error
             }
           });
       } else {
         otpMessage.textContent = "Please enter a valid email address.";
         otpMessage.className = "message error";
         otpMessage.style.display = "block";
+        otpSection.style.display = "none"; // Ensure OTP section is hidden on invalid email
       }
     } else {
       otpMessage.textContent =
         "You must wait 1 minute before requesting another OTP.";
       otpMessage.className = "message error";
       otpMessage.style.display = "block";
+      otpSection.style.display = "none"; // Ensure OTP section is hidden if waiting period
     }
   });
 
@@ -69,13 +300,21 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
+  /*
+  ======================
+   Form Validation Area
+  ======================
+  */
+
   const detailsForm = document.getElementById("detailsForm");
-  const currentWorkplace = document.getElementById("currentWorkplace");
-  const schoolDetails = document.getElementById("schoolDetails");
-  const officeDetails = document.getElementById("officeDetails");
+  // const currentWorkingPlace = document.getElementById("currentWorkingPlace");
+  // const schoolDetails = document.getElementById("schoolDetails");
+  // const provincialDetails = document.getElementById("provincialDetails");
+  // const zonalDetails = document.getElementById("zonalDetails");
+  // const divisionalDetails = document.getElementById("divisionalDetails");
 
   const fullName = document.getElementById("fullName");
-  const initialsName = document.getElementById("initialsName");
+  const nameWithInitials = document.getElementById("nameWithInitials");
   const nic = document.getElementById("nic");
   const email = document.getElementById("email");
   const whatsappNumber = document.getElementById("whatsappNumber");
@@ -83,13 +322,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const principleName = document.getElementById("principleName");
   const principleContact = document.getElementById("principleContact");
-  const instituteName = document.getElementById("instituteName");
-  const headOfInstitute = document.getElementById("headOfInstitute");
-  const headContact = document.getElementById("headContact");
+  const provincialName = document.getElementById("provincialName");
+  const zonalName = document.getElementById("zonalName");
+  const divisionalName = document.getElementById("divisionalName");
+  const headOfInstituteName = document.getElementById("headOfInstituteName");
+  const headOfInstituteContact = document.getElementById(
+    "headOfInstituteContact"
+  );
 
   const errorMessages = {
     fullName: "Full Name can only contain letters, spaces, and dots.",
-    initialsName:
+    nameWithInitials:
       "Name with Initials can only contain letters, spaces, and dots.",
     nic: "NIC must be 10 digits ending with 'v' or 'V', or 12 digits of only numbers.",
     email: "Invalid email address.",
@@ -97,9 +340,9 @@ document.addEventListener("DOMContentLoaded", () => {
     mobileNumber: "Mobile Number must be 10 digits starting with 0.",
     principleName: "Principal Name can only contain letters, spaces, and dots.",
     principleContact: "Principal Contact No must be 10 digits starting with 0.",
-    headOfInstitute:
+    headOfInstituteName:
       "Head of Institute Name can only contain letters, spaces, and dots.",
-    headContact:
+    headOfInstituteContact:
       "Head of Institute Contact No must be 10 digits starting with 0.",
   };
 
@@ -127,38 +370,70 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   validateInput(fullName, /^[A-Za-z\s.]+$/, errorMessages.fullName);
-  validateInput(initialsName, /^[A-Za-z\s.]+$/, errorMessages.initialsName);
+  validateInput(
+    nameWithInitials,
+    /^[A-Za-z\s.]+$/,
+    errorMessages.nameWithInitials
+  );
   validateInput(nic, /^(\d{9}[vV]|\d{12})$/, errorMessages.nic);
   validateInput(email, /^[^\s@]+@[^\s@]+\.[^\s@]+$/, errorMessages.email);
   validateInput(whatsappNumber, /^0\d{9}$/, errorMessages.whatsappNumber);
   validateInput(mobileNumber, /^0\d{9}$/, errorMessages.mobileNumber);
   validateInput(principleName, /^[A-Za-z\s.]+$/, errorMessages.principleName);
   validateInput(principleContact, /^0\d{9}$/, errorMessages.principleContact);
-  validateInput(instituteName, /^[A-Za-z\s.]+$/, errorMessages.headOfInstitute);
   validateInput(
-    headOfInstitute,
+    provincialName,
     /^[A-Za-z\s.]+$/,
-    errorMessages.headOfInstitute
+    errorMessages.headOfInstituteName
   );
-  validateInput(headContact, /^0\d{9}$/, errorMessages.headContact);
+  validateInput(zonalName, /^[A-Za-z\s.]+$/, errorMessages.headOfInstituteName);
+  validateInput(
+    divisionalName,
+    /^[A-Za-z\s.]+$/,
+    errorMessages.headOfInstituteName
+  );
+  validateInput(
+    headOfInstituteName,
+    /^[A-Za-z\s.]+$/,
+    errorMessages.headOfInstituteName
+  );
+  validateInput(
+    headOfInstituteContact,
+    /^0\d{9}$/,
+    errorMessages.headOfInstituteContact
+  );
 
-  currentWorkplace.addEventListener("change", () => {
-    const selectedValue = currentWorkplace.value;
+  function toggleDetails() {
+    const selectedValue = currentWorkingPlace.value;
     if (selectedValue === "school") {
       schoolDetails.classList.add("show");
-      officeDetails.classList.remove("show");
-    } else if (
-      selectedValue === "provincialOffice" ||
-      selectedValue === "zonalOffice" ||
-      selectedValue === "divisionalOffice"
-    ) {
+      provincialDetails.classList.remove("show");
+      zonalDetails.classList.remove("show");
+      divisionalDetails.classList.remove("show");
+    } else if (selectedValue === "provincialOffice") {
       schoolDetails.classList.remove("show");
-      officeDetails.classList.add("show");
+      provincialDetails.classList.add("show");
+      zonalDetails.classList.remove("show");
+      divisionalDetails.classList.remove("show");
+    } else if (selectedValue === "zonalOffice") {
+      schoolDetails.classList.remove("show");
+      provincialDetails.classList.remove("show");
+      zonalDetails.classList.add("show");
+      divisionalDetails.classList.remove("show");
+    } else if (selectedValue === "divisionalOffice") {
+      schoolDetails.classList.remove("show");
+      provincialDetails.classList.remove("show");
+      zonalDetails.classList.remove("show");
+      divisionalDetails.classList.add("show");
     } else {
       schoolDetails.classList.remove("show");
-      officeDetails.classList.remove("show");
+      provincialDetails.classList.remove("show");
+      zonalDetails.classList.remove("show");
+      divisionalDetails.classList.remove("show");
     }
-  });
+  }
+
+  currentWorkingPlace.addEventListener("change", toggleDetails);
 
   detailsForm.addEventListener("submit", (event) => {
     let isValid = true;
@@ -170,8 +445,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Validate Name with Initials
-    if (!/^[A-Za-z\s.]+$/.test(initialsName.value)) {
-      showError(initialsName, errorMessages.initialsName);
+    if (!/^[A-Za-z\s.]+$/.test(nameWithInitials.value)) {
+      showError(nameWithInitials, errorMessages.nameWithInitials);
       isValid = false;
     }
 
@@ -201,7 +476,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Validate Principal Name if School is selected
     if (
-      currentWorkplace.value === "school" &&
+      currentWorkingPlace.value === "school" &&
       !/^[A-Za-z\s.]+$/.test(principleName.value)
     ) {
       showError(principleName, errorMessages.principleName);
@@ -210,7 +485,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Validate Principal Contact No if School is selected
     if (
-      currentWorkplace.value === "school" &&
+      currentWorkingPlace.value === "school" &&
       !/^0\d{9}$/.test(principleContact.value)
     ) {
       showError(principleContact, errorMessages.principleContact);
@@ -219,23 +494,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Validate Head of Institute Name if Office is selected
     if (
-      (currentWorkplace.value === "provincialOffice" ||
-        currentWorkplace.value === "zonalOffice" ||
-        currentWorkplace.value === "divisionalOffice") &&
-      !/^[A-Za-z\s.]+$/.test(headOfInstitute.value)
+      (currentWorkingPlace.value === "provincialOffice" ||
+        currentWorkingPlace.value === "zonalOffice" ||
+        currentWorkingPlace.value === "divisionalOffice") &&
+      !/^[A-Za-z\s.]+$/.test(headOfInstituteName.value)
     ) {
-      showError(headOfInstitute, errorMessages.headOfInstitute);
+      showError(headOfInstituteName, errorMessages.headOfInstituteName);
       isValid = false;
     }
 
     // Validate Head of Institute Contact No if Office is selected
     if (
-      (currentWorkplace.value === "provincialOffice" ||
-        currentWorkplace.value === "zonalOffice" ||
-        currentWorkplace.value === "divisionalOffice") &&
-      !/^0\d{9}$/.test(headContact.value)
+      (currentWorkingPlace.value === "provincialOffice" ||
+        currentWorkingPlace.value === "zonalOffice" ||
+        currentWorkingPlace.value === "divisionalOffice") &&
+      !/^0\d{9}$/.test(headOfInstituteContact.value)
     ) {
-      showError(headContact, errorMessages.headContact);
+      showError(headOfInstituteContact, errorMessages.headOfInstituteContact);
       isValid = false;
     }
 
@@ -243,4 +518,6 @@ document.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
     }
   });
+
+  toggleDetails(); // Initialize on page load
 });

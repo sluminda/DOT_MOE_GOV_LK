@@ -9,82 +9,139 @@
 </head>
 
 <body>
-    <form id="detailsForm">
-        <h2>Personal Details</h2>
-        <label for="fullName">Full Name</label>
-        <input type="text" id="fullName" name="fullName" required>
-        <div class="error" id="fullNameError"></div>
+    <form id="detailsForm" action="submit_form.php" method="POST">
 
-        <label for="initialsName">Name with Initials</label>
-        <input type="text" id="initialsName" name="initialsName" required>
-        <div class="error" id="initialsNameError"></div>
+        <!-- Personal Details -->
+        <fieldset>
+            <legend>
+                <h2>Personal Details</h2>
+            </legend>
+            <div>
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" required>
+                <span id="fullNameError" class="error"></span>
+            </div>
+            <div>
+                <label for="nameWithInitials">Name with Initials:</label>
+                <input type="text" id="nameWithInitials" name="nameWithInitials" required>
+                <span id="nameWithInitialsError" class="error"></span>
+            </div>
+            <div>
+                <label for="nic">NIC:</label>
+                <input type="text" id="nic" name="nic" required>
+                <span id="nicError" class="error"></span>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <span id="emailError" class="error"></span>
+                <button type="button" id="sendOtp">Send OTP</button>
+                <div id="otpSection" style="display:none;">
+                    <label for="otp">Enter OTP:</label>
+                    <span id="otpMessage" class="message"></span>
+                    <input type="text" id="otp" name="otp">
+                    <button type="button" id="verifyOtp">Verify OTP</button>
 
-        <label for="nic">NIC</label>
-        <input type="text" id="nic" name="nic" required>
-        <div class="error" id="nicError"></div>
+                </div>
+            </div>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
-        <div class="error" id="emailError"></div>
-        <button type="button" id="requestOtp">Send OTP</button>
+            <div>
+                <label for="whatsappNumber">WhatsApp Number:</label>
+                <input type="text" id="whatsappNumber" name="whatsappNumber" required>
+                <span id="whatsappNumberError" class="error"></span>
+            </div>
+            <div>
+                <label for="mobileNumber">Mobile Number:</label>
+                <input type="text" id="mobileNumber" name="mobileNumber" required>
+                <span id="mobileNumberError" class="error"></span>
+            </div>
+        </fieldset>
 
-        <div id="otpSection" style="display: none;">
-            <label for="otp">OTP</label>
-            <input type="text" id="otp" name="otp" required>
-            <div class="message" id="otpMessage"></div>
-            <button type="button" id="verifyOtp">Verify OTP</button>
-        </div>
+        <!-- Workplace Details -->
+        <fieldset>
+            <legend>
+                <h2>Workplace Details</h2>
+            </legend>
+            <div>
+                <label for="currentWorkingPlace">Current Working Place:</label>
+                <select id="currentWorkingPlace" name="currentWorkingPlace" required>
+                    <option value="">Select</option>
+                    <option value="school">School</option>
+                    <option value="provincialOffice">Provincial Office</option>
+                    <option value="zonalOffice">Zonal Office</option>
+                    <option value="divisionalOffice">Divisional Office</option>
+                </select>
+            </div>
 
-        <label for="whatsappNumber">WhatsApp Number</label>
-        <input type="text" id="whatsappNumber" name="whatsappNumber" required>
-        <div class="error" id="whatsappNumberError"></div>
+            <!-- School Details -->
+            <div id="schoolDetails" class="workplaceDetails">
+                <label for="schoolName">School Name:</label>
+                <span id="schoolNameError" class="error"></span>
+                <input type="text" id="schoolName" name="schoolName">
+                <input type="hidden" id="selectedSchoolCencode" name="selectedSchoolCencode">
+                <div id="autocompleteSuggestions" class="autocomplete-suggestions"></div>
 
-        <label for="mobileNumber">Mobile Number</label>
-        <input type="text" id="mobileNumber" name="mobileNumber" required>
-        <div class="error" id="mobileNumberError"></div>
+                <label for="principleName">Principle Name:</label>
+                <input type="text" id="principleName" name="principleName">
+                <span id="principleNameError" class="error"></span>
 
-        <h2>Workplace Details</h2>
-        <label for="currentWorkingPlace">Current Working Place</label>
-        <select id="currentWorkingPlace" name="currentWorkingPlace" required>
-            <option value="">Select</option>
-            <option value="school">School</option>
-            <option value="provincialOffice">Provincial Office</option>
-            <option value="zonalOffice">Zonal Office</option>
-            <option value="divisionalOffice">Divisional Office</option>
-        </select>
+                <label for="principleContact">Principle Contact Number:</label>
+                <input type="text" id="principleContact" name="principleContact">
+                <span id="principleContactError" class="error"></span>
+            </div>
 
-        <div id="schoolDetails" style="display: none;">
-            <label for="schoolName">School Name</label>
-            <input type="text" id="schoolName" name="schoolName" autocomplete="off">
-            <input type="hidden" id="selectedSchoolCencode" name="selectedSchoolCencode">
-            <div id="autocompleteSuggestions" class="autocomplete-suggestions"></div>
-            <div class="error" id="schoolNameError"></div>
+            <!-- Provincial Office Details -->
+            <div id="provincialDetails" class="workplaceDetails">
+                <label for="provincialName">Institute Name:</label>
+                <span id="provincialNameError" class="error"></span>
+                <input type="text" id="provincialName" name="provincialName">
+                <div id="autocompleteSuggestionsProvincial" class="autocomplete-suggestions"></div>
 
-            <label for="principleName">Principle Name</label>
-            <input type="text" id="principleName" name="principleName" required>
-            <div class="error" id="principleNameError"></div>
+                <label for="headOfInstituteName">Head of Institute Name:</label>
+                <input type="text" id="headOfInstituteName" name="headOfInstituteName">
+                <span id="headOfInstituteNameError" class="error"></span>
 
-            <label for="principleContact">Principle Contact No</label>
-            <input type="text" id="principleContact" name="principleContact" required>
-            <div class="error" id="principleContactError"></div>
-        </div>
+                <label for="headOfInstituteContact">Head of Institute Contact Number:</label>
+                <input type="text" id="headOfInstituteContact" name="headOfInstituteContact">
+                <span id="headOfInstituteContactError" class="error"></span>
+            </div>
 
-        <div id="officeDetails" style="display: none;">
-            <label for="instituteName">Institute Name</label>
-            <input type="text" id="instituteName" name="instituteName" autocomplete="off">
-            <div id="autocompleteSuggestionsOffice" class="autocomplete-suggestions"></div>
-            <div class="error" id="instituteNameError"></div>
+            <!-- Zonal Office Details -->
+            <div id="zonalDetails" class="workplaceDetails">
+                <label for="zonalName">Institute Name:</label>
+                <span id="zonalNameError" class="error"></span>
+                <input type="text" id="zonalName" name="zonalName">
+                <div id="autocompleteSuggestionsZonal" class="autocomplete-suggestions"></div>
 
-            <label for="headName">Head of Institute Name</label>
-            <input type="text" id="headName" name="headName" required>
-            <div class="error" id="headNameError"></div>
+                <label for="headOfInstituteName">Head of Institute Name:</label>
+                <input type="text" id="headOfInstituteName" name="headOfInstituteName">
+                <span id="headOfInstituteNameError" class="error"></span>
 
-            <label for="headContact">Head of Institute Contact No</label>
-            <input type="text" id="headContact" name="headContact" required>
-            <div class="error" id="headContactError"></div>
-        </div>
+                <label for="headOfInstituteContact">Head of Institute Contact Number:</label>
+                <input type="text" id="headOfInstituteContact" name="headOfInstituteContact">
+                <span id="headOfInstituteContactError" class="error"></span>
+            </div>
 
-        <button type="submit">Submit</button>
+
+            <!-- Divisional Office Details -->
+            <div id="divisionalDetails" class="workplaceDetails">
+                <label for="divisionalName">Institute Name:</label>
+                <span id="divisionalNameError" class="error"></span>
+                <input type="text" id="divisionalName" name="divisionalName">
+                <div id="autocompleteSuggestionsDivisional" class="autocomplete-suggestions"></div>
+
+
+                <label for="headOfInstituteName">Head of Institute Name:</label>
+                <input type="text" id="headOfInstituteName" name="headOfInstituteName">
+                <span id="headOfInstituteNameError" class="error"></span>
+
+                <label for="headOfInstituteContact">Head of Institute Contact Number:</label>
+                <input type="text" id="headOfInstituteContact" name="headOfInstituteContact">
+                <span id="headOfInstituteContactError" class="error"></span>
+            </div>
+
+            <button type="submit">Submit</button>
+        </fieldset>
     </form>
 
     <script src="script.js"></script>
