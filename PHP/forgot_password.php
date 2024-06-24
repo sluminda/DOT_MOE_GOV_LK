@@ -1,6 +1,6 @@
 <?php
-require 'db_connect.php';
-require '../vendor/autoload.php'; // Ensure this path is correct and the file exists
+require 'db_config.php';
+require './vendor/autoload.php'; // Ensure this path is correct and the file exists
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -28,17 +28,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             try {
                 //Server settings
-                $mail->SMTPDebug = 0;                                      // Disable verbose debug output
+                // $mail->SMTPDebug = 0;                                      // Disable verbose debug output
                 $mail->isSMTP();                                           // Send using SMTP
                 $mail->Host       = 'smtp.gmail.com';                      // Set the SMTP server to send through
                 $mail->SMTPAuth   = true;                                  // Enable SMTP authentication
-                $mail->Username   = 'datamanagementbranch@gmail.com';                // SMTP username
-                $mail->Password   = 'your-email-password';                 // SMTP password
+                $mail->Username   = 'dotmoegov@gmail.com';                // SMTP username
+                $mail->Password   = 'zjxkoytcmtkrocjq';                 // SMTP password
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;        // Enable TLS encryption
                 $mail->Port       = 587;                                   // TCP port to connect to
 
                 //Recipients
-                $mail->setFrom('sluminda@gmail.com', 'Mailer');
+                $mail->setFrom('dotmoegov@gmail.com', 'Mailer');
                 $mail->addAddress($email);                                 // Add a recipient
 
                 // Content
@@ -60,24 +60,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<!-- HTML form for forgot password -->
-<main class="DF PR FD-C">
-    <div class="login-background_container DF PR center">
-        <form class="login-form PR center" action="forgot_password.php" method="post">
-            <div class="login_row DG PR center">
-                <label for="email">Email</label>
-                <input id="email" name="email" type="email" required>
-            </div>
-            <div class="login_row DG PR center">
-                <!-- reCAPTCHA widget -->
-                <div class="g-recaptcha" data-sitekey="your-site-key"></div>
-            </div>
-            <div class="login_row DG PR">
-                <button type="submit">Send Reset Link</button>
-            </div>
-        </form>
-    </div>
-</main>
+<!DOCTYPE html>
+<html lang="en">
 
-<!-- Include reCAPTCHA API script -->
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../CSS/Body/reset_password.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <form action="forgot_password.php" method="post">
+                <h2>Forgot Password</h2>
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input id="email" name="email" type="email" required>
+                </div>
+                <div class="input-group">
+                    <button type="submit">Send Reset Link</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</body>
+
+</html>

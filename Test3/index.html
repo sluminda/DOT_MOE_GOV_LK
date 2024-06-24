@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Workplace Details Admin Panel</h1>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <input type="text" id="name" class="form-control" placeholder="Name">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="nic" class="form-control" placeholder="NIC">
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input type="date" id="submittedAt_start" class="form-control">
+                            <span class="input-group-text">to</span>
+                            <input type="date" id="submittedAt_end" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="currentWorkingPlace" class="form-control"
+                            placeholder="Current Working Place">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="selectedInstituteName" class="form-control"
+                            placeholder="Selected Institute Name">
+                    </div>
+                    <div class="col-md-4">
+                        <button id="filterBtn" class="btn btn-primary w-100">Filter</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button id="exportBtn" class="btn btn-secondary w-100">Export CSV</button>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="tableSelect" class="form-select">
+                            <option value="current">Current Workplace Details</option>
+                            <option value="history">Workplace Details History</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row g-2">
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="id" checked>
+                            ID</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="fullName" checked>
+                            Full Name</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="nameWithInitials"
+                                checked> Name With Initials</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="nic" checked>
+                            NIC</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="email" checked>
+                            Email</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="whatsappNumber"
+                                checked> WhatsApp Number</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="mobileNumber"
+                                checked> Mobile Number</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="headOfInstituteName"
+                                checked> Head Of Institute Name</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle"
+                                value="headOfInstituteContactNo" checked> Head Of Institute Contact No</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="currentWorkingPlace"
+                                checked> Current Working Place</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle"
+                                value="selectedInstituteName" checked> Selected Institute Name</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="submittedAt" checked>
+                            Submitted At</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table id="dataTable" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th class="id">ID</th>
+                    <th class="fullName">Full Name</th>
+                    <th class="nameWithInitials">Name With Initials</th>
+                    <th class="nic">NIC</th>
+                    <th class="email">Email</th>
+                    <th class="whatsappNumber">WhatsApp Number</th>
+                    <th class="mobileNumber">Mobile Number</th>
+                    <th class="headOfInstituteName">Head Of Institute Name</th>
+                    <th class="headOfInstituteContactNo">Head Of Institute Contact No</th>
+                    <th class="currentWorkingPlace">Current Working Place</th>
+                    <th class="selectedInstituteName">Selected Institute Name</th>
+                    <th class="submittedAt">Submitted At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be inserted here -->
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button id="prevPage" class="btn btn-primary">Previous</button>
+            <span id="currentPage">1</span>
+            <button id="nextPage" class="btn btn-primary">Next</button>
+        </div>
+    </div>
+    <script src="../JS/jquery-3.7.1.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+
+</html>
