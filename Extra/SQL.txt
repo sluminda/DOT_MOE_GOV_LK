@@ -161,6 +161,7 @@ CREATE TABLE workplace_details (
     headOfInstituteName VARCHAR(250) NOT NULL,
     headOfInstituteContactNo VARCHAR(10) NOT NULL,
     currentWorkingPlace VARCHAR(50) NOT NULL,
+    selectedInstituteName VARCHAR(200) NOT NULL,
     submittedAt DATETIME NOT NULL,
     UNIQUE (nic, email)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -177,6 +178,7 @@ CREATE TABLE workplace_details_history (
     headOfInstituteName VARCHAR(250) NOT NULL,
     headOfInstituteContactNo VARCHAR(10) NOT NULL,
     currentWorkingPlace VARCHAR(50) NOT NULL,
+    selectedInstituteName VARCHAR(200) NOT NULL,
     submittedAt DATETIME NOT NULL
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

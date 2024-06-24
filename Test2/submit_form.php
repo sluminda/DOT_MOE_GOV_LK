@@ -32,6 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $whatsappNumber = sanitizeInput($_POST["whatsappNumber"]);
     $mobileNumber = sanitizeInput($_POST["mobileNumber"]);
     $currentWorkingPlace = sanitizeInput($_POST["currentWorkingPlace"]);
+    $currentWorkingPlace = sanitizeInput($_POST["currentWorkingPlace"]);
     $otpVerified = sanitizeInput($_POST["otpVerified"]);
 
     if ($otpVerified !== "true") {
@@ -63,15 +64,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($currentWorkingPlace === "school") {
+        $selectedInstituteName = sanitizeInput($_POST["selectedSchoolCencode"]);
         $headOfInstituteName = sanitizeInput($_POST["principleName"]);
         $headOfInstituteContactNo = sanitizeInput($_POST["principleContact"]);
     } elseif ($currentWorkingPlace === "provincialOffice") {
+        $provincialName = sanitizeInput($_POST["provincialName"]);
         $headOfInstituteName = sanitizeInput($_POST["provincialHeadOfInstituteName"]);
         $headOfInstituteContactNo = sanitizeInput($_POST["provincialHeadOfInstituteContact"]);
     } elseif ($currentWorkingPlace === "zonalOffice") {
+        $selectedInstituteName = sanitizeInput($_POST["zonalName"]);
         $headOfInstituteName = sanitizeInput($_POST["zonalHeadOfInstituteName"]);
         $headOfInstituteContactNo = sanitizeInput($_POST["zonalHeadOfInstituteContact"]);
     } elseif ($currentWorkingPlace === "divisionalOffice") {
+        $selectedInstituteName = sanitizeInput($_POST["divisionalName"]);
         $headOfInstituteName = sanitizeInput($_POST["divisionalHeadOfInstituteName"]);
         $headOfInstituteContactNo = sanitizeInput($_POST["divisionalHeadOfInstituteContact"]);
     }
@@ -86,8 +91,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($errors)) {
         // Insert into history table
-        $stmt = $conn->prepare("INSERT INTO workplace_details_history (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $submittedAt);
+        $stmt = $conn->prepare("INSERT INTO workplace_details_history (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteName,  submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+        $stmt->bind_param("sssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $selectedInstituteName, $submittedAt);
         $stmt->execute();
 
         // Check if NIC and email already exist
@@ -98,13 +103,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result->num_rows > 0) {
             // Update existing record
-            $stmt = $conn->prepare("UPDATE workplace_details SET fullName=?, nameWithInitials=?, whatsappNumber=?, mobileNumber=?, headOfInstituteName=?, headOfInstituteContactNo=?, currentWorkingPlace=?, submittedAt=? WHERE nic=? AND email=?");
-            $stmt->bind_param("ssssssssss", $fullName, $nameWithInitials, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $submittedAt, $nic, $email);
+            $stmt = $conn->prepare("UPDATE workplace_details SET fullName=?, nameWithInitials=?, whatsappNumber=?, mobileNumber=?, headOfInstituteName=?, headOfInstituteContactNo=?, currentWorkingPlace=?,  selectedInstituteName=?, submittedAt=? WHERE nic=? AND email=?");
+            $stmt->bind_param("sssssssssss", $fullName, $nameWithInitials, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace,  $selectedInstituteName, $submittedAt, $nic, $email);
             $stmt->execute();
         } else {
             // Insert new record
-            $stmt = $conn->prepare("INSERT INTO workplace_details (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $submittedAt);
+            $stmt = $conn->prepare("INSERT INTO workplace_details (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteName, submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $submittedAt);
             $stmt->execute();
         }
 
