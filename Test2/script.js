@@ -43,13 +43,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedDivisional = null;
 
   currentWorkingPlace.addEventListener("change", () => {
-    // Remove 'required' attribute from all inputs initially
     const inputs = document.querySelectorAll(
       '.workplaceDetails input[type="text"]'
     );
     inputs.forEach((input) => input.removeAttribute("required"));
 
-    // Hide all details sections initially
     schoolDetails.classList.remove("show");
     provincialDetails.classList.remove("show");
     zonalDetails.classList.remove("show");
@@ -155,6 +153,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  const highlightMatch = (text, query) => {
+    const index = text.toLowerCase().indexOf(query.toLowerCase());
+    if (index >= 0) {
+      return (
+        text.substring(0, index) +
+        '<span class="highlight">' +
+        text.substring(index, index + query.length) +
+        "</span>" +
+        text.substring(index + query.length)
+      );
+    }
+    return text;
+  };
+
   const autocompleteHandler = (
     input,
     suggestionsContainer,
@@ -177,7 +189,10 @@ document.addEventListener("DOMContentLoaded", () => {
             data.forEach((item) => {
               const div = document.createElement("div");
               div.classList.add("autocomplete-suggestion");
-              div.textContent = `${item.cencode || ""} ${item.institutionname}`;
+              div.innerHTML = highlightMatch(
+                `${item.cencode || ""} ${item.institutionname}`,
+                query
+              );
               div.addEventListener("click", () => {
                 input.value = item.institutionname;
                 if (type === "school") selectedSchool = item;
@@ -249,36 +264,6 @@ document.addEventListener("DOMContentLoaded", () => {
     divisionalNameError,
     "divisional"
   );
-
-  document.getElementById("detailsForm").addEventListener("submit", (event) => {
-    if (currentWorkingPlace.value === "school" && !selectedSchool) {
-      event.preventDefault();
-      schoolNameError.textContent =
-        "Please select a valid school from the suggestions.";
-      schoolNameError.style.display = "block";
-    } else if (
-      currentWorkingPlace.value === "provincialOffice" &&
-      !selectedProvincial
-    ) {
-      event.preventDefault();
-      provincialNameError.textContent =
-        "Please select a valid institute from the suggestions.";
-      provincialNameError.style.display = "block";
-    } else if (currentWorkingPlace.value === "zonalOffice" && !selectedZonal) {
-      event.preventDefault();
-      zonalNameError.textContent =
-        "Please select a valid institute from the suggestions.";
-      zonalNameError.style.display = "block";
-    } else if (
-      currentWorkingPlace.value === "divisionalOffice" &&
-      !selectedDivisional
-    ) {
-      event.preventDefault();
-      divisionalNameError.textContent =
-        "Please select a valid institute from the suggestions.";
-      divisionalNameError.style.display = "block";
-    }
-  });
 
   /*
   ======================
