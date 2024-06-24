@@ -3,7 +3,7 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "dot_moe_gov_lk";
-$port = 3308;
+$port = 3306;
 
 header('Content-Type: application/json');
 

@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <form id="detailsForm" action="submit_form.php" method="POST">
+    <form id="detailsForm" action="./submit_form.php" method="POST">
 
         <!-- Personal Details -->
         <fieldset>
@@ -36,13 +36,16 @@
                 <input type="email" id="email" name="email" required>
                 <span id="emailError" class="error"></span>
                 <button type="button" id="sendOtp">Send OTP</button>
-                <div id="otpSection" style="display:none;">
-                    <label for="otp">Enter OTP:</label>
-                    <span id="otpMessage" class="message"></span>
+
+
+                <!-- form fields go here, as in the original form HTML -->
+                <input type="hidden" id="otpVerified" name="otpVerified" value="false">
+                <div id="otpSection">
+                    <label for="otp">OTP:</label>
                     <input type="text" id="otp" name="otp">
                     <button type="button" id="verifyOtp">Verify OTP</button>
-
                 </div>
+                <div id="otpMessage" class="message" style="display:none;"></div>
             </div>
 
             <div>
@@ -81,11 +84,11 @@
                 <input type="hidden" id="selectedSchoolCencode" name="selectedSchoolCencode">
                 <div id="autocompleteSuggestions" class="autocomplete-suggestions"></div>
 
-                <label for="principleName">Principle Name:</label>
+                <label for="principleName">Principal Name:</label>
                 <input type="text" id="principleName" name="principleName">
                 <span id="principleNameError" class="error"></span>
 
-                <label for="principleContact">Principle Contact Number:</label>
+                <label for="principleContact">Principal Contact Number:</label>
                 <input type="text" id="principleContact" name="principleContact">
                 <span id="principleContactError" class="error"></span>
             </div>
@@ -97,13 +100,13 @@
                 <input type="text" id="provincialName" name="provincialName">
                 <div id="autocompleteSuggestionsProvincial" class="autocomplete-suggestions"></div>
 
-                <label for="headOfInstituteName">Head of Institute Name:</label>
-                <input type="text" id="headOfInstituteName" name="headOfInstituteName">
-                <span id="headOfInstituteNameError" class="error"></span>
+                <label for="provincialHeadOfInstituteName">Head of Institute Name:</label>
+                <input type="text" id="provincialHeadOfInstituteName" name="provincialHeadOfInstituteName">
+                <span id="provincialHeadOfInstituteNameError" class="error"></span>
 
-                <label for="headOfInstituteContact">Head of Institute Contact Number:</label>
-                <input type="text" id="headOfInstituteContact" name="headOfInstituteContact">
-                <span id="headOfInstituteContactError" class="error"></span>
+                <label for="provincialHeadOfInstituteContact">Head of Institute Contact Number:</label>
+                <input type="text" id="provincialHeadOfInstituteContact" name="provincialHeadOfInstituteContact">
+                <span id="provincialHeadOfInstituteContactError" class="error"></span>
             </div>
 
             <!-- Zonal Office Details -->
@@ -113,15 +116,14 @@
                 <input type="text" id="zonalName" name="zonalName">
                 <div id="autocompleteSuggestionsZonal" class="autocomplete-suggestions"></div>
 
-                <label for="headOfInstituteName">Head of Institute Name:</label>
-                <input type="text" id="headOfInstituteName" name="headOfInstituteName">
-                <span id="headOfInstituteNameError" class="error"></span>
+                <label for="zonalHeadOfInstituteName">Head of Institute Name:</label>
+                <input type="text" id="zonalHeadOfInstituteName" name="zonalHeadOfInstituteName">
+                <span id="zonalHeadOfInstituteNameError" class="error"></span>
 
-                <label for="headOfInstituteContact">Head of Institute Contact Number:</label>
-                <input type="text" id="headOfInstituteContact" name="headOfInstituteContact">
-                <span id="headOfInstituteContactError" class="error"></span>
+                <label for="zonalHeadOfInstituteContact">Head of Institute Contact Number:</label>
+                <input type="text" id="zonalHeadOfInstituteContact" name="zonalHeadOfInstituteContact">
+                <span id="zonalHeadOfInstituteContactError" class="error"></span>
             </div>
-
 
             <!-- Divisional Office Details -->
             <div id="divisionalDetails" class="workplaceDetails">
@@ -130,18 +132,18 @@
                 <input type="text" id="divisionalName" name="divisionalName">
                 <div id="autocompleteSuggestionsDivisional" class="autocomplete-suggestions"></div>
 
+                <label for="divisionalHeadOfInstituteName">Head of Institute Name:</label>
+                <input type="text" id="divisionalHeadOfInstituteName" name="divisionalHeadOfInstituteName">
+                <span id="divisionalHeadOfInstituteNameError" class="error"></span>
 
-                <label for="headOfInstituteName">Head of Institute Name:</label>
-                <input type="text" id="headOfInstituteName" name="headOfInstituteName">
-                <span id="headOfInstituteNameError" class="error"></span>
-
-                <label for="headOfInstituteContact">Head of Institute Contact Number:</label>
-                <input type="text" id="headOfInstituteContact" name="headOfInstituteContact">
-                <span id="headOfInstituteContactError" class="error"></span>
+                <label for="divisionalHeadOfInstituteContact">Head of Institute Contact Number:</label>
+                <input type="text" id="divisionalHeadOfInstituteContact" name="divisionalHeadOfInstituteContact">
+                <span id="divisionalHeadOfInstituteContactError" class="error"></span>
             </div>
 
             <button type="submit">Submit</button>
         </fieldset>
+
     </form>
 
     <script src="script.js"></script>

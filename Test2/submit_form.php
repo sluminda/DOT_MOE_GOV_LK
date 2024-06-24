@@ -1,232 +1,303 @@
 <?php
-// Database connection details
+session_start();
+date_default_timezone_set('Asia/Colombo');
+
+
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "dot_moe_gov_lk";
-$port = 3308; // Adjust port as necessary
+$port = 3306;
 
-// Function to sanitize input data
-function sanitize_input($data)
-{
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Validation function for fields
-function validateForm()
+function sanitizeInput($data)
 {
-    $errors = array();
-
-    // Validate fullName
-    if (empty($_POST['fullName'])) {
-        $errors['fullName'] = "Full Name is required";
-    } else {
-        $fullName = sanitize_input($_POST['fullName']);
-        // Additional validation if needed
-    }
-
-    // Validate nameWithInitials
-    if (empty($_POST['nameWithInitials'])) {
-        $errors['nameWithInitials'] = "Name with Initials is required";
-    } else {
-        $nameWithInitials = sanitize_input($_POST['nameWithInitials']);
-        // Additional validation if needed
-    }
-
-    // Validate nic
-    if (empty($_POST['nic'])) {
-        $errors['nic'] = "NIC is required";
-    } else {
-        $nic = sanitize_input($_POST['nic']);
-        // Additional validation if needed
-    }
-
-    // Validate email
-    if (empty($_POST['email'])) {
-        $errors['email'] = "Email is required";
-    } else {
-        $email = sanitize_input($_POST['email']);
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors['email'] = "Invalid email format";
-        }
-    }
-
-    // Validate whatsappNumber
-    if (empty($_POST['whatsappNumber'])) {
-        $errors['whatsappNumber'] = "WhatsApp Number is required";
-    } else {
-        $whatsappNumber = sanitize_input($_POST['whatsappNumber']);
-        // Additional validation if needed
-    }
-
-    // Validate mobileNumber
-    if (empty($_POST['mobileNumber'])) {
-        $errors['mobileNumber'] = "Mobile Number is required";
-    } else {
-        $mobileNumber = sanitize_input($_POST['mobileNumber']);
-        // Additional validation if needed
-    }
-
-    // Validate currentWorkingPlace
-    if (empty($_POST['currentWorkingPlace'])) {
-        $errors['currentWorkingPlace'] = "Current Working Place is required";
-    } else {
-        $currentWorkingPlace = sanitize_input($_POST['currentWorkingPlace']);
-        // Additional validation if needed
-    }
-
-    // Validate WorkPlaceName based on currentWorkingPlace
-    if ($currentWorkingPlace === "school") {
-        if (empty($_POST['schoolName'])) {
-            $errors['schoolName'] = "School Name is required";
-        } else {
-            $schoolName = sanitize_input($_POST['schoolName']);
-            // Additional validation if needed
-        }
-    } elseif ($currentWorkingPlace === "provincialOffice" || $currentWorkingPlace === "zonalOffice" || $currentWorkingPlace === "divisionalOffice") {
-        if (empty($_POST['WorkPlaceName'])) {
-            $errors['WorkPlaceName'] = "Institute Name is required";
-        } else {
-            $WorkPlaceName = sanitize_input($_POST['WorkPlaceName']);
-            // Additional validation if needed
-        }
-    }
-
-    // Validate headOfInstituteName
-    if (empty($_POST['headOfInstituteName'])) {
-        $errors['headOfInstituteName'] = "Head of Institute Name is required";
-    } else {
-        $headOfInstituteName = sanitize_input($_POST['headOfInstituteName']);
-        // Additional validation if needed
-    }
-
-    // Validate headOfInstituteContact
-    if (empty($_POST['headOfInstituteContact'])) {
-        $errors['headOfInstituteContact'] = "Head of Institute Contact Number is required";
-    } else {
-        $headOfInstituteContact = sanitize_input($_POST['headOfInstituteContact']);
-        // Additional validation if needed
-    }
-
-    return $errors;
+    return htmlspecialchars(stripslashes(trim($data)));
 }
 
-// Check if form is submitted
+$errors = [];
+$fullName = $nameWithInitials = $nic = $email = $whatsappNumber = $mobileNumber = $headOfInstituteName = $headOfInstituteContactNo = $currentWorkingPlace = "";
+$submittedAt = date("Y-m-d H:i:s");
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $errors = validateForm();
+    $fullName = sanitizeInput($_POST["fullName"]);
+    $nameWithInitials = sanitizeInput($_POST["nameWithInitials"]);
+    $nic = sanitizeInput($_POST["nic"]);
+    $email = sanitizeInput($_POST["email"]);
+    $whatsappNumber = sanitizeInput($_POST["whatsappNumber"]);
+    $mobileNumber = sanitizeInput($_POST["mobileNumber"]);
+    $currentWorkingPlace = sanitizeInput($_POST["currentWorkingPlace"]);
+    $otpVerified = sanitizeInput($_POST["otpVerified"]);
 
-    if (count($errors) === 0) {
-        try {
-            // Create connection using PDO
-            $dsn = "mysql:host=$servername;port=$port;dbname=$dbname;charset=utf8mb4";
-            $conn = new PDO($dsn, $username, $password);
-            // Set the PDO error mode to exception
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    if ($otpVerified !== "true") {
+        $errors[] = "OTP not verified.";
+    }
 
-            // Begin transaction for atomicity
-            $conn->beginTransaction();
+    if (empty($fullName) || !preg_match("/^[A-Za-z\s.]+$/", $fullName)) {
+        $errors[] = "Full Name is required and can only contain letters, spaces, and dots.";
+    }
 
-            // Check if a record with same nic and email exists
-            $stmt_check = $conn->prepare("SELECT id FROM main_submission WHERE nic = :nic AND email = :email");
-            $stmt_check->bindParam(':nic', $_POST['nic']);
-            $stmt_check->bindParam(':email', $_POST['email']);
-            $stmt_check->execute();
-            $existing_submission = $stmt_check->fetch(PDO::FETCH_ASSOC);
+    if (empty($nameWithInitials) || !preg_match("/^[A-Za-z\s.]+$/", $nameWithInitials)) {
+        $errors[] = "Name with Initials is required and can only contain letters, spaces, and dots.";
+    }
 
-            if ($existing_submission) {
-                // Update existing record in main_submission
-                $mainSubmissionId = $existing_submission['id'];
-                $stmt_update = $conn->prepare("UPDATE main_submission SET 
-                    fullName = :fullName,
-                    nameWithInitials = :nameWithInitials,
-                    whatsappNumber = :whatsappNumber,
-                    mobileNumber = :mobileNumber,
-                    currentWorkingPlace = :currentWorkingPlace,
-                    WorkPlaceName = :WorkPlaceName,
-                    headOfInstituteName = :headOfInstituteName,
-                    headOfInstituteContact = :headOfInstituteContact,
-                    ipAddress = :ipAddress,
-                    submittedDate = :submittedDate,
-                    submittedTime = :submittedTime
-                    WHERE id = :mainSubmissionId");
+    if (empty($nic) || !preg_match("/^(\d{9}[vV]|\d{12})$/", $nic)) {
+        $errors[] = "NIC is required and must be 10 digits ending with 'v' or 'V', or 12 digits of only numbers.";
+    }
 
-                // Bind parameters for update
-                $stmt_update->bindParam(':fullName', $_POST['fullName']);
-                $stmt_update->bindParam(':nameWithInitials', $_POST['nameWithInitials']);
-                $stmt_update->bindParam(':whatsappNumber', $_POST['whatsappNumber']);
-                $stmt_update->bindParam(':mobileNumber', $_POST['mobileNumber']);
-                $stmt_update->bindParam(':currentWorkingPlace', $_POST['currentWorkingPlace']);
-                $stmt_update->bindParam(':WorkPlaceName', $_POST['WorkPlaceName']);
-                $stmt_update->bindParam(':headOfInstituteName', $_POST['headOfInstituteName']);
-                $stmt_update->bindParam(':headOfInstituteContact', $_POST['headOfInstituteContact']);
-                $stmt_update->bindParam(':ipAddress', $_SERVER['REMOTE_ADDR']);
-                $stmt_update->bindParam(':submittedDate', date('Y-m-d'));
-                $stmt_update->bindParam(':submittedTime', date('H:i:s'));
-                $stmt_update->bindParam(':mainSubmissionId', $mainSubmissionId);
-                $stmt_update->execute();
-            } else {
-                // Insert new record into main_submission
-                $stmt_insert = $conn->prepare("INSERT INTO main_submission 
-                    (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, currentWorkingPlace, WorkPlaceName, headOfInstituteName, headOfInstituteContact, ipAddress, submittedDate, submittedTime) 
-                    VALUES 
-                    (:fullName, :nameWithInitials, :nic, :email, :whatsappNumber, :mobileNumber, :currentWorkingPlace, :WorkPlaceName, :headOfInstituteName, :headOfInstituteContact, :ipAddress, :submittedDate, :submittedTime)");
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Valid email is required.";
+    }
 
-                // Bind parameters for insert
-                $stmt_insert->bindParam(':fullName', $_POST['fullName']);
-                $stmt_insert->bindParam(':nameWithInitials', $_POST['nameWithInitials']);
-                $stmt_insert->bindParam(':nic', $_POST['nic']);
-                $stmt_insert->bindParam(':email', $_POST['email']);
-                $stmt_insert->bindParam(':whatsappNumber', $_POST['whatsappNumber']);
-                $stmt_insert->bindParam(':mobileNumber', $_POST['mobileNumber']);
-                $stmt_insert->bindParam(':currentWorkingPlace', $_POST['currentWorkingPlace']);
-                $stmt_insert->bindParam(':WorkPlaceName', $_POST['WorkPlaceName']);
-                $stmt_insert->bindParam(':headOfInstituteName', $_POST['headOfInstituteName']);
-                $stmt_insert->bindParam(':headOfInstituteContact', $_POST['headOfInstituteContact']);
-                $stmt_insert->bindParam(':ipAddress', $_SERVER['REMOTE_ADDR']);
-                $stmt_insert->bindParam(':submittedDate', date('Y-m-d'));
-                $stmt_insert->bindParam(':submittedTime', date('H:i:s'));
-                $stmt_insert->execute();
+    if (empty($whatsappNumber) || !preg_match("/^0\d{9}$/", $whatsappNumber)) {
+        $errors[] = "WhatsApp Number is required and must be 10 digits starting with 0.";
+    }
 
-                // Get the ID of the inserted record
-                $mainSubmissionId = $conn->lastInsertId();
-            }
+    if (empty($mobileNumber) || !preg_match("/^0\d{9}$/", $mobileNumber)) {
+        $errors[] = "Mobile Number is required and must be 10 digits starting with 0.";
+    }
 
-            // Log the submission in submission_history
-            $stmt_history = $conn->prepare("INSERT INTO submission_history 
-(mainSubmissionId, fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, currentWorkingPlace, WorkPlaceName, headOfInstituteName, headOfInstituteContact, ipAddress, submittedDate, submittedTime) 
-VALUES 
-(:mainSubmissionId, :fullName, :nameWithInitials, :nic, :email, :whatsappNumber, :mobileNumber, :currentWorkingPlace, :WorkPlaceName, :headOfInstituteName, :headOfInstituteContact, :ipAddress, :submittedDate, :submittedTime)");
+    if ($currentWorkingPlace === "school") {
+        $headOfInstituteName = sanitizeInput($_POST["principleName"]);
+        $headOfInstituteContactNo = sanitizeInput($_POST["principleContact"]);
+    } elseif ($currentWorkingPlace === "provincialOffice") {
+        $headOfInstituteName = sanitizeInput($_POST["provincialHeadOfInstituteName"]);
+        $headOfInstituteContactNo = sanitizeInput($_POST["provincialHeadOfInstituteContact"]);
+    } elseif ($currentWorkingPlace === "zonalOffice") {
+        $headOfInstituteName = sanitizeInput($_POST["zonalHeadOfInstituteName"]);
+        $headOfInstituteContactNo = sanitizeInput($_POST["zonalHeadOfInstituteContact"]);
+    } elseif ($currentWorkingPlace === "divisionalOffice") {
+        $headOfInstituteName = sanitizeInput($_POST["divisionalHeadOfInstituteName"]);
+        $headOfInstituteContactNo = sanitizeInput($_POST["divisionalHeadOfInstituteContact"]);
+    }
 
-            // Bind parameters for history insert
-            $stmt_history->bindParam(':mainSubmissionId', $mainSubmissionId);
-            $stmt_history->bindParam(':fullName', $_POST['fullName']);
-            $stmt_history->bindParam(':nameWithInitials', $_POST['nameWithInitials']);
-            $stmt_history->bindParam(':nic', $_POST['nic']);
-            $stmt_history->bindParam(':email', $_POST['email']);
-            $stmt_history->bindParam(':whatsappNumber', $_POST['whatsappNumber']);
-            $stmt_history->bindParam(':mobileNumber', $_POST['mobileNumber']);
-            $stmt_history->bindParam(':currentWorkingPlace', $_POST['currentWorkingPlace']);
-            $stmt_history->bindParam(':WorkPlaceName', $_POST['WorkPlaceName']);
-            $stmt_history->bindParam(':headOfInstituteName', $_POST['headOfInstituteName']);
-            $stmt_history->bindParam(':headOfInstituteContact', $_POST['headOfInstituteContact']);
-            $stmt_history->bindParam(':ipAddress', $_SERVER['REMOTE_ADDR']);
-            $stmt_history->bindParam(':submittedDate', date('Y-m-d'));
-            $stmt_history->bindParam(':submittedTime', date('H:i:s'));
-            $stmt_history->execute();
+    if (empty($headOfInstituteName) || !preg_match("/^[A-Za-z\s.]+$/", $headOfInstituteName)) {
+        $errors[] = "Head of Institute Name is required and can only contain letters, spaces, and dots.";
+    }
 
-            // Commit the transaction
-            $conn->commit();
-            echo "New record created successfully";
-        } catch (PDOException $e) {
-            // Rollback the transaction on error
-            $conn->rollback();
-            echo "Error: " . $e->getMessage();
+    if (empty($headOfInstituteContactNo) || !preg_match("/^0\d{9}$/", $headOfInstituteContactNo)) {
+        $errors[] = "Head of Institute Contact No is required and must be 10 digits starting with 0.";
+    }
+
+    if (empty($errors)) {
+        // Insert into history table
+        $stmt = $conn->prepare("INSERT INTO workplace_details_history (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $submittedAt);
+        $stmt->execute();
+
+        // Check if NIC and email already exist
+        $stmt = $conn->prepare("SELECT id FROM workplace_details WHERE nic=? AND email=?");
+        $stmt->bind_param("ss", $nic, $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            // Update existing record
+            $stmt = $conn->prepare("UPDATE workplace_details SET fullName=?, nameWithInitials=?, whatsappNumber=?, mobileNumber=?, headOfInstituteName=?, headOfInstituteContactNo=?, currentWorkingPlace=?, submittedAt=? WHERE nic=? AND email=?");
+            $stmt->bind_param("ssssssssss", $fullName, $nameWithInitials, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $submittedAt, $nic, $email);
+            $stmt->execute();
+        } else {
+            // Insert new record
+            $stmt = $conn->prepare("INSERT INTO workplace_details (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $submittedAt);
+            $stmt->execute();
         }
-        $conn = null;
+
+        $_SESSION['message'] = "Form submitted successfully!";
+        $_SESSION['message_type'] = "success";
+        header("Location: ./submit_form.php");
+        exit();
     } else {
-        echo "Validation errors occurred: " . json_encode($errors);
+        $_SESSION['message'] = implode("<br>", $errors);
+        $_SESSION['message_type'] = "error";
     }
 }
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Submission</title>
+    <link rel="stylesheet" href="./styles.css">
+
+    <style>
+        .message {
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .message.success {
+            color: green;
+            border: 1px solid green;
+        }
+
+        .message.error {
+            color: red;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body>
+    <?php if (isset($_SESSION['message'])) : ?>
+        <div class="message <?php echo $_SESSION['message_type']; ?>">
+            <?php
+            echo $_SESSION['message'];
+            unset($_SESSION['message']);
+            unset($_SESSION['message_type']);
+            ?>
+        </div>
+    <?php endif; ?>
+    <form id="detailsForm" action="./submit_form.php" method="POST">
+
+        <!-- Personal Details -->
+        <fieldset>
+            <legend>
+                <h2>Personal Details</h2>
+            </legend>
+            <div>
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" required>
+                <span id="fullNameError" class="error"></span>
+            </div>
+            <div>
+                <label for="nameWithInitials">Name with Initials:</label>
+                <input type="text" id="nameWithInitials" name="nameWithInitials" required>
+                <span id="nameWithInitialsError" class="error"></span>
+            </div>
+            <div>
+                <label for="nic">NIC:</label>
+                <input type="text" id="nic" name="nic" required>
+                <span id="nicError" class="error"></span>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <span id="emailError" class="error"></span>
+                <button type="button" id="sendOtp">Send OTP</button>
+
+
+                <!-- form fields go here, as in the original form HTML -->
+                <input type="hidden" id="otpVerified" name="otpVerified" value="false">
+                <div id="otpSection">
+                    <label for="otp">OTP:</label>
+                    <input type="text" id="otp" name="otp">
+                    <button type="button" id="verifyOtp">Verify OTP</button>
+                </div>
+                <div id="otpMessage" class="message" style="display:none;"></div>
+            </div>
+
+            <div>
+                <label for="whatsappNumber">WhatsApp Number:</label>
+                <input type="text" id="whatsappNumber" name="whatsappNumber" required>
+                <span id="whatsappNumberError" class="error"></span>
+            </div>
+            <div>
+                <label for="mobileNumber">Mobile Number:</label>
+                <input type="text" id="mobileNumber" name="mobileNumber" required>
+                <span id="mobileNumberError" class="error"></span>
+            </div>
+        </fieldset>
+
+        <!-- Workplace Details -->
+        <fieldset>
+            <legend>
+                <h2>Workplace Details</h2>
+            </legend>
+            <div>
+                <label for="currentWorkingPlace">Current Working Place:</label>
+                <select id="currentWorkingPlace" name="currentWorkingPlace" required>
+                    <option value="">Select</option>
+                    <option value="school">School</option>
+                    <option value="provincialOffice">Provincial Office</option>
+                    <option value="zonalOffice">Zonal Office</option>
+                    <option value="divisionalOffice">Divisional Office</option>
+                </select>
+            </div>
+
+            <!-- School Details -->
+            <div id="schoolDetails" class="workplaceDetails">
+                <label for="schoolName">School Name:</label>
+                <span id="schoolNameError" class="error"></span>
+                <input type="text" id="schoolName" name="schoolName">
+                <input type="hidden" id="selectedSchoolCencode" name="selectedSchoolCencode">
+                <div id="autocompleteSuggestions" class="autocomplete-suggestions"></div>
+
+                <label for="principleName">Principal Name:</label>
+                <input type="text" id="principleName" name="principleName">
+                <span id="principleNameError" class="error"></span>
+
+                <label for="principleContact">Principal Contact Number:</label>
+                <input type="text" id="principleContact" name="principleContact">
+                <span id="principleContactError" class="error"></span>
+            </div>
+
+            <!-- Provincial Office Details -->
+            <div id="provincialDetails" class="workplaceDetails">
+                <label for="provincialName">Institute Name:</label>
+                <span id="provincialNameError" class="error"></span>
+                <input type="text" id="provincialName" name="provincialName">
+                <div id="autocompleteSuggestionsProvincial" class="autocomplete-suggestions"></div>
+
+                <label for="provincialHeadOfInstituteName">Head of Institute Name:</label>
+                <input type="text" id="provincialHeadOfInstituteName" name="provincialHeadOfInstituteName">
+                <span id="provincialHeadOfInstituteNameError" class="error"></span>
+
+                <label for="provincialHeadOfInstituteContact">Head of Institute Contact Number:</label>
+                <input type="text" id="provincialHeadOfInstituteContact" name="provincialHeadOfInstituteContact">
+                <span id="provincialHeadOfInstituteContactError" class="error"></span>
+            </div>
+
+            <!-- Zonal Office Details -->
+            <div id="zonalDetails" class="workplaceDetails">
+                <label for="zonalName">Institute Name:</label>
+                <span id="zonalNameError" class="error"></span>
+                <input type="text" id="zonalName" name="zonalName">
+                <div id="autocompleteSuggestionsZonal" class="autocomplete-suggestions"></div>
+
+                <label for="zonalHeadOfInstituteName">Head of Institute Name:</label>
+                <input type="text" id="zonalHeadOfInstituteName" name="zonalHeadOfInstituteName">
+                <span id="zonalHeadOfInstituteNameError" class="error"></span>
+
+                <label for="zonalHeadOfInstituteContact">Head of Institute Contact Number:</label>
+                <input type="text" id="zonalHeadOfInstituteContact" name="zonalHeadOfInstituteContact">
+                <span id="zonalHeadOfInstituteContactError" class="error"></span>
+            </div>
+
+            <!-- Divisional Office Details -->
+            <div id="divisionalDetails" class="workplaceDetails">
+                <label for="divisionalName">Institute Name:</label>
+                <span id="divisionalNameError" class="error"></span>
+                <input type="text" id="divisionalName" name="divisionalName">
+                <div id="autocompleteSuggestionsDivisional" class="autocomplete-suggestions"></div>
+
+                <label for="divisionalHeadOfInstituteName">Head of Institute Name:</label>
+                <input type="text" id="divisionalHeadOfInstituteName" name="divisionalHeadOfInstituteName">
+                <span id="divisionalHeadOfInstituteNameError" class="error"></span>
+
+                <label for="divisionalHeadOfInstituteContact">Head of Institute Contact Number:</label>
+                <input type="text" id="divisionalHeadOfInstituteContact" name="divisionalHeadOfInstituteContact">
+                <span id="divisionalHeadOfInstituteContactError" class="error"></span>
+            </div>
+
+            <button type="submit">Submit</button>
+        </fieldset>
+
+    </form>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
