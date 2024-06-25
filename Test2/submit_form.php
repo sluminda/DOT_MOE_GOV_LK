@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($currentWorkingPlace === "school") {
-        $selectedInstituteName = sanitizeInput($_POST["selectedSchoolCencode"]);
+        $selectedInstituteName = sanitizeInput($_POST["schoolName"]);
         $headOfInstituteName = sanitizeInput($_POST["principleName"]);
         $headOfInstituteContactNo = sanitizeInput($_POST["principleContact"]);
     } elseif ($currentWorkingPlace === "provincialOffice") {
@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($errors)) {
         // Insert into history table
-        $stmt = $conn->prepare("INSERT INTO workplace_details_history (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteName,  submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+        $stmt = $conn->prepare("INSERT INTO workplace_details_history (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteName,  submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("sssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $selectedInstituteName, $submittedAt);
         $stmt->execute();
 

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db_connect.php';
+require 'db_config.php';
 
 // Check if the user is already logged in
 if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {

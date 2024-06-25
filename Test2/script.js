@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 query
               );
               div.addEventListener("click", () => {
-                input.value = item.institutionname;
+                input.value = `${item.cencode || ""} ${item.institutionname}`;
                 if (type === "school") selectedSchool = item;
                 if (type === "provincial") selectedProvincial = item;
                 if (type === "zonal") selectedZonal = item;
@@ -216,16 +216,28 @@ document.addEventListener("DOMContentLoaded", () => {
         if (
           (type === "school" &&
             (!selectedSchool ||
-              input.value !== selectedSchool.institutionname)) ||
+              input.value !==
+                `${selectedSchool.cencode || ""} ${
+                  selectedSchool.institutionname
+                }`)) ||
           (type === "provincial" &&
             (!selectedProvincial ||
-              input.value !== selectedProvincial.institutionname)) ||
+              input.value !==
+                `${selectedProvincial.cencode || ""} ${
+                  selectedProvincial.institutionname
+                }`)) ||
           (type === "zonal" &&
             (!selectedZonal ||
-              input.value !== selectedZonal.institutionname)) ||
+              input.value !==
+                `${selectedZonal.cencode || ""} ${
+                  selectedZonal.institutionname
+                }`)) ||
           (type === "divisional" &&
             (!selectedDivisional ||
-              input.value !== selectedDivisional.institutionname))
+              input.value !==
+                `${selectedDivisional.cencode || ""} ${
+                  selectedDivisional.institutionname
+                }`))
         ) {
           errorContainer.textContent =
             "Please select a valid option from the suggestions.";
@@ -240,6 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  // Apply the autocomplete handler to each input
   autocompleteHandler(
     schoolNameInput,
     autocompleteSuggestions,
