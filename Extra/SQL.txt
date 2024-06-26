@@ -149,6 +149,12 @@ CREATE TABLE otp_requests (
     expires_at INT NOT NULL
 );
 
+===============================
+
+For Data Officer Registration
+
+===============================
+
 -- Creating the workplace_details table
 CREATE TABLE workplace_details (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -162,11 +168,14 @@ CREATE TABLE workplace_details (
     headOfInstituteContactNo VARCHAR(10) NOT NULL,
     currentWorkingPlace VARCHAR(50) NOT NULL,
     selectedInstituteName VARCHAR(200) NOT NULL,
+    Province VARCHAR(50) DEFAULT '',
+    District VARCHAR(50) DEFAULT '',
+    Zone VARCHAR(50) DEFAULT '',
+    Division VARCHAR(50) DEFAULT '',
     submittedAt DATETIME NOT NULL,
     UNIQUE (nic, email)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Creating the workplace_details_history table
 CREATE TABLE workplace_details_history (
     id INT AUTO_INCREMENT PRIMARY KEY,
     fullName VARCHAR(250) NOT NULL,
@@ -179,7 +188,95 @@ CREATE TABLE workplace_details_history (
     headOfInstituteContactNo VARCHAR(10) NOT NULL,
     currentWorkingPlace VARCHAR(50) NOT NULL,
     selectedInstituteName VARCHAR(200) NOT NULL,
+    Province VARCHAR(50) DEFAULT '',
+    District VARCHAR(50) DEFAULT '',
+    Zone VARCHAR(50) DEFAULT '',
+    Division VARCHAR(50) DEFAULT '',
     submittedAt DATETIME NOT NULL
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
 -----------------------------------------------
+
+Stored Procedure for save Provincial, Zonal, Divisional Code in to table.
+
+DELIMITER //
+
+CREATE PROCEDURE update_workplace_details(
+    IN p_id INT,
+    IN p_fullName VARCHAR(250),
+    IN p_nameWithInitials VARCHAR(250),
+    IN p_nic VARCHAR(12),
+    IN p_email VARCHAR(250),
+    IN p_whatsappNumber VARCHAR(10),
+    IN p_mobileNumber VARCHAR(10),
+    IN p_headOfInstituteName VARCHAR(250),
+    IN p_headOfInstituteContactNo VARCHAR(10),
+    IN p_currentWorkingPlace VARCHAR(50),
+    IN p_selectedInstituteName VARCHAR(200),
+    IN p_submittedAt DATETIME
+)
+BEGIN
+    DECLARE institute_divcode VARCHAR(6);
+    DECLARE institute_zonecode VARCHAR(6);
+    DECLARE institute_distcode VARCHAR(3);
+    DECLARE filteredSchoolType INT;
+
+    IF p_currentWorkingPlace IN ('provincialOffice', 'zonalOffice', 'divisionalOffice') THEN
+        SET filteredSchoolType = 8;
+    ELSEIF p_currentWorkingPlace = 'school' THEN
+        SET filteredSchoolType = 1 OR 3;
+    END IF;
+
+    SELECT divcode, zonecode, distcode INTO institute_divcode, institute_zonecode, institute_distcode
+    FROM institutes
+    WHERE institutionname = p_selectedInstituteName AND schooltype = filteredSchoolType
+    LIMIT 1;
+
+    UPDATE workplace_details
+    SET Division = institute_divcode,
+        Zone = institute_zonecode,
+        District = institute_distcode
+    WHERE id = p_id;
+
+    INSERT INTO workplace_details_history
+    (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteName, submittedAt, Province, District, Zone, Division)
+    VALUES
+    (p_fullName, p_nameWithInitials, p_nic, p_email, p_whatsappNumber, p_mobileNumber, p_headOfInstituteName, p_headOfInstituteContactNo, p_currentWorkingPlace, p_selectedInstituteName, p_submittedAt, NULL, institute_distcode, institute_zonecode, institute_divcode);
+END;
+//
+
+DELIMITER ;
+
+
+
+
+
+
+
+
+=======================================
+
+
+Institute Table New
+
+DROP TABLE IF EXISTS `institutes`;
+CREATE TABLE IF NOT EXISTS `institutes` (
+  `cencode` varchar(8) NOT NULL,
+  `institutionname` varchar(100) DEFAULT '',
+  `new_divcode` varchar(6) DEFAULT '',
+  `new_divisionname` varchar(100) DEFAULT '',
+  `address` varchar(100) NOT NULL DEFAULT '',
+  `distcode` varchar(3) DEFAULT '',
+  `zonecode` varchar(6) DEFAULT '',
+  `divcode` varchar(6) DEFAULT '',
+  `schooltype` int DEFAULT '0',
+  `schoolcategory` varchar(1) NOT NULL DEFAULT '',
+  `status` int DEFAULT '0',
+  PRIMARY KEY (`cencode`),
+  KEY `cencode` (`cencode`),
+  KEY `distcode` (`distcode`),
+  KEY `zonecode` (`zonecode`),
+  KEY `divcode` (`divcode`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+COMMIT;

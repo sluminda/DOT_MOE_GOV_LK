@@ -118,9 +118,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute();
         }
 
+        // Call stored procedure to update Division, Zone, and District
+        $stmt = $conn->prepare("CALL updateInstituteDetails(?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $nic, $email, $currentWorkingPlace, $selectedInstituteName);
+        $stmt->execute();
+
         $_SESSION['form_submitted'] = true;
         $_SESSION['message'] = "Form submitted successfully!";
         $_SESSION['message_type'] = "success";
+        session_destroy();
 
         // Redirect to avoid form resubmission
         header("Location: ./submit_form.php?status=success");
@@ -133,6 +139,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
