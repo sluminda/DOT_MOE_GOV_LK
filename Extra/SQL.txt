@@ -258,25 +258,22 @@ DELIMITER ;
 =======================================
 
 
-Institute Table New
+division Table New
 
-DROP TABLE IF EXISTS `institutes`;
-CREATE TABLE IF NOT EXISTS `institutes` (
-  `cencode` varchar(8) NOT NULL,
-  `institutionname` varchar(100) DEFAULT '',
-  `new_divcode` varchar(6) DEFAULT '',
-  `new_divisionname` varchar(100) DEFAULT '',
-  `address` varchar(100) NOT NULL DEFAULT '',
+DROP TABLE IF EXISTS `division`;
+CREATE TABLE IF NOT EXISTS `division` (
+  `old_divcode` varchar(6) NOT NULL,
+  `old_divisionname` varchar(30) DEFAULT '',
+  `new_divcode` varchar(6) NOT NULL,
+  `new_divisionname` varchar(30) DEFAULT '',
   `distcode` varchar(3) DEFAULT '',
   `zonecode` varchar(6) DEFAULT '',
-  `divcode` varchar(6) DEFAULT '',
-  `schooltype` int DEFAULT '0',
-  `schoolcategory` varchar(1) NOT NULL DEFAULT '',
+  `divisionname_si` varchar(30) DEFAULT '',
+  `divisionname_ta` varchar(30) DEFAULT '',
   `status` int DEFAULT '0',
-  PRIMARY KEY (`cencode`),
-  KEY `cencode` (`cencode`),
-  KEY `distcode` (`distcode`),
-  KEY `zonecode` (`zonecode`),
-  KEY `divcode` (`divcode`)
+  PRIMARY KEY (`old_divcode`), 
+  KEY `divcode` (`old_divcode`), 
+  KEY `zonecode` (`zonecode`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 COMMIT;
+
