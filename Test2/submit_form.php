@@ -2,7 +2,6 @@
 session_start();
 date_default_timezone_set('Asia/Colombo');
 
-
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -25,13 +24,19 @@ $fullName = $nameWithInitials = $nic = $email = $whatsappNumber = $mobileNumber 
 $submittedAt = date("Y-m-d H:i:s");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_SESSION['form_submitted']) && $_SESSION['form_submitted'] === true) {
+        $_SESSION['message'] = "Form has already been submitted.";
+        $_SESSION['message_type'] = "error";
+        header("Location: ./submit_form.php?status=error");
+        exit();
+    }
+
     $fullName = sanitizeInput($_POST["fullName"]);
     $nameWithInitials = sanitizeInput($_POST["nameWithInitials"]);
     $nic = sanitizeInput($_POST["nic"]);
     $email = sanitizeInput($_POST["email"]);
     $whatsappNumber = sanitizeInput($_POST["whatsappNumber"]);
     $mobileNumber = sanitizeInput($_POST["mobileNumber"]);
-    $currentWorkingPlace = sanitizeInput($_POST["currentWorkingPlace"]);
     $currentWorkingPlace = sanitizeInput($_POST["currentWorkingPlace"]);
     $otpVerified = sanitizeInput($_POST["otpVerified"]);
 
@@ -64,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($currentWorkingPlace === "school") {
-        $selectedInstituteName = sanitizeInput($_POST["schoolName"]);
+        $selectedInstituteName = ($_POST["schoolName"]);
         $headOfInstituteName = sanitizeInput($_POST["principleName"]);
         $headOfInstituteContactNo = sanitizeInput($_POST["principleContact"]);
     } elseif ($currentWorkingPlace === "provincialOffice") {
@@ -91,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($errors)) {
         // Insert into history table
-        $stmt = $conn->prepare("INSERT INTO workplace_details_history (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteName,  submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO workplace_details_history (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteName, submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("sssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $selectedInstituteName, $submittedAt);
         $stmt->execute();
 
@@ -103,8 +108,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result->num_rows > 0) {
             // Update existing record
-            $stmt = $conn->prepare("UPDATE workplace_details SET fullName=?, nameWithInitials=?, whatsappNumber=?, mobileNumber=?, headOfInstituteName=?, headOfInstituteContactNo=?, currentWorkingPlace=?,  selectedInstituteName=?, submittedAt=? WHERE nic=? AND email=?");
-            $stmt->bind_param("sssssssssss", $fullName, $nameWithInitials, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace,  $selectedInstituteName, $submittedAt, $nic, $email);
+            $stmt = $conn->prepare("UPDATE workplace_details SET fullName=?, nameWithInitials=?, whatsappNumber=?, mobileNumber=?, headOfInstituteName=?, headOfInstituteContactNo=?, currentWorkingPlace=?, selectedInstituteName=?, submittedAt=? WHERE nic=? AND email=?");
+            $stmt->bind_param("sssssssssss", $fullName, $nameWithInitials, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $selectedInstituteName, $submittedAt, $nic, $email);
             $stmt->execute();
         } else {
             // Insert new record
@@ -113,13 +118,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute();
         }
 
+        $_SESSION['form_submitted'] = true;
         $_SESSION['message'] = "Form submitted successfully!";
         $_SESSION['message_type'] = "success";
-        header("Location: ./submit_form.php");
+
+        // Redirect to avoid form resubmission
+        header("Location: ./submit_form.php?status=success");
         exit();
     } else {
         $_SESSION['message'] = implode("<br>", $errors);
         $_SESSION['message_type'] = "error";
+        header("Location: ./submit_form.php?status=error");
+        exit();
     }
 }
 ?>
