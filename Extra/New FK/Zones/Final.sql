@@ -1,14 +1,15 @@
-DROP TABLE IF EXISTS zone;
-CREATE TABLE IF NOT EXISTS zone (
-  zonecode varchar(6) NOT NULL,
-  zonename varchar(30) DEFAULT '',
-  distcode varchar(3) DEFAULT '',
-  zonename_si varchar(50) DEFAULT '',
-  zonename_ta varchar(50) DEFAULT '',
-  status int DEFAULT '0',
-  PRIMARY KEY (zonecode),
-  KEY zonecode (zonecode),
-  KEY distcode (distcode)
+DROP TABLE IF EXISTS `zone`;
+CREATE TABLE IF NOT EXISTS `zone` (
+  `zonecode` varchar(6) NOT NULL,
+  `zonename` varchar(30) DEFAULT '',
+  `distcode` varchar(3) DEFAULT '',
+  `zonename_si` varchar(50) DEFAULT '',
+  `zonename_ta` varchar(50) DEFAULT '',
+  `status` int DEFAULT '0',
+  PRIMARY KEY (`zonecode`),
+  KEY `zonecode` (`zonecode`),
+  KEY `distcode` (`distcode`),
+  CONSTRAINT `fk_zone_district` FOREIGN KEY (`distcode`) REFERENCES `district`(`distcode`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 COMMIT;
 

@@ -1,16 +1,16 @@
-DROP TABLE IF EXISTS district;
-CREATE TABLE IF NOT EXISTS district (
-  distcode varchar(3) NOT NULL,
-  distname varchar(12) DEFAULT '',
-  procode varchar(3) DEFAULT '',
-  distname_si varchar(30) DEFAULT '',
-  distname_ta varchar(30) DEFAULT '',
-  status int DEFAULT '0',
-  PRIMARY KEY (distcode),
-  KEY distcode (distcode),
-  KEY procode (procode)
+DROP TABLE IF EXISTS `district`;
+CREATE TABLE IF NOT EXISTS `district` (
+  `distcode` varchar(3) NOT NULL,
+  `distname` varchar(12) DEFAULT '',
+  `procode` varchar(3) DEFAULT '',
+  `distname_si` varchar(30) DEFAULT '',
+  `distname_ta` varchar(30) DEFAULT '',
+  `status` int DEFAULT '0',
+  PRIMARY KEY (`distcode`),
+  KEY `distcode` (`distcode`),
+  KEY `procode` (`procode`),
+  CONSTRAINT `fk_district_province` FOREIGN KEY (`procode`) REFERENCES `province`(`procode`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
-COMMIT;
 
 
 INSERT INTO district (distcode, distname, procode, distname_si, distname_ta, status) VALUES ('D01', 'COLOMBO', 'P05', '', '', '1');

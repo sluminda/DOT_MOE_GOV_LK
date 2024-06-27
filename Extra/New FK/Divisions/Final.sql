@@ -1,17 +1,18 @@
-DROP TABLE IF EXISTS division;
-CREATE TABLE IF NOT EXISTS division (
-  divcode varchar(6) NOT NULL,
-  divisionname varchar(30) DEFAULT '',
-  distcode varchar(3) DEFAULT '',
-  zonecode varchar(6) DEFAULT '',
-  divisionname_si varchar(30) DEFAULT '',
-  divisionname_ta varchar(30) DEFAULT '',
-  status int DEFAULT '0',
-  PRIMARY KEY (divcode),
-  KEY divcode (divcode),
-  KEY zonecode (zonecode)
+DROP TABLE IF EXISTS `division`;
+CREATE TABLE IF NOT EXISTS `division` (
+  `divcode` varchar(6) NOT NULL,
+  `divisionname` varchar(30) DEFAULT '',
+  `distcode` varchar(3) DEFAULT '',
+  `zonecode` varchar(6) DEFAULT '',
+  `divisionname_si` varchar(30) DEFAULT '',
+  `divisionname_ta` varchar(30) DEFAULT '',
+  `status` int DEFAULT '0',
+  PRIMARY KEY (`divcode`),
+  KEY `divcode` (`divcode`),
+  KEY `zonecode` (`zonecode`),
+  CONSTRAINT `fk_division_district` FOREIGN KEY (`distcode`) REFERENCES `district`(`distcode`),
+  CONSTRAINT `fk_division_zone` FOREIGN KEY (`zonecode`) REFERENCES `zone`(`zonecode`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
-COMMIT;
 
 
 
