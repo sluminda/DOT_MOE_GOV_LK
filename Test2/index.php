@@ -16,8 +16,16 @@ if (!isset($_SESSION['form_token'])) {
 </head>
 
 <body>
-    <form id="detailsForm" action="./submit_form.php" method="POST">
+    <?php
+    if (isset($_SESSION['message'])) {
+        $messageType = $_SESSION['message_type'];
+        echo "<div class='$messageType'>{$_SESSION['message']}</div>";
+        unset($_SESSION['message']);
+        unset($_SESSION['message_type']);
+    }
+    ?>
 
+    <form id="detailsForm" action="submit_form.php" method="POST">
         <!-- Personal Details -->
         <fieldset>
             <legend>
@@ -43,7 +51,6 @@ if (!isset($_SESSION['form_token'])) {
                 <input type="email" id="email" name="email" required>
                 <span id="emailError" class="error"></span>
                 <button type="button" id="sendOtp">Send OTP</button>
-
 
                 <!-- form fields go here, as in the original form HTML -->
                 <input type="hidden" id="otpVerified" name="otpVerified" value="false">

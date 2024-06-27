@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_SESSION['form_submitted']) && $_SESSION['form_submitted'] === true) {
         $_SESSION['message'] = "Form has already been submitted.";
         $_SESSION['message_type'] = "error";
-        header("Location: ./submit_form.php?status=error");
+        header("Location: index.php");
         exit();
     }
 
@@ -119,9 +119,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Call stored procedure to update Division, Zone, and District
-        $stmt = $conn->prepare("CALL updateInstituteDetails(?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $nic, $email, $currentWorkingPlace, $selectedInstituteName);
-        $stmt->execute();
+        // $stmt = $conn->prepare("CALL updateInstituteDetails(?, ?, ?, ?)");
+        // $stmt->bind_param("ssss", $nic, $email, $currentWorkingPlace, $selectedInstituteName);
+        // $stmt->execute();
 
         $_SESSION['form_submitted'] = true;
         $_SESSION['message'] = "Form submitted successfully!";
@@ -129,198 +129,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         session_destroy();
 
         // Redirect to avoid form resubmission
-        header("Location: ./submit_form.php?status=success");
+        header("Location: index.php");
         exit();
     } else {
         $_SESSION['message'] = implode("<br>", $errors);
         $_SESSION['message_type'] = "error";
-        header("Location: ./submit_form.php?status=error");
+        header("Location: index.php");
         exit();
     }
 }
-?>
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Submission</title>
-    <link rel="stylesheet" href="./styles.css">
-
-    <style>
-        .message {
-            display: flex;
-            text-align: center;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        .message.success {
-            color: green;
-            border: 1px solid green;
-        }
-
-        .message.error {
-            color: red;
-            border: 1px solid red;
-        }
-    </style>
-</head>
-
-<body>
-    <?php if (isset($_SESSION['message'])) : ?>
-        <div class="message <?php echo $_SESSION['message_type']; ?>">
-            <?php
-            echo $_SESSION['message'];
-            unset($_SESSION['message']);
-            unset($_SESSION['message_type']);
-            ?>
-        </div>
-    <?php endif; ?>
-    <form id="detailsForm" action="./submit_form.php" method="POST">
-
-        <!-- Personal Details -->
-        <fieldset>
-            <legend>
-                <h2>Personal Details</h2>
-            </legend>
-            <div>
-                <label for="fullName">Full Name:</label>
-                <input type="text" id="fullName" name="fullName" required>
-                <span id="fullNameError" class="error"></span>
-            </div>
-            <div>
-                <label for="nameWithInitials">Name with Initials:</label>
-                <input type="text" id="nameWithInitials" name="nameWithInitials" required>
-                <span id="nameWithInitialsError" class="error"></span>
-            </div>
-            <div>
-                <label for="nic">NIC:</label>
-                <input type="text" id="nic" name="nic" required>
-                <span id="nicError" class="error"></span>
-            </div>
-            <div>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                <span id="emailError" class="error"></span>
-                <button type="button" id="sendOtp">Send OTP</button>
-
-
-                <!-- form fields go here, as in the original form HTML -->
-                <input type="hidden" id="otpVerified" name="otpVerified" value="false">
-                <div id="otpSection">
-                    <label for="otp">OTP:</label>
-                    <input type="text" id="otp" name="otp">
-                    <button type="button" id="verifyOtp">Verify OTP</button>
-                </div>
-                <div id="otpMessage" class="message" style="display:none;"></div>
-            </div>
-
-            <div>
-                <label for="whatsappNumber">WhatsApp Number:</label>
-                <input type="text" id="whatsappNumber" name="whatsappNumber" required>
-                <span id="whatsappNumberError" class="error"></span>
-            </div>
-            <div>
-                <label for="mobileNumber">Mobile Number:</label>
-                <input type="text" id="mobileNumber" name="mobileNumber" required>
-                <span id="mobileNumberError" class="error"></span>
-            </div>
-        </fieldset>
-
-        <!-- Workplace Details -->
-        <fieldset>
-            <legend>
-                <h2>Workplace Details</h2>
-            </legend>
-            <div>
-                <label for="currentWorkingPlace">Current Working Place:</label>
-                <select id="currentWorkingPlace" name="currentWorkingPlace" required>
-                    <option value="">Select</option>
-                    <option value="school">School</option>
-                    <option value="provincialOffice">Provincial Office</option>
-                    <option value="zonalOffice">Zonal Office</option>
-                    <option value="divisionalOffice">Divisional Office</option>
-                </select>
-            </div>
-
-            <!-- School Details -->
-            <div id="schoolDetails" class="workplaceDetails">
-                <label for="schoolName">School Name:</label>
-                <span id="schoolNameError" class="error"></span>
-                <input type="text" id="schoolName" name="schoolName">
-                <input type="hidden" id="selectedSchoolCencode" name="selectedSchoolCencode">
-                <div id="autocompleteSuggestions" class="autocomplete-suggestions"></div>
-
-                <label for="principleName">Principal Name:</label>
-                <input type="text" id="principleName" name="principleName">
-                <span id="principleNameError" class="error"></span>
-
-                <label for="principleContact">Principal Contact Number:</label>
-                <input type="text" id="principleContact" name="principleContact">
-                <span id="principleContactError" class="error"></span>
-            </div>
-
-            <!-- Provincial Office Details -->
-            <div id="provincialDetails" class="workplaceDetails">
-                <label for="provincialName">Institute Name:</label>
-                <span id="provincialNameError" class="error"></span>
-                <input type="text" id="provincialName" name="provincialName">
-                <div id="autocompleteSuggestionsProvincial" class="autocomplete-suggestions"></div>
-
-                <label for="provincialHeadOfInstituteName">Head of Institute Name:</label>
-                <input type="text" id="provincialHeadOfInstituteName" name="provincialHeadOfInstituteName">
-                <span id="provincialHeadOfInstituteNameError" class="error"></span>
-
-                <label for="provincialHeadOfInstituteContact">Head of Institute Contact Number:</label>
-                <input type="text" id="provincialHeadOfInstituteContact" name="provincialHeadOfInstituteContact">
-                <span id="provincialHeadOfInstituteContactError" class="error"></span>
-            </div>
-
-            <!-- Zonal Office Details -->
-            <div id="zonalDetails" class="workplaceDetails">
-                <label for="zonalName">Institute Name:</label>
-                <span id="zonalNameError" class="error"></span>
-                <input type="text" id="zonalName" name="zonalName">
-                <div id="autocompleteSuggestionsZonal" class="autocomplete-suggestions"></div>
-
-                <label for="zonalHeadOfInstituteName">Head of Institute Name:</label>
-                <input type="text" id="zonalHeadOfInstituteName" name="zonalHeadOfInstituteName">
-                <span id="zonalHeadOfInstituteNameError" class="error"></span>
-
-                <label for="zonalHeadOfInstituteContact">Head of Institute Contact Number:</label>
-                <input type="text" id="zonalHeadOfInstituteContact" name="zonalHeadOfInstituteContact">
-                <span id="zonalHeadOfInstituteContactError" class="error"></span>
-            </div>
-
-            <!-- Divisional Office Details -->
-            <div id="divisionalDetails" class="workplaceDetails">
-                <label for="divisionalName">Institute Name:</label>
-                <span id="divisionalNameError" class="error"></span>
-                <input type="text" id="divisionalName" name="divisionalName">
-                <div id="autocompleteSuggestionsDivisional" class="autocomplete-suggestions"></div>
-
-                <label for="divisionalHeadOfInstituteName">Head of Institute Name:</label>
-                <input type="text" id="divisionalHeadOfInstituteName" name="divisionalHeadOfInstituteName">
-                <span id="divisionalHeadOfInstituteNameError" class="error"></span>
-
-                <label for="divisionalHeadOfInstituteContact">Head of Institute Contact Number:</label>
-                <input type="text" id="divisionalHeadOfInstituteContact" name="divisionalHeadOfInstituteContact">
-                <span id="divisionalHeadOfInstituteContactError" class="error"></span>
-            </div>
-
-            <button type="submit">Submit</button>
-        </fieldset>
-
-    </form>
-
-    <script src="script.js"></script>
-</body>
-
-</html>

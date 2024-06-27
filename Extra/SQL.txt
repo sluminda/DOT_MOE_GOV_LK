@@ -251,29 +251,48 @@ DELIMITER ;
 
 
 
+===================================================
 
 
+Institute Table New
+
+DROP TABLE IF EXISTS `institutes`;
+CREATE TABLE IF NOT EXISTS `institutes` (
+  `old_cencode` varchar(8) NOT NULL,
+  `new_cencode` varchar(8) NOT NULL,
+  `old_institutionname` varchar(100) DEFAULT '',
+  `new_institutionname` varchar(100) DEFAULT '',
+  `address` varchar(100) NOT NULL DEFAULT '',
+  `distcode` varchar(3) DEFAULT '',
+  `zonecode` varchar(6) DEFAULT '',
+  `divcode` varchar(6) DEFAULT '',
+  `schooltype` int DEFAULT '0',
+  `schoolcategory` varchar(1) NOT NULL DEFAULT '',
+  `status` int DEFAULT '0',
+  PRIMARY KEY (`old_cencode`),
+  KEY `cencode` (`old_cencode`),
+  KEY `distcode` (`distcode`),
+  KEY `zonecode` (`zonecode`),
+  KEY `divcode` (`divcode`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 
 
 =======================================
+New Institute Table Latest
+
+CREATE TABLE Institutions (
+    InstType VARCHAR(10),
+    CenCode VARCHAR(10),
+    new_cencode VARCHAR(10),
+    InstitutionName VARCHAR(150),
+    new_InstitutionName VARCHAR(150),
+    DistrictCode VARCHAR(10),
+    ZoneCode VARCHAR(10),
+    DivisionCode VARCHAR(10),
+    IsNationalSchool BOOLEAN,
+    SchoolType VARCHAR(50),
+	SchoolStatus ENUM('Y', 'N')
+);
 
 
-division Table New
-
-DROP TABLE IF EXISTS `division`;
-CREATE TABLE IF NOT EXISTS `division` (
-  `old_divcode` varchar(6) NOT NULL,
-  `old_divisionname` varchar(30) DEFAULT '',
-  `new_divcode` varchar(6) NOT NULL,
-  `new_divisionname` varchar(30) DEFAULT '',
-  `distcode` varchar(3) DEFAULT '',
-  `zonecode` varchar(6) DEFAULT '',
-  `divisionname_si` varchar(30) DEFAULT '',
-  `divisionname_ta` varchar(30) DEFAULT '',
-  `status` int DEFAULT '0',
-  PRIMARY KEY (`old_divcode`), 
-  KEY `divcode` (`old_divcode`), 
-  KEY `zonecode` (`zonecode`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
-COMMIT;
 

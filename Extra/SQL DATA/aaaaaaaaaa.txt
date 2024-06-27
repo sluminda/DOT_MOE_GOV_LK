@@ -1,0 +1,11 @@
+CREATE TABLE Institutions (
+    InstType CHAR(10),
+    CenCode CHAR(10),
+    InstitutionName VARCHAR(150),
+    DistrictCode CHAR(10),
+    ZoneCode CHAR(10),
+    DivisionCode CHAR(10),
+    IsNationalSchool BOOLEAN,
+    SchoolType INT(2),
+	SchoolStatus ENUM('Y', 'N')
+);
