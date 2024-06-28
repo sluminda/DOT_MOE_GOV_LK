@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `district` (
   PRIMARY KEY (`distcode`),
   KEY `distcode` (`distcode`),
   KEY `procode` (`procode`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `district`
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `division` (
   PRIMARY KEY (`divcode`),
   KEY `divcode` (`divcode`),
   KEY `zonecode` (`zonecode`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `division`
@@ -434,7 +434,7 @@ CREATE TABLE IF NOT EXISTS `institutions` (
   KEY `DistrictCode` (`DistrictCode`),
   KEY `ZoneCode` (`ZoneCode`),
   KEY `DivisionCode` (`DivisionCode`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `institutions`
@@ -12968,7 +12968,7 @@ CREATE TABLE IF NOT EXISTS `province` (
   `procode` varchar(6) NOT NULL,
   `province` varchar(50) DEFAULT '',
   PRIMARY KEY (`procode`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `province`
@@ -13002,7 +13002,7 @@ CREATE TABLE IF NOT EXISTS `zone` (
   PRIMARY KEY (`zonecode`),
   KEY `zonecode` (`zonecode`),
   KEY `distcode` (`distcode`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `zone`

@@ -1,9 +1,10 @@
+-- Table structure for table `province`
 DROP TABLE IF EXISTS `province`;
 CREATE TABLE IF NOT EXISTS `province` (
-procode varchar(3) primary key,
-province varchar(50) DEFAULT ''
-)ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
-COMMIT;
+  `procode` varchar(6) NOT NULL,
+  `province` varchar(50) DEFAULT '',
+  PRIMARY KEY (`procode`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `province` (`procode`, `province`) VALUES
 ('P01', 'Central Province'),
