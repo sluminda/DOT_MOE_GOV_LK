@@ -125,6 +125,11 @@ button#verifyOtp:hover {
   background: #eee;
 }
 
+.autocomplete-no-results {
+  color: red;
+  padding: 5px;
+}
+
 .highlight {
   font-weight: bold;
   background-color: #e9e9e9;

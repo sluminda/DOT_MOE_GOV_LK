@@ -9,7 +9,7 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "dot_moe_gov_lk";
-$port = 3306;
+$port = 3308;
 
 header('Content-Type: application/json');
 

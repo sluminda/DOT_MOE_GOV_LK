@@ -84,9 +84,9 @@ if (!isset($_SESSION['form_token'])) {
                 <select id="currentWorkingPlace" name="currentWorkingPlace" required>
                     <option value="">Select</option>
                     <option value="school">School</option>
-                    <option value="provincialOffice">Provincial Office</option>
-                    <option value="zonalOffice">Zonal Office</option>
-                    <option value="divisionalOffice">Divisional Office</option>
+                    <option value="provincialOffice">Provincial Department of Education</option>
+                    <option value="zonalOffice">Zonal Education Office</option>
+                    <option value="divisionalOffice">Divisional Education Office</option>
                 </select>
             </div>
 
@@ -97,6 +97,7 @@ if (!isset($_SESSION['form_token'])) {
                 <input type="text" id="schoolName" name="schoolName">
                 <input type="hidden" id="selectedSchoolCencode" name="selectedSchoolCencode">
                 <div id="autocompleteSuggestions" class="autocomplete-suggestions"></div>
+                <div id="schoolNameError" class="error-message"></div>
 
                 <label for="principleName">Principal Name:</label>
                 <input type="text" id="principleName" name="principleName">
@@ -109,10 +110,11 @@ if (!isset($_SESSION['form_token'])) {
 
             <!-- Provincial Office Details -->
             <div id="provincialDetails" class="workplaceDetails">
-                <label for="provincialName">Institute Name:</label>
+                <label for="provincialName">Name of the Provincial Department of Education:</label>
                 <span id="provincialNameError" class="error"></span>
                 <input type="text" id="provincialName" name="provincialName">
                 <div id="autocompleteSuggestionsProvincial" class="autocomplete-suggestions"></div>
+                <div id="provincialNameError" class="error-message"></div>
 
                 <label for="provincialHeadOfInstituteName">Head of Institute Name:</label>
                 <input type="text" id="provincialHeadOfInstituteName" name="provincialHeadOfInstituteName">
@@ -125,10 +127,11 @@ if (!isset($_SESSION['form_token'])) {
 
             <!-- Zonal Office Details -->
             <div id="zonalDetails" class="workplaceDetails">
-                <label for="zonalName">Institute Name:</label>
+                <label for="zonalName">Name of the Zonal Education Office:</label>
                 <span id="zonalNameError" class="error"></span>
                 <input type="text" id="zonalName" name="zonalName">
                 <div id="autocompleteSuggestionsZonal" class="autocomplete-suggestions"></div>
+                <div id="zonalNameError" class="error-message"></div>
 
                 <label for="zonalHeadOfInstituteName">Head of Institute Name:</label>
                 <input type="text" id="zonalHeadOfInstituteName" name="zonalHeadOfInstituteName">
@@ -141,10 +144,11 @@ if (!isset($_SESSION['form_token'])) {
 
             <!-- Divisional Office Details -->
             <div id="divisionalDetails" class="workplaceDetails">
-                <label for="divisionalName">Institute Name:</label>
+                <label for="divisionalName">Divisional Education Office Name:</label>
                 <span id="divisionalNameError" class="error"></span>
                 <input type="text" id="divisionalName" name="divisionalName">
                 <div id="autocompleteSuggestionsDivisional" class="autocomplete-suggestions"></div>
+                <div id="divisionalNameError" class="error-message"></div>
 
                 <label for="divisionalHeadOfInstituteName">Head of Institute Name:</label>
                 <input type="text" id="divisionalHeadOfInstituteName" name="divisionalHeadOfInstituteName">
@@ -157,6 +161,7 @@ if (!isset($_SESSION['form_token'])) {
 
             <button type="submit">Submit</button>
         </fieldset>
+
 
     </form>
 

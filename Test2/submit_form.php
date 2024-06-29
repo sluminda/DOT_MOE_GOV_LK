@@ -6,7 +6,7 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "dot_moe_gov_lk";
-$port = 3306;
+$port = 3308;
 
 $conn = new mysqli($servername, $username, $password, $dbname, $port);
 
@@ -73,15 +73,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $headOfInstituteName = sanitizeInput($_POST["principleName"]);
         $headOfInstituteContactNo = sanitizeInput($_POST["principleContact"]);
     } elseif ($currentWorkingPlace === "provincialOffice") {
-        $provincialName = sanitizeInput($_POST["provincialName"]);
+        $selectedInstituteName = ($_POST["provincialName"]);
         $headOfInstituteName = sanitizeInput($_POST["provincialHeadOfInstituteName"]);
         $headOfInstituteContactNo = sanitizeInput($_POST["provincialHeadOfInstituteContact"]);
     } elseif ($currentWorkingPlace === "zonalOffice") {
-        $selectedInstituteName = sanitizeInput($_POST["zonalName"]);
+        $selectedInstituteName = ($_POST["zonalName"]);
         $headOfInstituteName = sanitizeInput($_POST["zonalHeadOfInstituteName"]);
         $headOfInstituteContactNo = sanitizeInput($_POST["zonalHeadOfInstituteContact"]);
     } elseif ($currentWorkingPlace === "divisionalOffice") {
-        $selectedInstituteName = sanitizeInput($_POST["divisionalName"]);
+        $selectedInstituteName = ($_POST["divisionalName"]);
         $headOfInstituteName = sanitizeInput($_POST["divisionalHeadOfInstituteName"]);
         $headOfInstituteContactNo = sanitizeInput($_POST["divisionalHeadOfInstituteContact"]);
     }
@@ -117,11 +117,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("sssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $selectedInstituteName, $submittedAt);
             $stmt->execute();
         }
-
-        // Call stored procedure to update Division, Zone, and District
-        // $stmt = $conn->prepare("CALL updateInstituteDetails(?, ?, ?, ?)");
-        // $stmt->bind_param("ssss", $nic, $email, $currentWorkingPlace, $selectedInstituteName);
-        // $stmt->execute();
 
         $_SESSION['form_submitted'] = true;
         $_SESSION['message'] = "Form submitted successfully!";

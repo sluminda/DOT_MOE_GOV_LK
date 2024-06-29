@@ -1,9 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  /*
-  ======================
-  Auto Complete Area
-  ======================
-  */
   const currentWorkingPlace = document.getElementById("currentWorkingPlace");
   const schoolDetails = document.getElementById("schoolDetails");
   const provincialDetails = document.getElementById("provincialDetails");
@@ -43,77 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedDivisional = null;
 
   currentWorkingPlace.addEventListener("change", () => {
-    const inputs = document.querySelectorAll(
-      '.workplaceDetails input[type="text"]'
-    );
-    inputs.forEach((input) => input.removeAttribute("required"));
-
-    schoolDetails.classList.remove("show");
-    provincialDetails.classList.remove("show");
-    zonalDetails.classList.remove("show");
-    divisionalDetails.classList.remove("show");
-
-    // Show details section based on selected value and add 'required' attribute to relevant inputs
-    const value = currentWorkingPlace.value;
-    if (value === "school") {
-      schoolDetails.classList.add("show");
-      document
-        .getElementById("schoolName")
-        .setAttribute("required", "required");
-      document
-        .getElementById("principleName")
-        .setAttribute("required", "required");
-      document
-        .getElementById("principleContact")
-        .setAttribute("required", "required");
-    } else if (value === "provincialOffice") {
-      provincialDetails.classList.add("show");
-      document
-        .getElementById("provincialName")
-        .setAttribute("required", "required");
-      document
-        .getElementById("provincialHeadOfInstituteName")
-        .setAttribute("required", "required");
-      document
-        .getElementById("provincialHeadOfInstituteContact")
-        .setAttribute("required", "required");
-    } else if (value === "zonalOffice") {
-      zonalDetails.classList.add("show");
-      document.getElementById("zonalName").setAttribute("required", "required");
-      document
-        .getElementById("zonalHeadOfInstituteName")
-        .setAttribute("required", "required");
-      document
-        .getElementById("zonalHeadOfInstituteContact")
-        .setAttribute("required", "required");
-    } else if (value === "divisionalOffice") {
-      divisionalDetails.classList.add("show");
-      document
-        .getElementById("divisionalName")
-        .setAttribute("required", "required");
-      document
-        .getElementById("divisionalHeadOfInstituteName")
-        .setAttribute("required", "required");
-      document
-        .getElementById("divisionalHeadOfInstituteContact")
-        .setAttribute("required", "required");
-    }
-  });
-
-  /*
-  ======================
-  Clear Texboxes when shift in workplace
-  ======================
-  */
-
-  function clearInputs() {
-    const inputs = document.querySelectorAll(
-      '.workplaceDetails input[type="text"]'
-    );
-    inputs.forEach((input) => (input.value = ""));
-  }
-
-  currentWorkingPlace.addEventListener("change", () => {
     clearInputs(); // Clear all input fields
 
     // Remove 'required' attribute from all inputs initially
@@ -133,25 +57,48 @@ document.addEventListener("DOMContentLoaded", () => {
     if (value === "school") {
       schoolDetails.classList.add("show");
       schoolNameInput.setAttribute("required", "required");
-      principleName.setAttribute("required", "required");
-      principleContact.setAttribute("required", "required");
+      document
+        .getElementById("principleName")
+        .setAttribute("required", "required");
+      document
+        .getElementById("principleContact")
+        .setAttribute("required", "required");
     } else if (value === "provincialOffice") {
       provincialDetails.classList.add("show");
       provincialNameInput.setAttribute("required", "required");
-      provincialHeadOfInstituteName.setAttribute("required", "required");
-      provincialHeadOfInstituteContact.setAttribute("required", "required");
+      document
+        .getElementById("provincialHeadOfInstituteName")
+        .setAttribute("required", "required");
+      document
+        .getElementById("provincialHeadOfInstituteContact")
+        .setAttribute("required", "required");
     } else if (value === "zonalOffice") {
       zonalDetails.classList.add("show");
       zonalNameInput.setAttribute("required", "required");
-      zonalHeadOfInstituteName.setAttribute("required", "required");
-      zonalHeadOfInstituteContact.setAttribute("required", "required");
+      document
+        .getElementById("zonalHeadOfInstituteName")
+        .setAttribute("required", "required");
+      document
+        .getElementById("zonalHeadOfInstituteContact")
+        .setAttribute("required", "required");
     } else if (value === "divisionalOffice") {
       divisionalDetails.classList.add("show");
       divisionalNameInput.setAttribute("required", "required");
-      divisionalHeadOfInstituteName.setAttribute("required", "required");
-      divisionalHeadOfInstituteContact.setAttribute("required", "required");
+      document
+        .getElementById("divisionalHeadOfInstituteName")
+        .setAttribute("required", "required");
+      document
+        .getElementById("divisionalHeadOfInstituteContact")
+        .setAttribute("required", "required");
     }
   });
+
+  const clearInputs = () => {
+    const inputs = document.querySelectorAll(
+      '.workplaceDetails input[type="text"]'
+    );
+    inputs.forEach((input) => (input.value = ""));
+  };
 
   const highlightMatch = (text, query) => {
     const index = text.toLowerCase().indexOf(query.toLowerCase());
@@ -167,44 +114,67 @@ document.addEventListener("DOMContentLoaded", () => {
     return text;
   };
 
+  const fetchAutocompleteData = async (query, type) => {
+    try {
+      const response = await fetch("autocomplete.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query, type }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+      return [];
+    }
+  };
+
   const autocompleteHandler = (
     input,
     suggestionsContainer,
     errorContainer,
     type
   ) => {
-    input.addEventListener("input", () => {
+    input.addEventListener("input", async () => {
       const query = input.value;
       if (query.length > 0) {
-        fetch("autocomplete.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ query: query, type: type }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            suggestionsContainer.innerHTML = "";
-            data.forEach((item) => {
-              const div = document.createElement("div");
-              div.classList.add("autocomplete-suggestion");
-              div.innerHTML = highlightMatch(
-                `${item.cencode || ""} ${item.institutionname}`,
-                query
-              );
-              div.addEventListener("click", () => {
-                input.value = `${item.cencode || ""} ${item.institutionname}`;
-                if (type === "school") selectedSchool = item;
-                if (type === "provincial") selectedProvincial = item;
-                if (type === "zonal") selectedZonal = item;
-                if (type === "divisional") selectedDivisional = item;
-                suggestionsContainer.innerHTML = "";
-              });
-              suggestionsContainer.appendChild(div);
+        const data = await fetchAutocompleteData(query, type);
+        suggestionsContainer.innerHTML = "";
+        if (data.length === 0) {
+          const noResultsDiv = document.createElement("div");
+          noResultsDiv.classList.add("autocomplete-no-results");
+          noResultsDiv.textContent = "No institution found with this name.";
+          suggestionsContainer.appendChild(noResultsDiv);
+        } else {
+          data.forEach((item) => {
+            const div = document.createElement("div");
+            div.classList.add("autocomplete-suggestion");
+            div.innerHTML = highlightMatch(
+              `${item.New_CenCode || ""} - ${item.New_InstitutionName}`,
+
+              query
+            );
+            div.addEventListener("click", () => {
+              input.value = `${item.New_CenCode || ""} ${
+                item.New_InstitutionName
+              }`;
+              if (type === "school") selectedSchool = item;
+              if (type === "provincial") selectedProvincial = item;
+              if (type === "zonal") selectedZonal = item;
+              if (type === "divisional") selectedDivisional = item;
+              suggestionsContainer.innerHTML = "";
             });
-            suggestionsContainer.style.display = "block";
+            suggestionsContainer.appendChild(div);
           });
+        }
+        suggestionsContainer.style.display = "block";
       } else {
         suggestionsContainer.innerHTML = "";
         suggestionsContainer.style.display = "none";
@@ -217,26 +187,26 @@ document.addEventListener("DOMContentLoaded", () => {
           (type === "school" &&
             (!selectedSchool ||
               input.value !==
-                `${selectedSchool.cencode || ""} ${
-                  selectedSchool.institutionname
+                `${selectedSchool.New_CenCode || ""} ${
+                  selectedSchool.New_InstitutionName
                 }`)) ||
           (type === "provincial" &&
             (!selectedProvincial ||
               input.value !==
-                `${selectedProvincial.cencode || ""} ${
-                  selectedProvincial.institutionname
+                `${selectedProvincial.New_CenCode || ""} ${
+                  selectedProvincial.New_InstitutionName
                 }`)) ||
           (type === "zonal" &&
             (!selectedZonal ||
               input.value !==
-                `${selectedZonal.cencode || ""} ${
-                  selectedZonal.institutionname
+                `${selectedZonal.New_CenCode || ""} ${
+                  selectedZonal.New_InstitutionName
                 }`)) ||
           (type === "divisional" &&
             (!selectedDivisional ||
               input.value !==
-                `${selectedDivisional.cencode || ""} ${
-                  selectedDivisional.institutionname
+                `${selectedDivisional.New_CenCode || ""} ${
+                  selectedDivisional.New_InstitutionName
                 }`))
         ) {
           errorContainer.textContent =
@@ -252,7 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // Apply the autocomplete handler to each input
   autocompleteHandler(
     schoolNameInput,
     autocompleteSuggestions,
