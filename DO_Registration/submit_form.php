@@ -2,6 +2,11 @@
 session_start();
 date_default_timezone_set('Asia/Colombo');
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'vendor/autoload.php';
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -23,11 +28,24 @@ $errors = [];
 $fullName = $nameWithInitials = $nic = $email = $whatsappNumber = $mobileNumber = $headOfInstituteName = $headOfInstituteContactNo = $currentWorkingPlace = "";
 $submittedAt = date("Y-m-d H:i:s");
 
+// Generate a unique token and store it in the session
+if (empty($_SESSION['form_token'])) {
+    $_SESSION['form_token'] = bin2hex(random_bytes(32));
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Check the form token
+    if (!isset($_POST['form_token']) || $_POST['form_token'] !== $_SESSION['form_token']) {
+        die("Invalid form submission.");
+    }
+
+    // Unset the form token to prevent resubmission
+    unset($_SESSION['form_token']);
+
     if (isset($_SESSION['form_submitted']) && $_SESSION['form_submitted'] === true) {
         $_SESSION['message'] = "Form has already been submitted.";
         $_SESSION['message_type'] = "error";
-        header("Location: index.php");
+        header("Location: ./data_officer_registration.php");
         exit();
     }
 
@@ -118,18 +136,92 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute();
         }
 
-        $_SESSION['form_submitted'] = true;
-        $_SESSION['message'] = "Form submitted successfully!";
-        $_SESSION['message_type'] = "success";
-        session_destroy();
+        $mail = new PHPMailer(true);
 
-        // Redirect to avoid form resubmission
-        header("Location: index.php");
-        exit();
+        try {
+            // Server settings
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'dotmoegov@gmail.com';
+            $mail->Password = 'zjxkoytcmtkrocjq';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+
+            // Recipients
+            $mail->setFrom('dotmoegov@gmail.com', 'Mailer');
+            $mail->addAddress($email, $nameWithInitials);
+
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = 'Form Submission Confirmation';
+            $mail->Body    = "
+                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; padding: 20px; background-color: #f9f9f9;'>
+                    <div style='text-align: center; padding-bottom: 20px;'>
+                        <h1 style='color: #333;'>Form Submission Confirmation</h1>
+                    </div>
+                    <div style='border-top: 1px solid #e0e0e0; padding-top: 20px;'>
+                        <p style='font-size: 16px; color: #333;'>Dear $nameWithInitials,</p>
+                        <p style='font-size: 16px; color: #333;'>Thank you for submitting the form. Your details have been successfully recorded.</p>
+                        <div style='padding-top: 20px;'>
+                            <h3 style='color: #333;'>Submitted Details:</h3>
+                            <div style='border-left: 3px solid #00aaff; padding-left: 15px; margin-left: 10px;'>
+                                <p><strong>Full Name:</strong> $fullName</p>
+                                <p><strong>Name with Initials:</strong> $nameWithInitials</p>
+                                <p><strong>NIC:</strong> $nic</p>
+                                <p><strong>Email:</strong> $email</p>
+                                <p><strong>WhatsApp Number:</strong> $whatsappNumber</p>
+                                <p><strong>Mobile Number:</strong> $mobileNumber</p>
+                                <p><strong>Head of Institute Name:</strong> $headOfInstituteName</p>
+                                <p><strong>Head of Institute Contact No:</strong> $headOfInstituteContactNo</p>
+                                <p><strong>Current Working Place:</strong> $currentWorkingPlace</p>
+                                <p><strong>Selected Institute Name:</strong> $selectedInstituteName</p>
+                            </div>
+                        </div>
+                        <p style='margin-top: 20px;'>Best regards,<br>Team</p>
+                    </div>
+                </div>
+            ";
+            $mail->AltBody = "
+                Dear $nameWithInitials,\n\n
+                Thank you for submitting the form. Your details have been successfully recorded.\n\n
+                Submitted Details:\n
+                Full Name: $fullName\n
+                Name with Initials: $nameWithInitials\n
+                NIC: $nic\n
+                Email: $email\n
+                WhatsApp Number: $whatsappNumber\n
+                Mobile Number: $mobileNumber\n
+                Head of Institute Name: $headOfInstituteName\n
+                Head of Institute Contact No: $headOfInstituteContactNo\n
+                Current Working Place: $currentWorkingPlace\n
+                Selected Institute Name: $selectedInstituteName\n\n
+                Best regards,\n
+                Team
+            ";
+
+            $mail->send();
+            $_SESSION['message'] = 'Form submitted successfully! A confirmation email has been sent.';
+            $_SESSION['message_type'] = 'success';
+            $_SESSION['form_submitted'] = true;
+        } catch (Exception $e) {
+            $_SESSION['message'] = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            $_SESSION['message_type'] = 'error';
+        }
+
+        // Redirect back to the form page
+        header('Location: ./data_officer_registration.php');
+        exit;
     } else {
-        $_SESSION['message'] = implode("<br>", $errors);
-        $_SESSION['message_type'] = "error";
-        header("Location: index.php");
-        exit();
+        $_SESSION['message'] = 'Errors: ' . implode(", ", $errors);
+        $_SESSION['message_type'] = 'error';
+
+        // Redirect back to the form page with errors
+        header('Location: ./error.php');
+        exit;
     }
+} else {
+    header('Location: ./error.php');
+    exit;
 }

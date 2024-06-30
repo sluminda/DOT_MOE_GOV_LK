@@ -13,26 +13,46 @@ if (!isset($_SESSION['form_token'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Form</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 
 <body>
     <?php
     if (isset($_SESSION['message'])) {
         $messageType = $_SESSION['message_type'];
-        echo "<div class='$messageType'>{$_SESSION['message']}</div>";
+        $messageContent = $_SESSION['message'];
         unset($_SESSION['message']);
         unset($_SESSION['message_type']);
+        if (isset($_SESSION['form_submitted']) && $_SESSION['form_submitted']) {
+            unset($_SESSION['form_submitted']);
+            echo "<script>localStorage.removeItem('formData');</script>"; // Clear form data in local storage
+        }
+        echo "<script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    showPopup('$messageContent', '$messageType');
+                });
+              </script>";
     }
     ?>
 
+
+
     <form id="detailsForm" action="submit_form.php" method="POST">
+        <!-- Include form token for CSRF protection -->
+        <input type="hidden" name="form_token" value="<?php echo $_SESSION['form_token']; ?>">
+        <div class="headTitle">
+            <h1><i class="fa-solid fa-user-plus"></i></h1>
+            <h1>Data Officer Registration Form</h1>
+        </div>
         <!-- Personal Details -->
         <fieldset>
             <legend>
+                <h2><i class="fas fa-user fa-icon"></i></h2>
                 <h2>Personal Details</h2>
             </legend>
             <div>
-                <label for="fullName">Full Name:</label>
+                <label for="fullName"></i>Full Name:</label>
                 <input type="text" id="fullName" name="fullName" required>
                 <span id="fullNameError" class="error"></span>
             </div>
@@ -77,6 +97,7 @@ if (!isset($_SESSION['form_token'])) {
         <!-- Workplace Details -->
         <fieldset>
             <legend>
+                <h2><i class="fas fa-briefcase fa-icon"></i></h2>
                 <h2>Workplace Details</h2>
             </legend>
             <div>
@@ -93,8 +114,8 @@ if (!isset($_SESSION['form_token'])) {
             <!-- School Details -->
             <div id="schoolDetails" class="workplaceDetails">
                 <label for="schoolName">School Name:</label>
-                <span id="schoolNameError" class="error"></span>
                 <input type="text" id="schoolName" name="schoolName">
+                <span id="schoolNameError" class="error"></span>
                 <input type="hidden" id="selectedSchoolCencode" name="selectedSchoolCencode">
                 <div id="autocompleteSuggestions" class="autocomplete-suggestions"></div>
                 <div id="schoolNameError" class="error-message"></div>
@@ -111,8 +132,8 @@ if (!isset($_SESSION['form_token'])) {
             <!-- Provincial Office Details -->
             <div id="provincialDetails" class="workplaceDetails">
                 <label for="provincialName">Name of the Provincial Department of Education:</label>
-                <span id="provincialNameError" class="error"></span>
                 <input type="text" id="provincialName" name="provincialName">
+                <span id="provincialNameError" class="error"></span>
                 <div id="autocompleteSuggestionsProvincial" class="autocomplete-suggestions"></div>
                 <div id="provincialNameError" class="error-message"></div>
 
@@ -128,8 +149,8 @@ if (!isset($_SESSION['form_token'])) {
             <!-- Zonal Office Details -->
             <div id="zonalDetails" class="workplaceDetails">
                 <label for="zonalName">Name of the Zonal Education Office:</label>
-                <span id="zonalNameError" class="error"></span>
                 <input type="text" id="zonalName" name="zonalName">
+                <span id="zonalNameError" class="error"></span>
                 <div id="autocompleteSuggestionsZonal" class="autocomplete-suggestions"></div>
                 <div id="zonalNameError" class="error-message"></div>
 
@@ -145,8 +166,8 @@ if (!isset($_SESSION['form_token'])) {
             <!-- Divisional Office Details -->
             <div id="divisionalDetails" class="workplaceDetails">
                 <label for="divisionalName">Divisional Education Office Name:</label>
-                <span id="divisionalNameError" class="error"></span>
                 <input type="text" id="divisionalName" name="divisionalName">
+                <span id="divisionalNameError" class="error"></span>
                 <div id="autocompleteSuggestionsDivisional" class="autocomplete-suggestions"></div>
                 <div id="divisionalNameError" class="error-message"></div>
 
@@ -161,11 +182,46 @@ if (!isset($_SESSION['form_token'])) {
 
             <button type="submit">Submit</button>
         </fieldset>
-
-
     </form>
 
-    <script src="script.js"></script>
+    <div id="popup" class="popup-overlay">
+        <div class="popup-box">
+            <span class="popup-close" onclick="closePopup()">×</span>
+            <div id="popupMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Populate form with previous data if available in local storage
+            const formData = JSON.parse(localStorage.getItem('formData'));
+            if (formData) {
+                for (const key in formData) {
+                    if (formData.hasOwnProperty(key)) {
+                        const element = document.getElementById(key);
+                        if (element) {
+                            element.value = formData[key];
+                        }
+                    }
+                }
+            }
+
+            // Save form data to local storage on change
+            document.getElementById('detailsForm').addEventListener('input', (event) => {
+                const formData = {};
+                new FormData(document.getElementById('detailsForm')).forEach((value, key) => {
+                    formData[key] = value;
+                });
+                localStorage.setItem('formData', JSON.stringify(formData));
+            });
+
+            // Clear form data in local storage if form submission was successful
+            if (<?php echo isset($_SESSION['form_submitted']) && $_SESSION['form_submitted'] ? 'true' : 'false'; ?>) {
+                localStorage.removeItem('formData');
+            }
+        });
+    </script>
+    <script src="./script.js"></script>
 </body>
 
 </html>

@@ -1,3 +1,12 @@
+function showPopup(message, type) {
+  const popup = document.getElementById("popup");
+  const popupMessage = document.getElementById("popupMessage");
+  const popupBox = document.querySelector(".popup-box");
+  popupBox.classList.add(type);
+  popupMessage.innerText = message;
+  popup.classList.add("show");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const currentWorkingPlace = document.getElementById("currentWorkingPlace");
   const schoolDetails = document.getElementById("schoolDetails");
