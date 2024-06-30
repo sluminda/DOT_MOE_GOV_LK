@@ -35,6 +35,12 @@ $(document).ready(function () {
           getVisibleColumns().forEach((column) => {
             rowHtml += `<td class="${column}">${row[column]}</td>`;
           });
+          rowHtml += `
+            <td class="actions">
+
+              <button class="btn btn-danger btn-sm deleteBtn" data-id="${row.id}">Delete</button>
+            </td>`;
+          // <button class="btn btn-warning btn-sm updateBtn" data-id="${row.id}">Update</button>
           rowHtml += "</tr>";
           tbody.append(rowHtml);
         });
@@ -83,6 +89,46 @@ $(document).ready(function () {
     } else {
       $(`.${column}`).hide();
     }
+  });
+
+  // Handle delete button click
+  $(document).on("click", ".deleteBtn", function () {
+    const id = $(this).data("id");
+    if (confirm("Are you sure you want to delete this row?")) {
+      $.post("delete_row.php", { id: id }, function (response) {
+        fetchData(currentPage);
+      });
+    }
+  });
+
+  // Handle update button click
+  $(document).on("click", ".updateBtn", function () {
+    const id = $(this).data("id");
+    // Populate the update modal with the current row data
+    const row = $(this)
+      .closest("tr")
+      .children("td")
+      .map(function () {
+        return $(this).text();
+      })
+      .get();
+
+    $("#updateId").val(id);
+    $("#updateFullName").val(row[1]); // Assuming the order of columns
+    // Repeat for other fields...
+
+    $("#updateModal").modal("show");
+  });
+
+  // Handle update form submission
+
+  $("#updateForm").submit(function (event) {
+    event.preventDefault();
+    const formData = $(this).serialize();
+    $.post("update_row.php", formData, function (response) {
+      $("#updateModal").modal("hide");
+      fetchData(currentPage);
+    });
   });
 
   // Initial fetch

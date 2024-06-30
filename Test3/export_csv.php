@@ -1,10 +1,12 @@
 <?php
 require 'db_connect.php';
 
+// Get the table name and columns from the query parameters
 $table = isset($_GET['table']) && $_GET['table'] === 'history' ? 'workplace_details_history' : 'workplace_details';
 $columns = isset($_GET['columns']) ? explode(',', $_GET['columns']) : [];
 $columnList = implode(", ", array_map('htmlspecialchars', $columns));
 
+// Build the WHERE clause based on filters
 $whereClauses = [];
 $params = [];
 
@@ -35,6 +37,7 @@ if ($whereClauses) {
     $whereSql = 'WHERE ' . implode(' AND ', $whereClauses);
 }
 
+// Prepare the SQL query
 $query = "SELECT $columnList FROM $table $whereSql";
 $stmt = $conn->prepare($query);
 foreach ($params as $key => &$val) {
@@ -43,12 +46,17 @@ foreach ($params as $key => &$val) {
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-header('Content-Type: text/csv');
-header('Content-Disposition: attachment;filename=workplace_details.csv');
+// Generate a filename with the current date and time
+$date = new DateTime();
+$filename = 'workplace_details_' . $date->format('Y-m-d_H-i-s') . '.csv';
 
+// Set the headers for the CSV download
+header('Content-Type: text/csv');
+header('Content-Disposition: attachment;filename=' . $filename);
+
+// Open the output stream and write the CSV data
 $output = fopen('php://output', 'w');
 fputcsv($output, $columns);
-
 foreach ($data as $row) {
     fputcsv($output, array_intersect_key($row, array_flip($columns)));
 }

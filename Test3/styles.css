@@ -17,31 +17,56 @@ body {
 h1 {
   text-align: center;
   color: #333;
+  margin-top: 0;
 }
 
 .card {
   margin-bottom: 20px;
 }
 
-.filter .form-control,
-.filter .btn,
-.filter .form-select {
+.filter-container {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.filter-container .row {
+  align-items: center;
+}
+
+.filter-container .col-md-3 {
   margin-bottom: 10px;
 }
 
-.columns {
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
   margin-bottom: 20px;
 }
 
-.columns label {
-  display: inline-block;
-  margin-right: 10px;
+.button-container .btn {
+  margin-bottom: 10px;
+}
+
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 table {
-  width: 100%;
+  width: auto;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  /* table-layout: fixed; */
 }
 
 table,
@@ -54,6 +79,7 @@ th,
 td {
   padding: 10px;
   text-align: left;
+  white-space: nowrap;
 }
 
 th {
@@ -61,8 +87,11 @@ th {
 }
 
 .pagination {
+  justify-content: center;
+  align-items: center;
+  display: flex;
   text-align: center;
-  margin-top: 20px;
+  margin: 20px auto;
 }
 
 .pagination button {

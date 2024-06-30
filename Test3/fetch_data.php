@@ -28,6 +28,22 @@ try {
         $whereClauses[] = "selectedInstituteName LIKE :selectedInstituteName";
         $params[':selectedInstituteName'] = "%" . $_GET['selectedInstituteName'] . "%";
     }
+    if (!empty($_GET['province'])) {
+        $whereClauses[] = "Province LIKE :province";
+        $params[':province'] = "%" . $_GET['province'] . "%";
+    }
+    if (!empty($_GET['district'])) {
+        $whereClauses[] = "District LIKE :district";
+        $params[':district'] = "%" . $_GET['district'] . "%";
+    }
+    if (!empty($_GET['zone'])) {
+        $whereClauses[] = "Zone LIKE :zone";
+        $params[':zone'] = "%" . $_GET['zone'] . "%";
+    }
+    if (!empty($_GET['division'])) {
+        $whereClauses[] = "Division LIKE :division";
+        $params[':division'] = "%" . $_GET['division'] . "%";
+    }
 
     $whereSql = '';
     if ($whereClauses) {
