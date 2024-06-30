@@ -5,19 +5,19 @@ session_start();
 if (!isset($_SESSION['loginTime']) || (time() - $_SESSION['loginTime'] > 259200)) { // 259200 seconds = 3 days
     session_unset();
     session_destroy();
-    header("Location: login.php");
+    header("Location: ../PHP/login.php");
     exit;
 }
 
 // Check if the user is logged in and has the correct user type
 if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true) {
-    header("Location: login.php");
+    header("Location: ../PHP/login.php");
     exit;
 }
 
 // Check user type for accessing Super Admin pages
 if (basename($_SERVER['PHP_SELF']) === 'super_admin.php' && $_SESSION['userType'] !== 'Super Admin') {
-    header("Location: login.php");
+    header("Location: ../PHP/login.php");
     exit;
 }
 
@@ -31,15 +31,13 @@ $userType = $_SESSION['userType'];
 ?>
 
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administration</title>
+    <title>DO Registration Panel</title>
 
     <link rel="apple-touch-icon" sizes="180x180" href="../Images/Favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../Images/Favicon/favicon-32x32.png">
@@ -51,11 +49,14 @@ $userType = $_SESSION['userType'];
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <link rel="stylesheet" href="../CSS/fonts.css">
+    <link rel="stylesheet" href="../CSS/boostrap.css">
     <link rel="stylesheet" href="../CSS/Template/header.css">
-    <link rel="stylesheet" href="../CSS/Body/super_admin.css">
+    <link rel="stylesheet" href="../CSS/Body/data_officer_form_admin_panel.css">
     <link rel="stylesheet" href="../CSS/Template/footer.css">
 
     <script defer src="../JS/header.js"></script>
+    <script src="../JS/jquery-3.7.1.min.js"></script>
+    <script defer src="../JS/data_officer_form_admin_panel.js"></script>
 </head>
 
 <body>
@@ -219,45 +220,164 @@ $userType = $_SESSION['userType'];
 
     </header>
 
-    <main class="super_admin_container DG PR">
-
-        <header> <strong>- Super Admin Panel - </strong></header>
-
-        <div class=" admin_modules_container DG">
-
-            <div class="modules_container DF FD-C PR">
-                <div class="title_container DF FD-R center">
-                    <i class="fa-solid fa-lg fa-users-gear"></i>
-                    <h3>Admin Accounts</h3>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Workplace Details Admin Panel</h1>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="filter-container">
+                    <div class="row g-3">
+                        <!-- Grouping related filters -->
+                        <div class="col-md-4">
+                            <input type="text" id="name" class="form-control" placeholder="Name">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="nic" class="form-control" placeholder="NIC">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="date" id="submittedAt_start" class="form-control">
+                                <span class="input-group-text">to</span>
+                                <input type="date" id="submittedAt_end" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="currentWorkingPlace" class="form-control" placeholder="Work Category">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="selectedInstituteCode" class="form-control" placeholder="Institute Code">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="selectedInstituteName" class="form-control" placeholder="Institute Name">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="province" class="form-control" placeholder="Province">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="district" class="form-control" placeholder="District">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="zone" class="form-control" placeholder="Zone">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="division" class="form-control" placeholder="Division">
+                        </div>
+                        <div class="col-md-4">
+                            <button id="filterBtn" class="btn btn-primary w-100" data-bs-toggle="tooltip" title="Apply Filters">Filter</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button id="exportBtn" class="btn btn-secondary w-100" data-bs-toggle="tooltip" title="Export as CSV">Export CSV</button>
+                        </div>
+                        <div class="col-md-4">
+                            <select id="tableSelect" class="form-select">
+                                <option value="current">Workplace Details</option>
+                                <option value="history">Workplace Details History</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <ul class="guidline-box DF PR FD-R">
-                    <li><a href="./user_list.php">View</a></li>
-                </ul>
-            </div>
-
-            <div class="modules_container module_2 DF FD-C PR">
-                <div class="title_container DF FD-R center">
-                    <i class="fa-solid fa-lg fa-user-graduate"></i>
-                    <h3>Data Officer Details</h3>
-                </div>
-                <ul class="DF PR FD-R">
-                    <li><a href="./data_officer_details.php">View</a></li>
-                </ul>
-            </div>
-
-            <div class="modules_container DF FD-C PR">
-                <div class="title_container DF FD-R center">
-                    <i class="fa-solid fa-lg fa-address-card"></i>
-                    <h3>Self Registration List</h3>
-                </div>
-                <ul class="DF PR FD-R">
-                    <li><a href="../DO_Reg_Admin_Panel/form_admin_panel.php">View</a></li>
-                </ul>
             </div>
         </div>
-    </main>
-
-
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row g-2">
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="id" checked>
+                            ID</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="fullName" checked>
+                            Full Name</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="nameWithInitials" checked> Name With Initials</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="nic" checked>
+                            NIC</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="email" checked>
+                            Email</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="whatsappNumber" checked> WhatsApp No</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="mobileNumber" checked> Mobile No</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="headOfInstituteName" checked> Institute Head</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="headOfInstituteContactNo" checked> Head Contact</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="currentWorkingPlace" checked> Work Category</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="selectedInstituteCode" checked> Institute Code</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="selectedInstituteName" checked> Institute Name</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="Province" checked>
+                            Province</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="District" checked>
+                            District</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="Zone" checked>
+                            Zone</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="Division" checked>
+                            Division</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label><input type="checkbox" class="form-check-input columnToggle" value="submittedAt" checked>
+                            Submitted At</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-container">
+            <table id="dataTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="id">ID</th>
+                        <th class="fullName">Full Name</th>
+                        <th class="nameWithInitials">Name With Initials</th>
+                        <th class="nic">NIC</th>
+                        <th class="email">Email</th>
+                        <th class="whatsappNumber">WhatsApp No</th>
+                        <th class="mobileNumber">Mobile No</th>
+                        <th class="headOfInstituteName">Institute Head</th>
+                        <th class="headOfInstituteContactNo">Head Contact</th>
+                        <th class="currentWorkingPlace">Work Category</th>
+                        <th class="selectedInstituteCode">Institute Code</th>
+                        <th class="selectedInstituteName">Institute Name</th>
+                        <th class="Province">Province</th>
+                        <th class="District">District</th>
+                        <th class="Zone">Zone</th>
+                        <th class="Division">Division</th>
+                        <th class="submittedAt">Submitted At</th>
+                        <th class="actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination">
+            <button id="prevPage" class="btn btn-primary">Previous</button>
+            <span id="currentPage">1</span>
+            <button id="nextPage" class="btn btn-primary">Next</button>
+        </div>
+    </div>
 
     <!-- Footer Starts Here -->
     <footer class="footer DF FD-C PR">
@@ -322,6 +442,7 @@ $userType = $_SESSION['userType'];
                 Ministry of Education.</p>
         </section>
     </footer>
+
 </body>
 
 </html>

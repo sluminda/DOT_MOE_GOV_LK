@@ -24,6 +24,12 @@ try {
         $whereClauses[] = "currentWorkingPlace LIKE :currentWorkingPlace";
         $params[':currentWorkingPlace'] = "%" . $_GET['currentWorkingPlace'] . "%";
     }
+
+    if (!empty($_GET['selectedInstituteCode'])) {
+        $whereClauses[] = "selectedInstituteCode LIKE :selectedInstituteCode";
+        $params[':selectedInstituteCode'] = "%" . $_GET['selectedInstituteCode'] . "%";
+    }
+
     if (!empty($_GET['selectedInstituteName'])) {
         $whereClauses[] = "selectedInstituteName LIKE :selectedInstituteName";
         $params[':selectedInstituteName'] = "%" . $_GET['selectedInstituteName'] . "%";
@@ -50,9 +56,25 @@ try {
         $whereSql = 'WHERE ' . implode(' AND ', $whereClauses);
     }
 
-    $query = "SELECT * FROM $table $whereSql";
-    $stmt = $conn->prepare($query);
+    $itemsPerPage = 10; // Set your desired items per page
+    $offset = (isset($_GET['page']) ? $_GET['page'] - 1 : 0) * $itemsPerPage;
 
+    // Count total items
+    $countQuery = "SELECT COUNT(*) as total FROM $table $whereSql";
+    $countStmt = $conn->prepare($countQuery);
+    foreach ($params as $key => &$val) {
+        $countStmt->bindParam($key, $val);
+    }
+    if ($countStmt->execute() === false) {
+        throw new Exception('Error executing statement: ' . implode(', ', $countStmt->errorInfo()));
+    }
+
+    $totalCount = $countStmt->fetchColumn(); // Fetch the total count directly
+    $totalPages = ceil($totalCount / $itemsPerPage);
+
+    // Fetch paginated items
+    $query = "SELECT * FROM $table $whereSql LIMIT $itemsPerPage OFFSET $offset";
+    $stmt = $conn->prepare($query);
     foreach ($params as $key => &$val) {
         $stmt->bindParam($key, $val);
     }
@@ -67,7 +89,7 @@ try {
         throw new Exception('Error fetching data: ' . implode(', ', $stmt->errorInfo()));
     }
 
-    echo json_encode(['data' => $result]);
+    echo json_encode(['data' => $result, 'page' => isset($_GET['page']) ? $_GET['page'] : 1, 'totalPages' => $totalPages]);
 } catch (Exception $e) {
     error_log($e->getMessage());
     http_response_code(500);

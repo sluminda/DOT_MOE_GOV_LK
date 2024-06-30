@@ -1,0 +1,164 @@
+.container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.container h1 {
+  text-align: center;
+  color: #333;
+  margin-top: 0;
+}
+
+.container .card {
+  margin-bottom: 20px;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container .card-body {
+  padding: 20px;
+}
+
+.container .filter-container {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.container .filter-container .row {
+  align-items: center;
+}
+
+.container .filter-container .col-md-4 {
+  margin-bottom: 10px;
+}
+
+.container .button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.container .button-container .btn {
+  margin-bottom: 10px;
+}
+
+.container .table-container {
+  overflow-x: auto;
+  max-width: 100%;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.container table,
+.container th,
+.container td {
+  border: 1px solid #ddd;
+}
+
+.container th,
+.container td {
+  padding: 10px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.container th {
+  background-color: #f4f4f9;
+}
+
+.container tr:hover {
+  background-color: #f1f1f1;
+}
+
+.container .pagination {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  text-align: center;
+  margin: 20px auto;
+}
+
+.container .pagination button {
+  padding: 10px 20px;
+  margin: 0 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.container .pagination button:hover {
+  background-color: #0056b3;
+}
+
+.container .pagination span {
+  font-size: 16px;
+  color: #333;
+}
+
+.container .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.container .btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.container .btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.container .btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+.container input,
+.container select,
+.container button {
+  margin-top: 10px;
+}
+
+.container .tooltip-inner {
+  max-width: 300px;
+  width: 300px;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .container .filter-container .row > div {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .container .button-container {
+    flex-direction: column;
+  }
+
+  .container .pagination button {
+    padding: 10px;
+  }
+}

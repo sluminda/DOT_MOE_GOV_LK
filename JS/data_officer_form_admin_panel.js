@@ -1,5 +1,6 @@
 $(document).ready(function () {
   let currentPage = 1;
+  let totalPages = 1;
 
   function getVisibleColumns() {
     return $(".columnToggle:checked")
@@ -16,7 +17,12 @@ $(document).ready(function () {
       submittedAt_start: $("#submittedAt_start").val(),
       submittedAt_end: $("#submittedAt_end").val(),
       currentWorkingPlace: $("#currentWorkingPlace").val(),
+      selectedInstituteCode: $("#selectedInstituteCode").val(),
       selectedInstituteName: $("#selectedInstituteName").val(),
+      province: $("#province").val(),
+      district: $("#district").val(),
+      zone: $("#zone").val(),
+      division: $("#division").val(),
       page: page,
       table: $("#tableSelect").val() === "history" ? "history" : "current",
     };
@@ -24,8 +30,9 @@ $(document).ready(function () {
     $.get("fetch_data.php", filters, function (response) {
       try {
         const data = JSON.parse(response);
-        currentPage = data.page;
-        $("#currentPage").text(currentPage);
+        currentPage = parseInt(data.page);
+        totalPages = parseInt(data.totalPages);
+        updatePaginationUI();
 
         const tbody = $("#dataTable tbody");
         tbody.empty();
@@ -35,12 +42,11 @@ $(document).ready(function () {
           getVisibleColumns().forEach((column) => {
             rowHtml += `<td class="${column}">${row[column]}</td>`;
           });
-          rowHtml += `
-            <td class="actions">
-
-              <button class="btn btn-danger btn-sm deleteBtn" data-id="${row.id}">Delete</button>
-            </td>`;
-          // <button class="btn btn-warning btn-sm updateBtn" data-id="${row.id}">Update</button>
+          if ($("#tableSelect").val() !== "history") {
+            rowHtml += `<td class="actions">
+                                      <button class="btn btn-danger btn-sm deleteBtn" data-id="${row.id}">Delete</button>
+                                  </td>`;
+          }
           rowHtml += "</tr>";
           tbody.append(rowHtml);
         });
@@ -53,6 +59,7 @@ $(document).ready(function () {
   }
 
   $("#filterBtn").click(function () {
+    currentPage = 1; // Reset current page when applying new filters
     fetchData();
   });
 
@@ -63,7 +70,9 @@ $(document).ready(function () {
   });
 
   $("#nextPage").click(function () {
-    fetchData(currentPage + 1);
+    if (currentPage < totalPages) {
+      fetchData(currentPage + 1);
+    }
   });
 
   $("#exportBtn").click(function () {
@@ -73,7 +82,12 @@ $(document).ready(function () {
       submittedAt_start: $("#submittedAt_start").val(),
       submittedAt_end: $("#submittedAt_end").val(),
       currentWorkingPlace: $("#currentWorkingPlace").val(),
+      selectedInstituteCode: $("#selectedInstituteCode").val(),
       selectedInstituteName: $("#selectedInstituteName").val(),
+      province: $("#province").val(),
+      district: $("#district").val(),
+      zone: $("#zone").val(),
+      division: $("#division").val(),
       columns: getVisibleColumns().join(","),
       table: $("#tableSelect").val() === "history" ? "history" : "current",
     };
@@ -101,36 +115,33 @@ $(document).ready(function () {
     }
   });
 
-  // Handle update button click
-  $(document).on("click", ".updateBtn", function () {
-    const id = $(this).data("id");
-    // Populate the update modal with the current row data
-    const row = $(this)
-      .closest("tr")
-      .children("td")
-      .map(function () {
-        return $(this).text();
-      })
-      .get();
+  // Function to update pagination UI
+  function updatePaginationUI() {
+    $("#currentPage").text(`${currentPage}/${totalPages}`);
+  }
 
-    $("#updateId").val(id);
-    $("#updateFullName").val(row[1]); // Assuming the order of columns
-    // Repeat for other fields...
+  // Function to toggle "Actions" column visibility
+  function toggleActionsColumn() {
+    if ($("#tableSelect").val() === "history") {
+      $(".actions").hide();
+    } else {
+      $(".actions").show();
+    }
+  }
 
-    $("#updateModal").modal("show");
+  // Event listener for real-time filtering
+  $(".filter-input").on("input", function () {
+    currentPage = 1; // Reset current page when applying new filters
+    fetchData();
   });
 
-  // Handle update form submission
-
-  $("#updateForm").submit(function (event) {
-    event.preventDefault();
-    const formData = $(this).serialize();
-    $.post("update_row.php", formData, function (response) {
-      $("#updateModal").modal("hide");
-      fetchData(currentPage);
-    });
-  });
-
-  // Initial fetch
+  // Initial fetch and actions column visibility
   fetchData();
+  toggleActionsColumn();
+
+  // Event listener for table selection change
+  $("#tableSelect").change(function () {
+    fetchData();
+    toggleActionsColumn();
+  });
 });
