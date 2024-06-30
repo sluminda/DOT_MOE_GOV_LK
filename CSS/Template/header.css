@@ -73,6 +73,7 @@ Default Configuration
   --button-warning-color: #ffffff;
   --warning-color: rgb(227, 64, 64);
   --white-color: #ffffff;
+  --highlight-color: #adff6eab;
 
   --new-color-1: #f0f0f0;
   --new-color-2: #e0e0e0;
@@ -129,6 +130,7 @@ Default Configuration
   --table-body-color: #353131ce;
   --button-warning-bg-color: rgb(219, 53, 53);
   --button-warning-color: #ffffff;
+  --highlight-color: #265601ab;
 
   --new-color-1: #2b2b2b;
   --new-color-2: #3a3a3a;

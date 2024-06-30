@@ -15,9 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const divisionalDetails = document.getElementById("divisionalDetails");
 
   const schoolNameInput = document.getElementById("schoolName");
-  const selectedSchoolCencode = document.getElementById(
-    "selectedSchoolCencode"
-  );
+
   const autocompleteSuggestions = document.getElementById(
     "autocompleteSuggestions"
   );
@@ -167,17 +165,38 @@ document.addEventListener("DOMContentLoaded", () => {
             div.classList.add("autocomplete-suggestion");
             div.innerHTML = highlightMatch(
               `${item.New_CenCode || ""} - ${item.New_InstitutionName}`,
-
               query
             );
             div.addEventListener("click", () => {
               input.value = `${item.New_CenCode || ""} ${
                 item.New_InstitutionName
               }`;
-              if (type === "school") selectedSchool = item;
-              if (type === "provincial") selectedProvincial = item;
-              if (type === "zonal") selectedZonal = item;
-              if (type === "divisional") selectedDivisional = item;
+              // Set the selected item and hidden fields
+              if (type === "school") {
+                selectedSchool = item;
+                document.getElementById("schoolCodeInput").value =
+                  item.New_CenCode;
+                document.getElementById("schoolNameInput").value =
+                  item.New_InstitutionName;
+              } else if (type === "provincial") {
+                selectedProvincial = item;
+                document.getElementById("provincialCodeInput").value =
+                  item.New_CenCode;
+                document.getElementById("provincialNameInput").value =
+                  item.New_InstitutionName;
+              } else if (type === "zonal") {
+                selectedZonal = item;
+                document.getElementById("zonalCodeInput").value =
+                  item.New_CenCode;
+                document.getElementById("zonalNameInput").value =
+                  item.New_InstitutionName;
+              } else if (type === "divisional") {
+                selectedDivisional = item;
+                document.getElementById("divisionalCodeInput").value =
+                  item.New_CenCode;
+                document.getElementById("divisionalNameInput").value =
+                  item.New_InstitutionName;
+              }
               suggestionsContainer.innerHTML = "";
             });
             suggestionsContainer.appendChild(div);
@@ -221,7 +240,10 @@ document.addEventListener("DOMContentLoaded", () => {
           errorContainer.textContent =
             "Please select a valid option from the suggestions.";
           errorContainer.style.display = "block";
-          if (type === "school") selectedSchoolCencode.value = "";
+          if (type === "school") {
+            document.getElementById("schoolCodeInput").value = "";
+            document.getElementById("schoolNameInput").value = "";
+          }
         } else {
           errorContainer.textContent = "";
           errorContainer.style.display = "none";
@@ -231,6 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  // Initialize the autocomplete handlers
   autocompleteHandler(
     schoolNameInput,
     autocompleteSuggestions,
@@ -417,14 +440,14 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   function showError(input, message) {
-    const errorDiv = input.nextElementSibling;
+    const errorDiv = input.previousElementSibling;
     errorDiv.textContent = message;
     errorDiv.style.display = "block";
     input.style.borderColor = "red";
   }
 
   function hideError(input) {
-    const errorDiv = input.nextElementSibling;
+    const errorDiv = input.previousElementSibling;
     errorDiv.style.display = "none";
     input.style.borderColor = "";
   }

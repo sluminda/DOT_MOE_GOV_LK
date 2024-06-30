@@ -87,18 +87,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($currentWorkingPlace === "school") {
+        $selectedInstituteCode = sanitizeInput($_POST["schoolCode"]);
         $selectedInstituteName = ($_POST["schoolName"]);
         $headOfInstituteName = sanitizeInput($_POST["principleName"]);
         $headOfInstituteContactNo = sanitizeInput($_POST["principleContact"]);
     } elseif ($currentWorkingPlace === "provincialOffice") {
+        $selectedInstituteCode = sanitizeInput($_POST["provincialCode"]);
         $selectedInstituteName = ($_POST["provincialName"]);
         $headOfInstituteName = sanitizeInput($_POST["provincialHeadOfInstituteName"]);
         $headOfInstituteContactNo = sanitizeInput($_POST["provincialHeadOfInstituteContact"]);
     } elseif ($currentWorkingPlace === "zonalOffice") {
+        $selectedInstituteCode = sanitizeInput($_POST["zonalCode"]);
         $selectedInstituteName = ($_POST["zonalName"]);
         $headOfInstituteName = sanitizeInput($_POST["zonalHeadOfInstituteName"]);
         $headOfInstituteContactNo = sanitizeInput($_POST["zonalHeadOfInstituteContact"]);
     } elseif ($currentWorkingPlace === "divisionalOffice") {
+        $selectedInstituteCode = sanitizeInput($_POST["divisionalCode"]);
         $selectedInstituteName = ($_POST["divisionalName"]);
         $headOfInstituteName = sanitizeInput($_POST["divisionalHeadOfInstituteName"]);
         $headOfInstituteContactNo = sanitizeInput($_POST["divisionalHeadOfInstituteContact"]);
@@ -114,8 +118,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($errors)) {
         // Insert into history table
-        $stmt = $conn->prepare("INSERT INTO workplace_details_history (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteName, submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $selectedInstituteName, $submittedAt);
+        $stmt = $conn->prepare("INSERT INTO workplace_details_history (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteCode, selectedInstituteName, submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $selectedInstituteCode, $selectedInstituteName, $submittedAt);
         $stmt->execute();
 
         // Check if NIC and email already exist
@@ -126,13 +130,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result->num_rows > 0) {
             // Update existing record
-            $stmt = $conn->prepare("UPDATE workplace_details SET fullName=?, nameWithInitials=?, whatsappNumber=?, mobileNumber=?, headOfInstituteName=?, headOfInstituteContactNo=?, currentWorkingPlace=?, selectedInstituteName=?, submittedAt=? WHERE nic=? AND email=?");
-            $stmt->bind_param("sssssssssss", $fullName, $nameWithInitials, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $selectedInstituteName, $submittedAt, $nic, $email);
+            $stmt = $conn->prepare("UPDATE workplace_details SET fullName=?, nameWithInitials=?, whatsappNumber=?, mobileNumber=?, headOfInstituteName=?, headOfInstituteContactNo=?, currentWorkingPlace=?, selectedInstituteCode=?, selectedInstituteName=?, submittedAt=? WHERE nic=? AND email=?");
+            $stmt->bind_param("ssssssssssss", $fullName, $nameWithInitials, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $selectedInstituteCode, $selectedInstituteName, $submittedAt, $nic, $email);
             $stmt->execute();
         } else {
             // Insert new record
-            $stmt = $conn->prepare("INSERT INTO workplace_details (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteName, submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $selectedInstituteName, $submittedAt);
+            $stmt = $conn->prepare("INSERT INTO workplace_details (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteCode, selectedInstituteName, submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $selectedInstituteCode, $selectedInstituteName, $submittedAt);
             $stmt->execute();
         }
 
@@ -150,56 +154,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mail->Port = 587;
 
             // Recipients
-            $mail->setFrom('dotmoegov@gmail.com', 'Mailer');
+            $mail->setFrom('dotmoegov@gmail.com', 'Data Officer Registration');
             $mail->addAddress($email, $nameWithInitials);
 
             // Content
             $mail->isHTML(true);
-            $mail->Subject = 'Form Submission Confirmation';
-            $mail->Body    = "
-                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; padding: 20px; background-color: #f9f9f9;'>
-                    <div style='text-align: center; padding-bottom: 20px;'>
-                        <h1 style='color: #333;'>Form Submission Confirmation</h1>
-                    </div>
-                    <div style='border-top: 1px solid #e0e0e0; padding-top: 20px;'>
-                        <p style='font-size: 16px; color: #333;'>Dear $nameWithInitials,</p>
-                        <p style='font-size: 16px; color: #333;'>Thank you for submitting the form. Your details have been successfully recorded.</p>
-                        <div style='padding-top: 20px;'>
-                            <h3 style='color: #333;'>Submitted Details:</h3>
-                            <div style='border-left: 3px solid #00aaff; padding-left: 15px; margin-left: 10px;'>
-                                <p><strong>Full Name:</strong> $fullName</p>
-                                <p><strong>Name with Initials:</strong> $nameWithInitials</p>
-                                <p><strong>NIC:</strong> $nic</p>
-                                <p><strong>Email:</strong> $email</p>
-                                <p><strong>WhatsApp Number:</strong> $whatsappNumber</p>
-                                <p><strong>Mobile Number:</strong> $mobileNumber</p>
-                                <p><strong>Head of Institute Name:</strong> $headOfInstituteName</p>
-                                <p><strong>Head of Institute Contact No:</strong> $headOfInstituteContactNo</p>
-                                <p><strong>Current Working Place:</strong> $currentWorkingPlace</p>
-                                <p><strong>Selected Institute Name:</strong> $selectedInstituteName</p>
-                            </div>
-                        </div>
-                        <p style='margin-top: 20px;'>Best regards,<br>Team</p>
-                    </div>
+            $mail->Subject = 'Data Officer Registration Confirmation';
+            $mail->Body = "
+    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; padding: 20px; background-color: #ffffff;'>
+        <div style='text-align: center; padding-bottom: 20px;'>
+            <h1 style='color: #333;'>Data Officer Registration Confirmation</h1>
+        </div>
+        <div style='border-top: 1px solid #e0e0e0; padding-top: 20px;'>
+            <p style='font-size: 16px; color: #333;'>Dear $nameWithInitials,</p>
+            <p style='font-size: 16px; color: #333;'>Thank you for submitting the form. Your details have been successfully recorded.</p>
+            <div style='padding-top: 20px;'>
+                <h3 style='color: #333;'>Submitted Details:</h3>
+                <div style='border-left: 3px solid #00aaff; padding-left: 15px; margin-left: 10px;'>
+                    <p style='font-size: 14px; color: #333;'><strong>Full Name:</strong> $fullName</p>
+                    <p style='font-size: 14px; color: #333;'><strong>Name with Initials:</strong> $nameWithInitials</p>
+                    <p style='font-size: 14px; color: #333;'><strong>NIC:</strong> $nic</p>
+                    <p style='font-size: 14px; color: #333;'><strong>Email:</strong> $email</p>
+                    <p style='font-size: 14px; color: #333;'><strong>WhatsApp Number:</strong> $whatsappNumber</p>
+                    <p style='font-size: 14px; color: #333;'><strong>Mobile Number:</strong> $mobileNumber</p>
+                    <p style='font-size: 14px; color: #333;'><strong>Current Working Place:</strong> $currentWorkingPlace</p>
+                    <p style='font-size: 14px; color: #333;'><strong>Selected Institute Code:</strong> $selectedInstituteCode</p>
+                    <p style='font-size: 14px; color: #333;'><strong>Selected Institute Name:</strong> $selectedInstituteName</p>
+                    <p style='font-size: 14px; color: #333;'><strong>Head of Institute Name:</strong> $headOfInstituteName</p>
+                    <p style='font-size: 14px; color: #333;'><strong>Head of Institute Contact No:</strong> $headOfInstituteContactNo</p>
                 </div>
-            ";
+            </div>
+            <p style='margin-top: 20px; font-size: 16px; color: #333;'>Best regards,<br>Data Management Branch,<br>Ministry of Education.</p>
+        </div>
+    </div>";
+
             $mail->AltBody = "
-                Dear $nameWithInitials,\n\n
-                Thank you for submitting the form. Your details have been successfully recorded.\n\n
-                Submitted Details:\n
-                Full Name: $fullName\n
-                Name with Initials: $nameWithInitials\n
-                NIC: $nic\n
-                Email: $email\n
-                WhatsApp Number: $whatsappNumber\n
-                Mobile Number: $mobileNumber\n
-                Head of Institute Name: $headOfInstituteName\n
-                Head of Institute Contact No: $headOfInstituteContactNo\n
-                Current Working Place: $currentWorkingPlace\n
-                Selected Institute Name: $selectedInstituteName\n\n
-                Best regards,\n
-                Team
-            ";
+            Dear $nameWithInitials,\n\n
+            Thank you for submitting the form. Your details have been successfully recorded.\n\n
+            Submitted Details:\n
+    Full Name: $fullName\n
+    Name with Initials: $nameWithInitials\n
+    NIC: $nic\n
+    Email: $email\n
+    WhatsApp Number: $whatsappNumber\n
+    Mobile Number: $mobileNumber\n
+    Current Working Place: $currentWorkingPlace\n
+    Selected Institute Code: $selectedInstituteCode\n
+    Selected Institute Name: $selectedInstituteName\n
+    Head of Institute Name: $headOfInstituteName\n
+    Head of Institute Contact No: $headOfInstituteContactNo\n\n
+    Best regards,\n
+    Data Management Branch,
+    Ministry of Education.
+";
+
 
             $mail->send();
             $_SESSION['message'] = 'Form submitted successfully! A confirmation email has been sent.';

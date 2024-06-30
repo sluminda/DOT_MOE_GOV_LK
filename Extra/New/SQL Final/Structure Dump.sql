@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308
--- Generation Time: Jun 30, 2024 at 03:07 AM
+-- Generation Time: Jun 30, 2024 at 07:24 AM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.18
 
@@ -89,6 +89,21 @@ CREATE TABLE IF NOT EXISTS `institutions` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `otp_requests`
+--
+
+DROP TABLE IF EXISTS `otp_requests`;
+CREATE TABLE IF NOT EXISTS `otp_requests` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(100) NOT NULL,
+  `otp_hash` varchar(150) NOT NULL,
+  `expires_at` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `province`
 --
 
@@ -128,6 +143,64 @@ CREATE TABLE IF NOT EXISTS `workplace_details` (
   UNIQUE KEY `nic` (`nic`,`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Triggers `workplace_details`
+--
+DROP TRIGGER IF EXISTS `before_insert_workplace_details`;
+DELIMITER $$
+CREATE TRIGGER `before_insert_workplace_details` BEFORE INSERT ON `workplace_details` FOR EACH ROW BEGIN
+    DECLARE v_ProCode VARCHAR(3);
+    DECLARE v_DistrictCode VARCHAR(3);
+    DECLARE v_ZoneCode VARCHAR(6);
+    DECLARE v_DivisionCode VARCHAR(6);
+    
+    -- Fetch codes from institutions table
+    SELECT ProCode, DistrictCode, ZoneCode, DivisionCode
+    INTO v_ProCode, v_DistrictCode, v_ZoneCode, v_DivisionCode
+    FROM institutions
+    WHERE New_CenCode = NEW.selectedInstituteCode;
+    
+    -- Fetch names from province, district, zone, and division tables
+    SELECT province INTO @Province FROM province WHERE procode = v_ProCode;
+    SELECT distname INTO @District FROM district WHERE distcode = v_DistrictCode;
+    SELECT zonename INTO @Zone FROM zone WHERE zonecode = v_ZoneCode;
+    SELECT divisionname INTO @Division FROM division WHERE divcode = v_DivisionCode;
+    
+    SET NEW.Province = @Province;
+    SET NEW.District = @District;
+    SET NEW.Zone = @Zone;
+    SET NEW.Division = @Division;
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `before_update_workplace_details`;
+DELIMITER $$
+CREATE TRIGGER `before_update_workplace_details` BEFORE UPDATE ON `workplace_details` FOR EACH ROW BEGIN
+    DECLARE v_ProCode VARCHAR(3);
+    DECLARE v_DistrictCode VARCHAR(3);
+    DECLARE v_ZoneCode VARCHAR(6);
+    DECLARE v_DivisionCode VARCHAR(6);
+
+    -- Fetch codes from institutions table
+    SELECT ProCode, DistrictCode, ZoneCode, DivisionCode
+    INTO v_ProCode, v_DistrictCode, v_ZoneCode, v_DivisionCode
+    FROM institutions
+    WHERE New_CenCode = NEW.selectedInstituteCode;
+
+    -- Fetch names from province, district, zone, and division tables
+    SELECT province INTO @Province FROM province WHERE procode = v_ProCode;
+    SELECT distname INTO @District FROM district WHERE distcode = v_DistrictCode;
+    SELECT zonename INTO @Zone FROM zone WHERE zonecode = v_ZoneCode;
+    SELECT divisionname INTO @Division FROM division WHERE divcode = v_DivisionCode;
+
+    SET NEW.Province = @Province;
+    SET NEW.District = @District;
+    SET NEW.Zone = @Zone;
+    SET NEW.Division = @Division;
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -146,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `workplace_details_history` (
   `headOfInstituteName` varchar(250) NOT NULL,
   `headOfInstituteContactNo` varchar(10) NOT NULL,
   `currentWorkingPlace` varchar(50) NOT NULL,
-    `selectedInstituteCode` varchar(8) NOT NULL,
+  `selectedInstituteCode` varchar(8) NOT NULL,
   `selectedInstituteName` varchar(200) NOT NULL,
   `Province` varchar(50) DEFAULT '',
   `District` varchar(50) DEFAULT '',
@@ -155,6 +228,64 @@ CREATE TABLE IF NOT EXISTS `workplace_details_history` (
   `submittedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Triggers `workplace_details_history`
+--
+DROP TRIGGER IF EXISTS `before_insert_workplace_details_history`;
+DELIMITER $$
+CREATE TRIGGER `before_insert_workplace_details_history` BEFORE INSERT ON `workplace_details_history` FOR EACH ROW BEGIN
+    DECLARE v_ProCode VARCHAR(3);
+    DECLARE v_DistrictCode VARCHAR(3);
+    DECLARE v_ZoneCode VARCHAR(6);
+    DECLARE v_DivisionCode VARCHAR(6);
+
+    -- Fetch codes from institutions table
+    SELECT ProCode, DistrictCode, ZoneCode, DivisionCode
+    INTO v_ProCode, v_DistrictCode, v_ZoneCode, v_DivisionCode
+    FROM institutions
+    WHERE New_CenCode = NEW.selectedInstituteCode;
+
+    -- Fetch names from province, district, zone, and division tables
+    SELECT province INTO @Province FROM province WHERE procode = v_ProCode;
+    SELECT distname INTO @District FROM district WHERE distcode = v_DistrictCode;
+    SELECT zonename INTO @Zone FROM zone WHERE zonecode = v_ZoneCode;
+    SELECT divisionname INTO @Division FROM division WHERE divcode = v_DivisionCode;
+
+    SET NEW.Province = @Province;
+    SET NEW.District = @District;
+    SET NEW.Zone = @Zone;
+    SET NEW.Division = @Division;
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `before_update_workplace_details_history`;
+DELIMITER $$
+CREATE TRIGGER `before_update_workplace_details_history` BEFORE UPDATE ON `workplace_details_history` FOR EACH ROW BEGIN
+    DECLARE v_ProCode VARCHAR(3);
+    DECLARE v_DistrictCode VARCHAR(3);
+    DECLARE v_ZoneCode VARCHAR(6);
+    DECLARE v_DivisionCode VARCHAR(6);
+
+    -- Fetch codes from institutions table
+    SELECT ProCode, DistrictCode, ZoneCode, DivisionCode
+    INTO v_ProCode, v_DistrictCode, v_ZoneCode, v_DivisionCode
+    FROM institutions
+    WHERE New_CenCode = NEW.selectedInstituteCode;
+
+    -- Fetch names from province, district, zone, and division tables
+    SELECT province INTO @Province FROM province WHERE procode = v_ProCode;
+    SELECT distname INTO @District FROM district WHERE distcode = v_DistrictCode;
+    SELECT zonename INTO @Zone FROM zone WHERE zonecode = v_ZoneCode;
+    SELECT divisionname INTO @Division FROM division WHERE divcode = v_DivisionCode;
+
+    SET NEW.Province = @Province;
+    SET NEW.District = @District;
+    SET NEW.Zone = @Zone;
+    SET NEW.Division = @Division;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
