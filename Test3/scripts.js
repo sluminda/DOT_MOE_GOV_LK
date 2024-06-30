@@ -22,21 +22,27 @@ $(document).ready(function () {
     };
 
     $.get("fetch_data.php", filters, function (response) {
-      const data = JSON.parse(response);
-      currentPage = data.page;
-      $("#currentPage").text(currentPage);
+      try {
+        const data = JSON.parse(response);
+        currentPage = data.page;
+        $("#currentPage").text(currentPage);
 
-      const tbody = $("#dataTable tbody");
-      tbody.empty();
+        const tbody = $("#dataTable tbody");
+        tbody.empty();
 
-      data.data.forEach((row) => {
-        let rowHtml = "<tr>";
-        getVisibleColumns().forEach((column) => {
-          rowHtml += `<td class="${column}">${row[column]}</td>`;
+        data.data.forEach((row) => {
+          let rowHtml = "<tr>";
+          getVisibleColumns().forEach((column) => {
+            rowHtml += `<td class="${column}">${row[column]}</td>`;
+          });
+          rowHtml += "</tr>";
+          tbody.append(rowHtml);
         });
-        rowHtml += "</tr>";
-        tbody.append(rowHtml);
-      });
+      } catch (e) {
+        console.error("Error parsing JSON response: ", response);
+      }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+      console.error("Request failed: ", textStatus, errorThrown);
     });
   }
 

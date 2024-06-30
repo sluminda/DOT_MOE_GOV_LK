@@ -1,12 +1,20 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dot_moe_gov_lk";
-$port = 3306;
+$host = 'localhost';
+$db = 'dot_moe_gov_lk';
+$user = 'root';
+$pass = '';
+$port = 3308;
+$charset = 'utf8mb4';
 
-$conn = new mysqli($servername, $username, $password, $dbname, $port);
+$dsn = "mysql:host=$host;dbname=$db;port=$port;charset=$charset";
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+try {
+    $conn = new PDO($dsn, $user, $pass, $options);
+} catch (\PDOException $e) {
+    throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }

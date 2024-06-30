@@ -11668,15 +11668,15 @@ CREATE TABLE IF NOT EXISTS `province` (
 --
 
 INSERT INTO `province` (`procode`, `province`) VALUES
-('P01', 'Central Province'),
-('P02', 'Eastern Province'),
-('P03', 'North Central Province'),
-('P04', 'Northern Province'),
-('P05', 'Western Province'),
-('P06', 'North Western Province'),
-('P07', 'Sabaragamuwa Province'),
-('P08', 'Southern Province'),
-('P09', 'Uva Province');
+('P01', 'CENTRAL'),
+('P02', 'EASTERN'),
+('P03', 'NORTH CENTRAL'),
+('P04', 'NORTHERN'),
+('P05', 'WESTERN'),
+('P06', 'NORTH WESTERN'),
+('P07', 'SABARAGAMUWA'),
+('P08', 'SOUTHERN'),
+('P09', 'UVA');
 
 -- --------------------------------------------------------
 
