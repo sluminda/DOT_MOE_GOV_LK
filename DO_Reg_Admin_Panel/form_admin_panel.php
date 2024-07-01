@@ -84,7 +84,7 @@ $userType = $_SESSION['userType'];
                                 <span class="user_name"><?php echo htmlspecialchars("Hello " . $userName); ?></span>
                                 <span class="user_type"><?php echo htmlspecialchars($userType); ?></span>
                             </div>
-                            <form class="DF PR" action="logout.php" method="post">
+                            <form class="DF PR" action="../PHP/logout.php" method="post">
                                 <button type="submit" class="logout_btn">Log Out</button>
                             </form>
                         </div>
@@ -190,7 +190,7 @@ $userType = $_SESSION['userType'];
                             <span class="user_type"><?php echo htmlspecialchars($userType); ?></span>
                         </div>
                     </div>
-                    <form action="logout.php" method="post">
+                    <form action="../PHP/logout.php" method="post">
                         <button type="submit" class="logout_btn">Log Out</button>
                     </form>
                 </div>

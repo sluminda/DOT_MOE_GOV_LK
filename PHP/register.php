@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db_connect.php';
+require './db_config.php';
 
 // Ensure that the user is logged in
 if (!isset($_SESSION['loggedIn'])) {

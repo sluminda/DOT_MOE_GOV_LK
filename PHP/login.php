@@ -1,8 +1,8 @@
 <?php
 session_start();
-require 'db_config.php';
+require './db_config.php';
 
-// Check if the user is already logged in
+// if the user is already logged in
 if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
     // Redirect the user based on their user type
     if ($_SESSION['userType'] === "Admin") {
@@ -40,56 +40,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $userInput = htmlspecialchars(trim($_POST['userinput']));
     $pass = htmlspecialchars(trim($_POST['password']));
 
-    $sql = "SELECT userID, userName, userPassword, userType FROM userlogin WHERE userName = :userinput OR userEmail = :userinput";
-    $sql = "SELECT userID, userName, userPassword, userType FROM userlogin WHERE userName = :userinput OR userEmail = :userinput";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':userinput', $userInput);
-    $stmt->execute();
+    try {
+        $sql = "SELECT userID, userName, userPassword, userType FROM userlogin WHERE userName = :userinput OR userEmail = :userinput";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':userinput', $userInput);
+        $stmt->execute();
 
-    if ($stmt->rowCount() > 0) {
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $userID = $row['userID'];
-        $userName = $row['userName'];
-        $hashed_password = $row['userPassword'];
-        $userType = $row['userType'];
+        // Check if the statement was executed successfully
+        if ($stmt) {
+            if ($stmt->rowCount() > 0) {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $userID = $row['userID'];
+                $userName = $row['userName'];
+                $hashed_password = $row['userPassword'];
+                $userType = $row['userType'];
 
-        if (password_verify($pass, $hashed_password)) {
-            $_SESSION['userID'] = $userID;
-            $_SESSION['userName'] = $userName;
-            $_SESSION['userType'] = $userType;
-            $_SESSION['loggedIn'] = true;
-            $_SESSION['loginTime'] = time();
+                if (password_verify($pass, $hashed_password)) {
+                    $_SESSION['userID'] = $userID;
+                    $_SESSION['userName'] = $userName;
+                    $_SESSION['userType'] = $userType;
+                    $_SESSION['loggedIn'] = true;
+                    $_SESSION['loginTime'] = time();
 
-            // Get the user's IP address
-            $ipAddress = getUserIpAddr();
+                    // Get the user's IP address
+                    $ipAddress = getUserIpAddr();
 
-            // Log the login details
-            $loginTime = date('Y-m-d H:i:s');
-            $log_sql = "INSERT INTO login_records (userID, loginTime, ipAddress) VALUES (:userID, :loginTime, :ipAddress)";
-            $log_stmt = $conn->prepare($log_sql);
-            $log_stmt->bindParam(':userID', $userID);
-            $log_stmt->bindParam(':loginTime', $loginTime);
-            $log_stmt->bindParam(':ipAddress', $ipAddress);
-            $log_stmt->execute();
+                    // Log the login details
+                    $loginTime = date('Y-m-d H:i:s');
+                    $log_sql = "INSERT INTO login_records (userID, loginTime, ipAddress) VALUES (:userID, :loginTime, :ipAddress)";
+                    $log_stmt = $conn->prepare($log_sql);
+                    $log_stmt->bindParam(':userID', $userID);
+                    $log_stmt->bindParam(':loginTime', $loginTime);
+                    $log_stmt->bindParam(':ipAddress', $ipAddress);
+                    $log_stmt->execute();
 
-            if ($userType === "Admin") {
-                header("Location: data_officer_details.php");
-            } elseif ($userType === "Super Admin") {
-                header("Location: super_admin.php");
+                    if ($userType === "Admin") {
+                        header("Location: data_officer_details.php");
+                    } elseif ($userType === "Super Admin") {
+                        header("Location: super_admin.php");
+                    }
+                    exit;
+                } else {
+                    $_SESSION['error_message'] = "Invalid username/email or password.";
+                    header("Location: login.php");
+                    exit;
+                }
+            } else {
+                $_SESSION['error_message'] = "Invalid username/email or password.";
+                header("Location: login.php");
+                exit;
             }
-            exit;
         } else {
-            $_SESSION['error_message'] = "Invalid username/email or password.";
+            $_SESSION['error_message'] = "Database error.";
             header("Location: login.php");
             exit;
         }
-    } else {
-        $_SESSION['error_message'] = "Invalid username/email or password.";
+    } catch (PDOException $e) {
+        // Handle PDOException
+        $_SESSION['error_message'] = "Error: " . $e->getMessage();
         header("Location: login.php");
         exit;
     }
 }
 ?>
+
 
 
 

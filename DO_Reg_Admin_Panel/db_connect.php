@@ -3,7 +3,7 @@ $host = 'localhost';
 $db = 'dot_moe_gov_lk';
 $user = 'root';
 $pass = '';
-$port = 3308;
+$port = 3306;
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;port=$port;charset=$charset";
