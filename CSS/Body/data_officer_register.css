@@ -14,6 +14,8 @@
 }
 
 form {
+  display: flex;
+  flex-direction: column;
   max-width: 600px;
   min-width: 300px;
   margin: 4rem auto;
@@ -63,6 +65,14 @@ form {
   justify-content: center;
 }
 
+#detailsForm fieldset .legend1 {
+  padding-top: 2rem;
+}
+
+#detailsForm fieldset .legend2 {
+  padding-top: 0;
+}
+
 #detailsForm fieldset legend:hover {
   color: var(--link-color);
 }
@@ -108,12 +118,10 @@ form {
   border-color: var(--secondary-color);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   outline: none;
-  /* transform: scale(1.02); */
 }
 
 #detailsForm button:hover {
   background-color: var(--button-hover-color);
-  /* transform: scale(1.05); */
 }
 
 #detailsForm button#verifyOtp {
@@ -122,22 +130,21 @@ form {
 
 #detailsForm button#verifyOtp:hover {
   background-color: var(--button-hover-color);
-  /* transform: scale(1.05); */
 }
 
 #detailsForm .error {
   color: red;
   font-size: 12px;
-  display: none; /* Initially hidden */
+  display: none;
 }
 
 #detailsForm .workplaceDetails {
-  display: none; /* Initially hidden */
+  display: none;
   transition: all 0.5s ease;
 }
 
 #detailsForm .show {
-  display: block; /* Displayed when active */
+  display: block;
 }
 
 #detailsForm #otpSection {
@@ -155,7 +162,7 @@ form {
   /* margin-top: 10px; */
   padding: 5px;
   border-radius: 5px;
-  display: none; /* Initially hidden */
+  display: none;
   transition: all 0.3s ease;
 }
 
@@ -181,7 +188,7 @@ form {
 
 #detailsForm .autocomplete-suggestions {
   border: 1px solid #ccc;
-  display: none; /* Initially hidden */
+  display: none;
   position: absolute;
   background-color: var(--bg-color);
   z-index: 1000;
@@ -236,6 +243,7 @@ form {
 
 .popup-box {
   background: var(--login-box-color);
+  color: var(--secondary-color);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
@@ -259,12 +267,15 @@ form {
 
 .popup-close {
   cursor: pointer;
-  color: var(--close-btn-color);
+  color: var(--secondary-color);
   position: absolute;
   top: 10px;
   right: 10px;
   font-size: 20px;
   transition: color 0.3s ease;
+  z-index: 5000;
+  scale: 1.3;
+  transform: translateY(-10px);
 }
 
 .popup-close:hover {

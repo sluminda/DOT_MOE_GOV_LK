@@ -184,7 +184,7 @@ if (!isset($_SESSION['form_token'])) {
 
             <!-- Personal Details -->
             <fieldset>
-                <legend>
+                <legend class="legend1">
                     <h2><i class="fa-solid fa-user"></i></h2>
                     <h2>Personal Details</h2>
                 </legend>
@@ -242,7 +242,7 @@ if (!isset($_SESSION['form_token'])) {
 
             <!-- Workplace Details -->
             <fieldset>
-                <legend>
+                <legend class="legend2">
                     <h2><i class="fa-solid fa-briefcase"></i></h2>
                     <h2>Workplace Details</h2>
                 </legend>
@@ -269,69 +269,69 @@ if (!isset($_SESSION['form_token'])) {
 
 
                     <label for="principleName">Principal Name:</label>
-                    <input type="text" id="principleName" name="principleName">
                     <span id="principleNameError" class="error"></span>
+                    <input type="text" id="principleName" name="principleName">
 
                     <label for="principleContact">Principal Contact Number:</label>
-                    <input type="text" id="principleContact" name="principleContact">
                     <span id="principleContactError" class="error"></span>
+                    <input type="text" id="principleContact" name="principleContact">
                 </div>
 
                 <!-- Provincial Office Details -->
                 <div id="provincialDetails" class="workplaceDetails">
                     <label for="provincialName">Name of the Provincial Department of Education:</label>
-                    <input type="text" id="provincialName" name="provincialName">
                     <span id="provincialNameError" class="error"></span>
+                    <input type="text" id="provincialName" name="provincialName">
                     <input type="hidden" id="provincialCodeInput" name="provincialCode" />
                     <input type="hidden" id="provincialNameInput" name="provincialName" />
-                    <div id="autocompleteSuggestionsProvincial" class="autocomplete-suggestions"></div>
                     <div id="provincialNameError" class="error-message"></div>
+                    <div id="autocompleteSuggestionsProvincial" class="autocomplete-suggestions"></div>
 
                     <label for="provincialHeadOfInstituteName">Head of Institute Name:</label>
-                    <input type="text" id="provincialHeadOfInstituteName" name="provincialHeadOfInstituteName">
                     <span id="provincialHeadOfInstituteNameError" class="error"></span>
+                    <input type="text" id="provincialHeadOfInstituteName" name="provincialHeadOfInstituteName">
 
                     <label for="provincialHeadOfInstituteContact">Head of Institute Contact Number:</label>
-                    <input type="text" id="provincialHeadOfInstituteContact" name="provincialHeadOfInstituteContact">
                     <span id="provincialHeadOfInstituteContactError" class="error"></span>
+                    <input type="text" id="provincialHeadOfInstituteContact" name="provincialHeadOfInstituteContact">
                 </div>
 
                 <!-- Zonal Office Details -->
                 <div id="zonalDetails" class="workplaceDetails">
                     <label for="zonalName">Name of the Zonal Education Office:</label>
-                    <input type="text" id="zonalName" name="zonalName">
                     <span id="zonalNameError" class="error"></span>
+                    <input type="text" id="zonalName" name="zonalName">
                     <input type="hidden" id="zonalCodeInput" name="zonalCode" />
                     <input type="hidden" id="zonalNameInput" name="zonalName" />
-                    <div id="autocompleteSuggestionsZonal" class="autocomplete-suggestions"></div>
                     <div id="zonalNameError" class="error-message"></div>
+                    <div id="autocompleteSuggestionsZonal" class="autocomplete-suggestions"></div>
 
                     <label for="zonalHeadOfInstituteName">Head of Institute Name:</label>
-                    <input type="text" id="zonalHeadOfInstituteName" name="zonalHeadOfInstituteName">
                     <span id="zonalHeadOfInstituteNameError" class="error"></span>
+                    <input type="text" id="zonalHeadOfInstituteName" name="zonalHeadOfInstituteName">
 
                     <label for="zonalHeadOfInstituteContact">Head of Institute Contact Number:</label>
-                    <input type="text" id="zonalHeadOfInstituteContact" name="zonalHeadOfInstituteContact">
                     <span id="zonalHeadOfInstituteContactError" class="error"></span>
+                    <input type="text" id="zonalHeadOfInstituteContact" name="zonalHeadOfInstituteContact">
                 </div>
 
                 <!-- Divisional Office Details -->
                 <div id="divisionalDetails" class="workplaceDetails">
                     <label for="divisionalName">Divisional Education Office Name:</label>
-                    <input type="text" id="divisionalName" name="divisionalName">
                     <span id="divisionalNameError" class="error"></span>
+                    <input type="text" id="divisionalName" name="divisionalName">
                     <input type="hidden" id="divisionalCodeInput" name="divisionalCode" />
                     <input type="hidden" id="divisionalNameInput" name="divisionalName" />
-                    <div id="autocompleteSuggestionsDivisional" class="autocomplete-suggestions"></div>
                     <div id="divisionalNameError" class="error-message"></div>
+                    <div id="autocompleteSuggestionsDivisional" class="autocomplete-suggestions"></div>
 
                     <label for="divisionalHeadOfInstituteName">Head of Institute Name:</label>
-                    <input type="text" id="divisionalHeadOfInstituteName" name="divisionalHeadOfInstituteName">
                     <span id="divisionalHeadOfInstituteNameError" class="error"></span>
+                    <input type="text" id="divisionalHeadOfInstituteName" name="divisionalHeadOfInstituteName">
 
                     <label for="divisionalHeadOfInstituteContact">Head of Institute Contact Number:</label>
-                    <input type="text" id="divisionalHeadOfInstituteContact" name="divisionalHeadOfInstituteContact">
                     <span id="divisionalHeadOfInstituteContactError" class="error"></span>
+                    <input type="text" id="divisionalHeadOfInstituteContact" name="divisionalHeadOfInstituteContact">
                 </div>
 
                 <button type="submit">Submit</button>
@@ -413,34 +413,22 @@ if (!isset($_SESSION['form_token'])) {
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            // Populate form with previous data if available in local storage
-            // const formData = JSON.parse(localStorage.getItem('formData'));
-            // if (formData) {
-            //     for (const key in formData) {
-            //         if (formData.hasOwnProperty(key)) {
-            //             const element = document.getElementById(key);
-            //             if (element) {
-            //                 element.value = formData[key];
-            //             }
-            //         }
-            //     }
-            // }
+        function showPopup(message, type) {
+            const popup = document.getElementById('popup');
+            const popupMessage = document.getElementById('popupMessage');
+            const popupBox = document.querySelector('.popup-box');
+            popupBox.classList.add(type);
+            popupMessage.innerText = message;
+            popup.classList.add('show');
+        }
 
-            // // Save form data to local storage on change
-            // document.getElementById('detailsForm').addEventListener('input', (event) => {
-            //     const formData = {};
-            //     new FormData(document.getElementById('detailsForm')).forEach((value, key) => {
-            //         formData[key] = value;
-            //     });
-            //     localStorage.setItem('formData', JSON.stringify(formData));
-            // });
-
-            // Clear form data in local storage if form submission was successful
-            if (<?php echo isset($_SESSION['form_submitted']) && $_SESSION['form_submitted'] ? 'true' : 'false'; ?>) {
-                localStorage.removeItem('formData');
-            }
-        });
+        function closePopup() {
+            const popup = document.getElementById('popup');
+            popup.classList.remove('show');
+            setTimeout(() => {
+                window.location.href = '../index.html';
+            }, 500);
+        }
     </script>
     <script src="./script.js"></script>
 </body>
