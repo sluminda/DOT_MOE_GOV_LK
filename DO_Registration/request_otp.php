@@ -5,11 +5,7 @@ use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dot_moe_gov_lk";
-$port = 3306;
+include './db_connection.php';
 
 header('Content-Type: application/json');
 
@@ -25,12 +21,7 @@ $otp = random_int(100000, 999999);
 $otpHash = password_hash($otp, PASSWORD_DEFAULT);
 $expiresAt = time() + (15 * 60); // 15 minutes
 
-$conn = new mysqli($servername, $username, $password, $dbname, $port);
 
-if ($conn->connect_error) {
-    echo json_encode(['success' => false, 'message' => 'Database connection failed']);
-    exit();
-}
 
 $stmt = $conn->prepare("INSERT INTO otp_requests (email, otp_hash, expires_at) VALUES (?, ?, ?)");
 $stmt->bind_param("ssi", $email, $otpHash, $expiresAt);

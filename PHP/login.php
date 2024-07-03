@@ -8,7 +8,7 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
     if ($_SESSION['userType'] === "Admin") {
         header("Location: data_officer_details.php");
         exit;
-    } elseif ($_SESSION['userType'] === "Super Admin") {
+    } elseif ($_SESSION['userType'] === "Super Admin" || $_SESSION['userType'] === "Owner") {
         header("Location: super_admin.php");
         exit;
     }
@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     if ($userType === "Admin") {
                         header("Location: data_officer_details.php");
-                    } elseif ($userType === "Super Admin") {
+                    } elseif ($userType === "Super Admin" || $userType === "Owner") {
                         header("Location: super_admin.php");
                     }
                     exit;
@@ -103,6 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 
 

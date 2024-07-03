@@ -22,7 +22,7 @@ form {
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
-  background-color: var(--login-box-color);
+  background-color: var(--table-body-color);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -104,6 +104,17 @@ form {
   color: var(--secondary-color);
 }
 
+#detailsForm button {
+  color: var(--white-color) !important;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#detailsForm button:hover,
+#detailsForm button:focus {
+  background-color: var(--button-hover-color);
+}
+
 #detailsForm select option {
   width: 300px;
 }
@@ -113,8 +124,7 @@ form {
 }
 
 #detailsForm input:focus,
-#detailsForm select:focus,
-#detailsForm button:focus {
+#detailsForm select:focus {
   border-color: var(--secondary-color);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   outline: none;
@@ -194,14 +204,17 @@ form {
   z-index: 1000;
   overflow-y: auto;
   max-height: 200px;
-  width: 600px;
+  min-width: fit-content;
+  /* max-width: 400px; */
   transition: all 0.3s ease;
+  transform: translateY(-10px);
 }
 
 #detailsForm .autocomplete-suggestion {
   padding: 8px;
   cursor: pointer;
   color: var(--secondary-color);
+  box-shadow: 0 0 1px 0 black;
 }
 
 #detailsForm .autocomplete-suggestion:hover {

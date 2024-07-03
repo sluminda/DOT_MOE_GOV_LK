@@ -1,15 +1,5 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dot_moe_gov_lk";
-$port = 3306;
-
-$conn = new mysqli($servername, $username, $password, $dbname, $port);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include './db_connection.php';
 
 $input = json_decode(file_get_contents("php://input"), true);
 $query = $input['query'];

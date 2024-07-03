@@ -16,7 +16,7 @@ if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true) {
 }
 
 // Check user type for accessing Super Admin pages
-if (basename($_SERVER['PHP_SELF']) === 'super_admin.php' && $_SESSION['userType'] !== 'Super Admin') {
+if (basename($_SERVER['PHP_SELF']) === 'super_admin.php' && !in_array($_SESSION['userType'], ['Super Admin', 'Owner'])) {
     header("Location: login.php");
     exit;
 }
@@ -29,6 +29,7 @@ $userLoggedIn = true;
 $userName = $_SESSION['userName'];
 $userType = $_SESSION['userType'];
 ?>
+
 
 
 

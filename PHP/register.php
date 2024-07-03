@@ -8,8 +8,9 @@ if (!isset($_SESSION['loggedIn'])) {
     exit;
 }
 
-// Ensure that the user is a Super Admin
-if ($_SESSION['userType'] !== 'Super Admin') {
+// Ensure that only Super Admin or Owner can access this page
+$userType = $_SESSION['userType'];
+if (!in_array($userType, ['Super Admin', 'Owner'])) {
     echo "Access denied. You do not have permission to access this page.";
     exit;
 }
@@ -308,8 +309,12 @@ $userType = $_SESSION['userType'];
                 <div class="login_row DG PR">
                     <label for="userType">User Type</label>
                     <select id="userType" name="userType" required>
-                        <option value="Admin" <?php echo ($userType === 'Admin') ? 'selected' : ''; ?>>Admin</option>
-                        <option value="Super Admin" <?php echo ($userType === 'Super Admin') ? 'selected' : ''; ?>>Super Admin</option>
+                        <?php if ($userType === 'Owner') : ?>
+                            <option value="Admin" <?php echo ($userType === 'Admin') ? 'selected' : ''; ?>>Admin</option>
+                            <option value="Super Admin" <?php echo ($userType === 'Super Admin') ? 'selected' : ''; ?>>Super Admin</option>
+                        <?php elseif ($userType === 'Super Admin') : ?>
+                            <option value="Admin" <?php echo ($userType === 'Admin') ? 'selected' : ''; ?>>Admin</option>
+                        <?php endif; ?>
                     </select>
                 </div>
 
@@ -334,7 +339,6 @@ $userType = $_SESSION['userType'];
                 <div class="login_row DG PR">
                     <button type="submit">Register</button>
                 </div>
-
             </form>
         </div>
     </main>
@@ -402,6 +406,19 @@ $userType = $_SESSION['userType'];
                 Ministry of Education.</p>
         </section>
     </footer>
+
+    <script>
+        function validateForm() {
+            var password = document.getElementById("password").value;
+            var re_password = document.getElementById("re_password").value;
+
+            if (password !== re_password) {
+                alert("Passwords do not match.");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 
 </html>

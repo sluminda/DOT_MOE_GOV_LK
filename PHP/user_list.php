@@ -15,6 +15,12 @@ $loggedInUser = $_SESSION['userName'];
 $userLoggedIn = true;
 $userName = $_SESSION['userName'];
 $userType = $_SESSION['userType'];
+
+// Ensure that only Super Admin and Owner can access this page
+if (!in_array($userType, ['Super Admin', 'Owner'])) {
+    header("Location: login.php");
+    exit;
+}
 ?>
 
 
@@ -235,19 +241,24 @@ $userType = $_SESSION['userType'];
                     // Output data of each row
                     foreach ($results as $row) {
                         echo "<tr id='user-" . htmlspecialchars($row["userName"]) . "'>
-                        <td>" . htmlspecialchars($row["userName"]) . "</td>
-                        <td>" . htmlspecialchars($row["userEmail"]) . "</td>
-                        <td>" . htmlspecialchars($row["userPhoneNumber"]) . "</td>
-                        <td>" . htmlspecialchars($row["userType"]) . "</td>
-                        <td class='actions'>";
+                    <td>" . htmlspecialchars($row["userName"]) . "</td>
+                    <td>" . htmlspecialchars($row["userEmail"]) . "</td>
+                    <td>" . htmlspecialchars($row["userPhoneNumber"]) . "</td>
+                    <td>" . htmlspecialchars($row["userType"]) . "</td>
+                    <td class='actions'>";
 
-                        // Check if the current row's username matches the logged-in username and prevent Super Admin from deleting their own account
-                        if ($row["userName"] !== $loggedInUser || $row["userType"] !== 'Super Admin') {
+                        // Owner can remove anyone except themselves
+                        if ($userType === 'Owner' && $row["userName"] !== $loggedInUser) {
+                            echo "<button onclick=\"removeUser('" . htmlspecialchars($row["userName"]) . "')\">Remove</button>";
+                        }
+
+                        // Super Admin can only remove Admins and not themselves
+                        if ($userType === 'Super Admin' && $row["userType"] === 'Admin' && $row["userName"] !== $loggedInUser) {
                             echo "<button onclick=\"removeUser('" . htmlspecialchars($row["userName"]) . "')\">Remove</button>";
                         }
 
                         echo "</td>
-                      </tr>";
+                  </tr>";
                     }
                 } else {
                     echo "<tr><td colspan='5'>No records found</td></tr>";
@@ -324,28 +335,6 @@ $userType = $_SESSION['userType'];
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

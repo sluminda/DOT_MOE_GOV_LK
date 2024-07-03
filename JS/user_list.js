@@ -9,7 +9,7 @@ function removeUser(username) {
         if (response.success) {
           document.getElementById("user-" + username).remove();
         } else {
-          alert("Failed to remove user.");
+          alert("Failed to remove user: " + response.message);
         }
       }
     };

@@ -211,17 +211,17 @@ if (!isset($_SESSION['form_token'])) {
                     <span id="emailError" class="error"></span>
                     <input type="email" id="email" name="email" required>
 
-                    <button type="button" id="sendOtp">Send OTP</button>
+                    <button type="button" id="sendOtp">Send OTP to Email</button>
 
                     <!-- form fields go here, as in the original form HTML -->
                     <input type="hidden" id="otpVerified" name="otpVerified" value="false">
                     <div id="otpSection">
                         <div class="msg_contain">
-                            <label for="otp">OTP:</label>
+                            <label for="otp">OTP Code:</label>
                             <div id="otpMessage" class="message" style="display:none;"></div>
                         </div>
                         <input type="text" id="otp" name="otp">
-                        <button type="button" id="verifyOtp">Verify OTP</button>
+                        <button type="button" id="verifyOtp">Verify Your OTP Code</button>
                     </div>
 
                 </div>
@@ -279,7 +279,7 @@ if (!isset($_SESSION['form_token'])) {
 
                 <!-- Provincial Office Details -->
                 <div id="provincialDetails" class="workplaceDetails">
-                    <label for="provincialName">Name of the Provincial Department of Education:</label>
+                    <label for="provincialName">Provincial Education Dept. Name/Census Code:</label>
                     <span id="provincialNameError" class="error"></span>
                     <input type="text" id="provincialName" name="provincialName">
                     <input type="hidden" id="provincialCodeInput" name="provincialCode" />
@@ -298,7 +298,7 @@ if (!isset($_SESSION['form_token'])) {
 
                 <!-- Zonal Office Details -->
                 <div id="zonalDetails" class="workplaceDetails">
-                    <label for="zonalName">Name of the Zonal Education Office:</label>
+                    <label for="zonalName">Zonal Edu. Office Name/Census Code:</label>
                     <span id="zonalNameError" class="error"></span>
                     <input type="text" id="zonalName" name="zonalName">
                     <input type="hidden" id="zonalCodeInput" name="zonalCode" />
@@ -317,7 +317,7 @@ if (!isset($_SESSION['form_token'])) {
 
                 <!-- Divisional Office Details -->
                 <div id="divisionalDetails" class="workplaceDetails">
-                    <label for="divisionalName">Divisional Education Office Name:</label>
+                    <label for="divisionalName">Divisional Edu. Office Name/Census Code:</label>
                     <span id="divisionalNameError" class="error"></span>
                     <input type="text" id="divisionalName" name="divisionalName">
                     <input type="hidden" id="divisionalCodeInput" name="divisionalCode" />

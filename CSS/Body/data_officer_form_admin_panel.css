@@ -82,6 +82,26 @@
 
 .container th {
   background-color: #f4f4f9;
+  cursor: pointer;
+  position: relative;
+}
+
+.container th.sortable:after {
+  content: "\25B2"; /* Up arrow */
+  position: absolute;
+  right: 10px;
+  color: #007bff;
+  display: none;
+}
+
+.container th.sortable.asc:after {
+  display: inline-block;
+  content: "\25B2"; /* Up arrow */
+}
+
+.container th.sortable.desc:after {
+  display: inline-block;
+  content: "\25BC"; /* Down arrow */
 }
 
 .container tr:hover {
@@ -161,4 +181,28 @@
   .container .pagination button {
     padding: 10px;
   }
+}
+
+.container th {
+  background-color: #f4f4f9;
+  cursor: pointer;
+  position: relative;
+  padding-right: 30px; /* Adjust padding for icons */
+}
+
+.container th .sort-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.5;
+}
+
+.container th.sortable.asc .sort-icon {
+  opacity: 1;
+}
+
+.container th.sortable.desc .sort-icon {
+  opacity: 1;
+  transform: translateY(-50%) rotate(180deg); /* Rotate icon for descending order */
 }

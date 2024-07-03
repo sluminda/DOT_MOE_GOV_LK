@@ -16,7 +16,7 @@ if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true) {
 }
 
 // Check user type for accessing Super Admin pages
-if (basename($_SERVER['PHP_SELF']) === 'super_admin.php' && $_SESSION['userType'] !== 'Super Admin') {
+if (basename($_SERVER['PHP_SELF']) === 'super_admin.php' && !in_array($_SESSION['userType'], ['Super Admin', 'Owner'])) {
     header("Location: ../PHP/login.php");
     exit;
 }
@@ -29,6 +29,7 @@ $userLoggedIn = true;
 $userName = $_SESSION['userName'];
 $userType = $_SESSION['userType'];
 ?>
+
 
 
 <!DOCTYPE html>
@@ -228,7 +229,7 @@ $userType = $_SESSION['userType'];
                     <div class="row g-3">
                         <!-- Grouping related filters -->
                         <div class="col-md-4">
-                            <input type="text" id="name" class="form-control" placeholder="Name">
+                            <input type="text" id="name" class="form-control" placeholder="Full Name">
                         </div>
                         <div class="col-md-4">
                             <input type="text" id="nic" class="form-control" placeholder="NIC">
@@ -347,35 +348,37 @@ $userType = $_SESSION['userType'];
             <table id="dataTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th class="id">ID</th>
-                        <th class="fullName">Full Name</th>
-                        <th class="nameWithInitials">Name With Initials</th>
-                        <th class="nic">NIC</th>
-                        <th class="email">Email</th>
-                        <th class="whatsappNumber">WhatsApp No</th>
-                        <th class="mobileNumber">Mobile No</th>
-                        <th class="headOfInstituteName">Institute Head</th>
-                        <th class="headOfInstituteContactNo">Head Contact</th>
-                        <th class="currentWorkingPlace">Work Category</th>
-                        <th class="selectedInstituteCode">Institute Code</th>
-                        <th class="selectedInstituteName">Institute Name</th>
-                        <th class="Province">Province</th>
-                        <th class="District">District</th>
-                        <th class="Zone">Zone</th>
-                        <th class="Division">Division</th>
-                        <th class="submittedAt">Submitted At</th>
-                        <th class="actions">Actions</th>
+                        <th class="sortable" data-column="id" data-order="asc">ID<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="fullName" data-order="asc">Full Name<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="nameWithInitials" data-order="asc">Name With Initials<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="nic" data-order="asc">NIC<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="email" data-order="asc">Email<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="whatsappNumber" data-order="asc">WhatsApp No<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="mobileNumber" data-order="asc">Mobile No<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="headOfInstituteName" data-order="asc">Institute Head<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="headOfInstituteContactNo" data-order="asc">Head Contact<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="currentWorkingPlace" data-order="asc">Work Category<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="selectedInstituteCode" data-order="asc">Institute Code<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="selectedInstituteName" data-order="asc">Institute Name<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="Province" data-order="asc">Province<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="District" data-order="asc">District<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="Zone" data-order="asc">Zone<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="Division" data-order="asc">Division<i class="fas fa-sort sort-icon"></i></th>
+                        <th class="sortable" data-column="submittedAt" data-order="asc">Submitted At<i class="fas fa-sort sort-icon"></i></th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- Data will be inserted here -->
+                <tbody id="dataTable">
+                    <!-- Table body content will be dynamically generated -->
                 </tbody>
             </table>
         </div>
         <div class="pagination">
+            <button id="firstPage" class="btn btn-primary">First</button>
             <button id="prevPage" class="btn btn-primary">Previous</button>
             <span id="currentPage">1</span>
             <button id="nextPage" class="btn btn-primary">Next</button>
+            <button id="lastPage" class="btn btn-primary">Last</button>
         </div>
     </div>
 
@@ -443,6 +446,105 @@ $userType = $_SESSION['userType'];
         </section>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableHeaders = document.querySelectorAll('.sortable');
+
+            tableHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    const column = this.dataset.column;
+                    const currentOrder = this.dataset.order;
+                    const newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+
+                    fetchData(1, column, newOrder);
+
+                    // Reset all headers
+                    tableHeaders.forEach(h => {
+                        h.classList.remove('asc', 'desc');
+                        h.querySelector('.sort-icon').classList.remove('fa-sort-up', 'fa-sort-down');
+                        h.querySelector('.sort-icon').classList.add('fa-sort');
+                        h.dataset.order = 'asc'; // Reset to initial order
+                    });
+
+                    // Set the current header
+                    this.dataset.order = newOrder;
+                    this.classList.add(newOrder);
+                    this.querySelector('.sort-icon').classList.remove('fa-sort');
+                    this.querySelector('.sort-icon').classList.add(newOrder === 'asc' ? 'fa-sort-up' : 'fa-sort-down');
+                });
+            });
+
+            function fetchData(page = 1, sortColumn = '', sortOrder = '') {
+                const url = new URL('fetch_data.php', window.location.href);
+                url.searchParams.set('page', page);
+                if (sortColumn) {
+                    url.searchParams.set('sortColumn', sortColumn);
+                    url.searchParams.set('sortOrder', sortOrder);
+                }
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        const tbody = document.querySelector('#dataTable tbody');
+                        tbody.innerHTML = '';
+                        data.data.forEach(row => {
+                            const tr = document.createElement('tr');
+                            Object.keys(row).forEach(key => {
+                                const td = document.createElement('td');
+                                td.textContent = row[key];
+                                tr.appendChild(td);
+                            });
+
+                            if (document.querySelector("#tableSelect").value !== "history") {
+                                const actionsTd = document.createElement('td');
+                                actionsTd.classList.add('actions');
+                                const deleteBtn = document.createElement('button');
+                                deleteBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'deleteBtn');
+                                deleteBtn.dataset.id = row.id;
+                                deleteBtn.textContent = 'Delete';
+                                actionsTd.appendChild(deleteBtn);
+                                tr.appendChild(actionsTd);
+                            }
+
+                            tbody.appendChild(tr);
+                        });
+
+                        document.getElementById('currentPage').textContent = data.page;
+                        // Handle pagination buttons based on data.totalPages
+
+                        bindDeleteButtonEvent(); // Re-bind delete button click event after updating table rows
+                    });
+            }
+
+            function bindDeleteButtonEvent() {
+                document.querySelectorAll('.deleteBtn').forEach(button => {
+                    button.removeEventListener('click', handleDelete); // Ensure previous event is removed
+                    button.addEventListener('click', handleDelete);
+                });
+            }
+
+            function handleDelete(event) {
+                const id = event.target.dataset.id;
+                if (confirm('Are you sure you want to delete this row?')) {
+                    fetch('delete_row.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: new URLSearchParams({
+                                id: id
+                            })
+                        })
+                        .then(response => response.text())
+                        .then(() => {
+                            fetchData(document.getElementById('currentPage').textContent); // Fetch data for the current page
+                        });
+                }
+            }
+
+            fetchData(); // Initial fetch
+        });
+    </script>
 </body>
 
 </html>

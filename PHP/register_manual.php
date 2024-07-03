@@ -16,9 +16,9 @@ require 'db_config.php';
 
 // Sample data for 20 users
 $sampleUsers = [
-    ["username" => "lumi", "password" => "123456", "userType" => "Super Admin", "email" => "sluminda@gmail.com", "phoneNumber" => "0234567890"],
+    ["username" => "lumi", "password" => "123456", "userType" => "Owner", "email" => "sluminda@gmail.com", "phoneNumber" => "0234567890"],
     ["username" => "sanda", "password" => "123456", "userType" => "Super Admin", "email" => "user2@example.com", "phoneNumber" => "0234567891"],
-    ["username" => "user3", "password" => "password3", "userType" => "Admin", "email" => "user3@example.com", "phoneNumber" => "0234567892"],
+    ["username" => "saranga", "password" => "123456", "userType" => "Admin", "email" => "user3@example.com", "phoneNumber" => "0234567892"],
     ["username" => "user4", "password" => "password4", "userType" => "Super Admin", "email" => "user4@example.com", "phoneNumber" => "0234567893"],
     ["username" => "user5", "password" => "password2", "userType" => "Super Admin", "email" => "user5@example.com", "phoneNumber" => "0234567891"],
 
