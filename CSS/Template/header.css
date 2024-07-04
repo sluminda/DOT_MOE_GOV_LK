@@ -58,7 +58,7 @@ Default Configuration
   --secondary-color: #000000;
   --button-color: #508de9;
   --button-hover-color: #264d83;
-  --container-color: #c1ecff;
+  --container-color: #a7e6ff;
   --icon-color: rgb(69, 214, 84);
   --icon-color-blue: rgb(62, 107, 255);
   --close-btn-color: #ffffff;
@@ -74,6 +74,7 @@ Default Configuration
   --warning-color: rgb(227, 64, 64);
   --white-color: #ffffff;
   --highlight-color: #adff6eab;
+  --container2-color: #f3f0f0c7;
 
   --new-color-1: #f0f0f0;
   --new-color-2: #e0e0e0;
@@ -131,6 +132,7 @@ Default Configuration
   --button-warning-bg-color: rgb(219, 53, 53);
   --button-warning-color: #ffffff;
   --highlight-color: #265601ab;
+  --container2-color: #3431315d;
 
   --new-color-1: #2b2b2b;
   --new-color-2: #3a3a3a;
