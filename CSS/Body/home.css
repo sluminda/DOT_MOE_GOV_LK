@@ -206,14 +206,15 @@ Main Section Training Modules
 /* End here  |*/
 
 .modules_container {
+  position: relative;
   padding: 7%;
   border: 2px solid var(--button-color);
-  /* outline: 1px solid var(--button-color); */
   border-radius: 10px;
   align-items: center;
-  row-gap: var(--font-big-2); /* Important */
+  row-gap: var(--font-big-2);
   justify-content: space-between;
   background-color: var(--container-color);
+  overflow: hidden;
 }
 
 .training_modules .modules_container h3 {
@@ -361,15 +362,11 @@ Main Section Statements
 
 .statements article p {
   /* max-width: 25ch; */
+  font-size: 0.9rem;
   text-align: justify;
   color: var(--secondary-color);
 }
 
-.statements article p::before {
-  content: ",,";
-  left: 0;
-  font-size: 1.2em; /* Adjust as needed */
-}
 .statements article a {
   text-decoration: none;
   padding: 0.4rem 1rem;

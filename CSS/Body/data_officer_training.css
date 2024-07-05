@@ -101,7 +101,7 @@
   align-items: center;
   row-gap: var(--font-big-2);
   justify-content: space-between;
-  background-color: var(--container-color);
+  background-color: var(--container2-color);
 }
 
 .training_modules .modules_container h4 {

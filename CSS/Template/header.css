@@ -231,7 +231,7 @@ body > header {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 8%;
-  box-shadow: 0 0 5px var(--secondary-color);
+  box-shadow: 0 0 2px var(--secondary-color);
 }
 
 /* Mobile navigation */

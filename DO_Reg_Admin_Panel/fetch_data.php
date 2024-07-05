@@ -24,10 +24,12 @@ try {
         $whereClauses[] = "currentWorkingPlace LIKE :currentWorkingPlace";
         $params[':currentWorkingPlace'] = "%" . $_GET['currentWorkingPlace'] . "%";
     }
+
     if (!empty($_GET['selectedInstituteCode'])) {
         $whereClauses[] = "selectedInstituteCode LIKE :selectedInstituteCode";
         $params[':selectedInstituteCode'] = "%" . $_GET['selectedInstituteCode'] . "%";
     }
+
     if (!empty($_GET['selectedInstituteName'])) {
         $whereClauses[] = "selectedInstituteName LIKE :selectedInstituteName";
         $params[':selectedInstituteName'] = "%" . $_GET['selectedInstituteName'] . "%";
@@ -54,9 +56,6 @@ try {
         $whereSql = 'WHERE ' . implode(' AND ', $whereClauses);
     }
 
-    $sortColumn = isset($_GET['sortColumn']) ? $_GET['sortColumn'] : 'id';
-    $sortOrder = isset($_GET['sortOrder']) && in_array(strtolower($_GET['sortOrder']), ['asc', 'desc']) ? $_GET['sortOrder'] : 'asc';
-
     $itemsPerPage = 10; // Set your desired items per page
     $offset = (isset($_GET['page']) ? $_GET['page'] - 1 : 0) * $itemsPerPage;
 
@@ -73,8 +72,8 @@ try {
     $totalCount = $countStmt->fetchColumn(); // Fetch the total count directly
     $totalPages = ceil($totalCount / $itemsPerPage);
 
-    // Fetch paginated and sorted items
-    $query = "SELECT * FROM $table $whereSql ORDER BY $sortColumn $sortOrder LIMIT $itemsPerPage OFFSET $offset";
+    // Fetch paginated items
+    $query = "SELECT * FROM $table $whereSql LIMIT $itemsPerPage OFFSET $offset";
     $stmt = $conn->prepare($query);
     foreach ($params as $key => &$val) {
         $stmt->bindParam($key, $val);

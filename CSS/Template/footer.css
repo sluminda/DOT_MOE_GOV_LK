@@ -1,5 +1,5 @@
 .footer {
-  box-shadow: 0 0 5px var(--secondary-color);
+  box-shadow: 0 0 2px var(--secondary-color);
   padding: 1rem var(--padding-1);
   gap: 1rem;
 }
