@@ -72,13 +72,13 @@ if (!isset($_SESSION['form_token'])) {
                     </a>
                 </li>
 
-                <li><a href="./Contributors.html">
+                <li><a href="../Pages/Contributors.html">
                         <div><i class="fa-solid fa-handshake-angle"></i></div>
                         <h3>Contributors</h3>
                     </a>
                 </li>
 
-                <li><a href="./Gallery.html">
+                <li><a href="../Pages/Gallery.html">
                         <div><i class="fa-regular fa-images"></i></div>
                         <h3>Gallery</h3>
                     </a>
@@ -131,14 +131,14 @@ if (!isset($_SESSION['form_token'])) {
                         <h3>Home</h3>
                     </a>
                 </li>
-                <li><a class="DF FD-R center" href="./Contributors.html">
+                <li><a class="DF FD-R center" href="../Pages/Contributors.html">
                         <div>
                             <i class="fa-solid fa-handshake-angle"></i>
                         </div>
                         <h3>Contributors</h3>
                     </a>
                 </li>
-                <li><a class="DF FD-R center" href="./Gallery.html">
+                <li><a class="DF FD-R center" href="../Pages/Gallery.html">
                         <div>
                             <i class="fa-regular fa-images"></i>
                         </div>

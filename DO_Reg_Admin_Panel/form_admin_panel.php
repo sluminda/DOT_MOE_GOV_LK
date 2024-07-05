@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// Define allowed user types
+$allowedUserTypes = ['Owner', 'Super Admin'];
+
 // Check if the session is expired
 if (!isset($_SESSION['loginTime']) || (time() - $_SESSION['loginTime'] > 259200)) { // 259200 seconds = 3 days
     session_unset();
@@ -9,14 +12,14 @@ if (!isset($_SESSION['loginTime']) || (time() - $_SESSION['loginTime'] > 259200)
     exit;
 }
 
-// Check if the user is logged in and has the correct user type
+// Check if the user is logged in
 if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true) {
     header("Location: ../PHP/login.php");
     exit;
 }
 
-// Check user type for accessing Super Admin pages
-if (basename($_SERVER['PHP_SELF']) === 'super_admin.php' && $_SESSION['userType'] !== 'Super Admin') {
+// Check user type for accessing this page
+if (!in_array($_SESSION['userType'], $allowedUserTypes)) {
     header("Location: ../PHP/login.php");
     exit;
 }
@@ -29,6 +32,7 @@ $userLoggedIn = true;
 $userName = $_SESSION['userName'];
 $userType = $_SESSION['userType'];
 ?>
+
 
 
 <!DOCTYPE html>

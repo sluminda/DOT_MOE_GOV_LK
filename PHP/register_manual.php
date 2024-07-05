@@ -1,18 +1,18 @@
 <?php
-// session_start();
+session_start();
 require 'db_config.php';
 
 // Ensure that the user is logged in
-// if (!isset($_SESSION['loggedIn'])) {
-//     header("Location: login.php");
-//     exit;
-// }
+if (!isset($_SESSION['loggedIn'])) {
+    header("Location: ./login.php");
+    exit;
+}
 
 // Ensure that the user is a Super Admin
-// if ($_SESSION['userType'] !== 'Super Admin') {
-//     echo "Access denied. You do not have permission to access this page.";
-//     exit;
-// }
+if ($_SESSION['userType'] !== 'Owner') {
+    echo "Access denied. You do not have permission to access this page.";
+    exit;
+}
 
 // Sample data for 20 users
 $sampleUsers = [
