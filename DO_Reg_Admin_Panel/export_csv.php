@@ -1,12 +1,10 @@
 <?php
 require 'db_connect.php';
 
-// Get the table name and columns from the query parameters
 $table = isset($_GET['table']) && $_GET['table'] === 'history' ? 'workplace_details_history' : 'workplace_details';
 $columns = isset($_GET['columns']) ? explode(',', $_GET['columns']) : [];
 $columnList = implode(", ", array_map('htmlspecialchars', $columns));
 
-// Build the WHERE clause based on filters
 $whereClauses = [];
 $params = [];
 
@@ -31,13 +29,32 @@ if (!empty($_GET['selectedInstituteName'])) {
     $whereClauses[] = "selectedInstituteName LIKE :selectedInstituteName";
     $params[':selectedInstituteName'] = "%" . $_GET['selectedInstituteName'] . "%";
 }
+if (!empty($_GET['province'])) {
+    $whereClauses[] = "province LIKE :province";
+    $params[':province'] = "%" . $_GET['province'] . "%";
+}
+if (!empty($_GET['district'])) {
+    $whereClauses[] = "district LIKE :district";
+    $params[':district'] = "%" . $_GET['district'] . "%";
+}
+if (!empty($_GET['zone'])) {
+    $whereClauses[] = "zone LIKE :zone";
+    $params[':zone'] = "%" . $_GET['zone'] . "%";
+}
+if (!empty($_GET['division'])) {
+    $whereClauses[] = "division LIKE :division";
+    $params[':division'] = "%" . $_GET['division'] . "%";
+}
 
 $whereSql = '';
 if ($whereClauses) {
     $whereSql = 'WHERE ' . implode(' AND ', $whereClauses);
 }
 
-// Prepare the SQL query
+// Debugging
+error_log("SQL Query: SELECT $columnList FROM $table $whereSql");
+error_log("Params: " . json_encode($params));
+
 $query = "SELECT $columnList FROM $table $whereSql";
 $stmt = $conn->prepare($query);
 foreach ($params as $key => &$val) {
@@ -46,15 +63,12 @@ foreach ($params as $key => &$val) {
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Generate a filename with the current date and time
 $date = new DateTime();
 $filename = 'workplace_details_' . $date->format('Y-m-d_H-i-s') . '.csv';
 
-// Set the headers for the CSV download
 header('Content-Type: text/csv');
 header('Content-Disposition: attachment;filename=' . $filename);
 
-// Open the output stream and write the CSV data
 $output = fopen('php://output', 'w');
 fputcsv($output, $columns);
 foreach ($data as $row) {

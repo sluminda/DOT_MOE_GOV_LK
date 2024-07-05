@@ -28,6 +28,8 @@ $(document).ready(function () {
     };
 
     $.get("fetch_data.php", filters, function (response) {
+      // Debug output
+      console.log("Fetch Data Response:", response);
       try {
         const data = JSON.parse(response);
         currentPage = parseInt(data.page);
@@ -44,8 +46,8 @@ $(document).ready(function () {
           });
           if ($("#tableSelect").val() !== "history") {
             rowHtml += `<td class="actions">
-                                      <button class="btn btn-danger btn-sm deleteBtn" data-id="${row.id}">Delete</button>
-                                  </td>`;
+                                        <button class="btn btn-danger btn-sm deleteBtn" data-id="${row.id}">Delete</button>
+                                    </td>`;
           }
           rowHtml += "</tr>";
           tbody.append(rowHtml);
@@ -61,18 +63,6 @@ $(document).ready(function () {
   $("#filterBtn").click(function () {
     currentPage = 1; // Reset current page when applying new filters
     fetchData();
-  });
-
-  $("#prevPage").click(function () {
-    if (currentPage > 1) {
-      fetchData(currentPage - 1);
-    }
-  });
-
-  $("#nextPage").click(function () {
-    if (currentPage < totalPages) {
-      fetchData(currentPage + 1);
-    }
   });
 
   $("#exportBtn").click(function () {
@@ -105,7 +95,6 @@ $(document).ready(function () {
     }
   });
 
-  // Handle delete button click
   $(document).on("click", ".deleteBtn", function () {
     const id = $(this).data("id");
     if (confirm("Are you sure you want to delete this row?")) {
@@ -115,12 +104,10 @@ $(document).ready(function () {
     }
   });
 
-  // Function to update pagination UI
   function updatePaginationUI() {
     $("#currentPage").text(`${currentPage}/${totalPages}`);
   }
 
-  // Event listener for first page button click
   $("#firstPage").click(function () {
     if (currentPage > 1) {
       currentPage = 1;
@@ -128,7 +115,6 @@ $(document).ready(function () {
     }
   });
 
-  // Event listener for last page button click
   $("#lastPage").click(function () {
     if (currentPage < totalPages) {
       currentPage = totalPages;
@@ -136,7 +122,6 @@ $(document).ready(function () {
     }
   });
 
-  // Function to toggle "Actions" column visibility
   function toggleActionsColumn() {
     if ($("#tableSelect").val() === "history") {
       $(".actions").hide();
@@ -145,17 +130,14 @@ $(document).ready(function () {
     }
   }
 
-  // Event listener for real-time filtering
   $(".filter-input").on("input", function () {
     currentPage = 1; // Reset current page when applying new filters
     fetchData();
   });
 
-  // Initial fetch and actions column visibility
   fetchData();
   toggleActionsColumn();
 
-  // Event listener for table selection change
   $("#tableSelect").change(function () {
     fetchData();
     toggleActionsColumn();

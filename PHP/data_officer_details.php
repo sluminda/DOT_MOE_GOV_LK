@@ -12,7 +12,7 @@ if (!isset($_SESSION['loginTime']) || (time() - $_SESSION['loginTime'] > 259200)
 // Check if the user is logged in and has the correct user type
 if (
     !isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true ||
-    ($_SESSION['userType'] !== 'Admin' && $_SESSION['userType'] !== 'Super Admin')
+    ($_SESSION['userType'] !== 'Admin' && $_SESSION['userType'] !== 'Super Admin' && $_SESSION['userType'] !== 'Owner')
 ) {
     header("Location: login.php");
     exit;
