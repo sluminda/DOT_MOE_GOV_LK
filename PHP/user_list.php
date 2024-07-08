@@ -1,10 +1,10 @@
 <?php
 session_start();
-require 'db_config.php';
+require './db_config.php';
 
 // Ensure that the user is logged in
 if (!isset($_SESSION['loggedIn'])) {
-    header("Location: login.php");
+    header("Location: ./login.php");
     exit;
 }
 
@@ -18,7 +18,7 @@ $userType = $_SESSION['userType'];
 
 // Ensure that only Super Admin and Owner can access this page
 if (!in_array($userType, ['Super Admin', 'Owner'])) {
-    header("Location: login.php");
+    header("Location: ./login.php");
     exit;
 }
 ?>

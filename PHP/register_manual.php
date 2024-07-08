@@ -1,27 +1,23 @@
 <?php
 session_start();
-require 'db_config.php';
+require './db_config.php';
 
-// Ensure that the user is logged in
+
 if (!isset($_SESSION['loggedIn'])) {
     header("Location: ./login.php");
     exit;
 }
 
-// Ensure that the user is a Super Admin
+
 if ($_SESSION['userType'] !== 'Owner') {
     echo "Access denied. You do not have permission to access this page.";
     exit;
 }
 
-// Sample data for 20 users
-$sampleUsers = [
-    ["username" => "lumi", "password" => "123456", "userType" => "Owner", "email" => "sluminda@gmail.com", "phoneNumber" => "0234567890"],
-    ["username" => "sanda", "password" => "123456", "userType" => "Super Admin", "email" => "user2@example.com", "phoneNumber" => "0234567891"],
-    ["username" => "saranga", "password" => "123456", "userType" => "Admin", "email" => "user3@example.com", "phoneNumber" => "0234567892"],
-    ["username" => "user4", "password" => "password4", "userType" => "Super Admin", "email" => "user4@example.com", "phoneNumber" => "0234567893"],
-    ["username" => "user5", "password" => "password2", "userType" => "Super Admin", "email" => "user5@example.com", "phoneNumber" => "0234567891"],
 
+$sampleUsers = [
+    // ["username" => "lumi", "password" => "123456", "userType" => "Owner", "email" => "sluminda@gmail.com", "phoneNumber" => "0234567890"],
+    // ["username" => "lumi", "password" => "123456", "userType" => "Owner", "email" => "sluminda@gmail.com", "phoneNumber" => "0234567890"]
 ];
 
 foreach ($sampleUsers as $user) {

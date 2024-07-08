@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':userinput', $userInput);
         $stmt->execute();
 
-        // Check if the statement was executed successfully
+
         if ($stmt) {
             if ($stmt->rowCount() > 0) {
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -62,10 +62,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['loggedIn'] = true;
                     $_SESSION['loginTime'] = time();
 
-                    // Get the user's IP address
                     $ipAddress = getUserIpAddr();
 
-                    // Log the login details
                     $loginTime = date('Y-m-d H:i:s');
                     $log_sql = "INSERT INTO login_records (userID, loginTime, ipAddress) VALUES (:userID, :loginTime, :ipAddress)";
                     $log_stmt = $conn->prepare($log_sql);
@@ -77,28 +75,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if ($userType === "Admin") {
                         header("Location: data_officer_details.php");
                     } elseif ($userType === "Super Admin" || $userType === "Owner") {
-                        header("Location: super_admin.php");
+                        header("Location: ./super_admin.php");
                     }
                     exit;
                 } else {
                     $_SESSION['error_message'] = "Invalid username/email or password.";
-                    header("Location: login.php");
+                    header("Location: ./login.php");
                     exit;
                 }
             } else {
                 $_SESSION['error_message'] = "Invalid username/email or password.";
-                header("Location: login.php");
+                header("Location: ./login.php");
                 exit;
             }
         } else {
             $_SESSION['error_message'] = "Database error.";
-            header("Location: login.php");
+            header("Location: ./login.php");
             exit;
         }
     } catch (PDOException $e) {
-        // Handle PDOException
         $_SESSION['error_message'] = "Error: " . $e->getMessage();
-        header("Location: login.php");
+        header("Location: ./login.php");
         exit;
     }
 }

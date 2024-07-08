@@ -1,5 +1,5 @@
 <?php
-include './db_connection.php';
+include '../PHP/db_connect.php';
 
 $input = json_decode(file_get_contents("php://input"), true);
 $query = $input['query'];

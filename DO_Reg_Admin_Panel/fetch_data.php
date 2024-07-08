@@ -1,5 +1,5 @@
 <?php
-include 'db_connect.php';
+include '../PHP/db_config.php';
 
 try {
     $table = isset($_GET['table']) && $_GET['table'] === 'history' ? 'workplace_details_history' : 'workplace_details';
@@ -56,10 +56,10 @@ try {
         $whereSql = 'WHERE ' . implode(' AND ', $whereClauses);
     }
 
-    $itemsPerPage = 10; // Set your desired items per page
+    $itemsPerPage = 10;
     $offset = (isset($_GET['page']) ? $_GET['page'] - 1 : 0) * $itemsPerPage;
 
-    // Count total items
+
     $countQuery = "SELECT COUNT(*) as total FROM $table $whereSql";
     $countStmt = $conn->prepare($countQuery);
     foreach ($params as $key => &$val) {
@@ -69,10 +69,10 @@ try {
         throw new Exception('Error executing statement: ' . implode(', ', $countStmt->errorInfo()));
     }
 
-    $totalCount = $countStmt->fetchColumn(); // Fetch the total count directly
+    $totalCount = $countStmt->fetchColumn();
     $totalPages = ceil($totalCount / $itemsPerPage);
 
-    // Fetch paginated items
+
     $query = "SELECT * FROM $table $whereSql LIMIT $itemsPerPage OFFSET $offset";
     $stmt = $conn->prepare($query);
     foreach ($params as $key => &$val) {

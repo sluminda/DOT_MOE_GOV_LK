@@ -5,9 +5,9 @@ date_default_timezone_set('Asia/Colombo');
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
-include './db_connection.php';
+include '../PHP/db_connect.php';
 
 function sanitizeInput($data)
 {
@@ -139,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'dotmoegov@gmail.com';
-            $mail->Password = 'zjxkoytcmtkrocjq';
+            $mail->Password = '';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 

@@ -10,11 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $userInput = trim($_POST['userInput']);
 
     try {
-        // Check if input is an email
+
         if (filter_var($userInput, FILTER_VALIDATE_EMAIL)) {
             $sql = "SELECT * FROM userlogin WHERE userEmail = :userInput";
         } else {
-            // Assume input is a username
             $sql = "SELECT * FROM userlogin WHERE username = :userInput";
         }
 
@@ -24,11 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $email = $row['userEmail']; // Get the email from the database
-            $token = bin2hex(random_bytes(50)); // Generate a secure token
+            $email = $row['userEmail'];
+            $token = bin2hex(random_bytes(50));
             $expiry_time = date('Y-m-d H:i:s', strtotime('+1 hour')); // Token expiry time set to 1 hour
 
-            // Insert token into password_resets table
+
             $sql = "INSERT INTO password_resets (email, token, expiry_time) VALUES (:email, :token, :expiry_time)";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
@@ -36,54 +35,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bindParam(':expiry_time', $expiry_time, PDO::PARAM_STR);
             $stmt->execute();
 
-            // Send email to user with the reset link
+
             $resetLink = "localhost/DOT_MOE_GOV_LK/PHP/reset_form.php?token=$token";
             $mail = new PHPMailer(true);
 
             try {
-                // Server settings
+
                 $mail->isSMTP();
                 $mail->Host       = 'smtp.gmail.com';
                 $mail->SMTPAuth   = true;
                 $mail->Username   = 'dotmoegov@gmail.com';
-                $mail->Password   = 'zjxkoytcmtkrocjq';
+                $mail->Password   = '';
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port       = 587;
 
-                // Recipients
+
                 $mail->setFrom('dotmoegov@gmail.com', 'Password Reset');
                 $mail->addAddress($email);
 
-                // Content
+
                 $mail->isHTML(true);
                 $mail->Subject = 'Password Reset';
                 $mail->Body    = "
-    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; padding: 20px; background-color: #ffffff;'>
-        <div style='text-align: center; padding-bottom: 20px;'>
-            <h1 style='color: #333;'>Password Reset Request</h1>
-        </div>
-        <div style='border-top: 1px solid #e0e0e0; padding-top: 20px;'>
-            <p style='font-size: 16px; color: #333;'>Dear User,</p>
-            <p style='font-size: 16px; color: #333;'>We received a request to reset your password. Click the button below to reset your password.</p>
-            <div style='text-align: center; margin: 20px 0;'>
-                <a href='$resetLink' style='padding: 10px 20px; background-color: #0077ff; color: #ffffff; text-decoration: none; border-radius: 5px;'>Reset Password</a>
-            </div>
-            <p style='font-size: 16px; color: #333;'>If you did not request a password reset, please ignore this email. This password reset link is valid for 1 hour.</p>
-            <p style='margin-top: 20px; font-size: 16px; color: #333;'><br></p>
-            <p style='font-size: 14px;'>Best regards,<br>Data Management Branch, <br>Ministry of Education</p>
-        </div>
-    </div>
-";
+                            <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; padding: 20px; background-color: #ffffff;'>
+                                <div style='text-align: center; padding-bottom: 20px;'>
+                                    <h1 style='color: #333;'>Password Reset Request</h1>
+                                </div>
+                                <div style='border-top: 1px solid #e0e0e0; padding-top: 20px;'>
+                                    <p style='font-size: 16px; color: #333;'>Dear User,</p>
+                                    <p style='font-size: 16px; color: #333;'>We received a request to reset your password. Click the button below to reset your password.</p>
+                                    <div style='text-align: center; margin: 20px 0;'>
+                                        <a href='$resetLink' style='padding: 10px 20px; background-color: #0077ff; color: #ffffff; text-decoration: none; border-radius: 5px;'>Reset Password</a>
+                                    </div>
+                                    <p style='font-size: 16px; color: #333;'>If you did not request a password reset, please ignore this email. This password reset link is valid for 1 hour.</p>
+                                    <p style='margin-top: 20px; font-size: 16px; color: #333;'><br></p>
+                                    <p style='font-size: 14px;'>Best regards,<br>Data Management Branch, <br>Ministry of Education</p>
+                                </div>
+                            </div>
+                                ";
 
                 $mail->AltBody = "
-    Dear User,\n\n
-    We received a request to reset your password. Click the link below to reset your password.\n\n
-    $resetLink\n\n
-    If you did not request a password reset, please ignore this email. This password reset link is valid for 1 hour.\n\n
-    Best regards,\n
-    Data Management Branch,\n
-    Ministry of Education.\n
-";
+                                Dear User,\n\n
+                                We received a request to reset your password. Click the link below to reset your password.\n\n
+                                $resetLink\n\n
+                                If you did not request a password reset, please ignore this email. This password reset link is valid for 1 hour.\n\n
+                                Best regards,\n
+                                Data Management Branch,\n
+                                Ministry of Education.\n
+                            ";
 
                 $mail->send();
                 $_SESSION['message'] = "A password reset link has been sent to your email.";
@@ -107,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery</title>
+    <title>Forget Password</title>
 
     <link rel="apple-touch-icon" sizes="180x180" href="../Images/Favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../Images/Favicon/favicon-32x32.png">

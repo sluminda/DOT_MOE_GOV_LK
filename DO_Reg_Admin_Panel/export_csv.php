@@ -1,5 +1,5 @@
 <?php
-require 'db_connect.php';
+require '../PHP/db_config.php';
 
 $table = isset($_GET['table']) && $_GET['table'] === 'history' ? 'workplace_details_history' : 'workplace_details';
 $columns = isset($_GET['columns']) ? explode(',', $_GET['columns']) : [];

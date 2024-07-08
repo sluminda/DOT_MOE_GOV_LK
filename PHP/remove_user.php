@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db_config.php';
+require './db_config.php';
 
 if (!isset($_SESSION['loggedIn'])) {
     echo json_encode(['success' => false, 'message' => 'User not logged in']);
