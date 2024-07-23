@@ -1,5 +1,7 @@
 <?php
-include 'db_connect.php';
+include 'db_config.php';
+
+header('Content-Type: application/json');
 
 try {
     if (!isset($_POST['id'])) {

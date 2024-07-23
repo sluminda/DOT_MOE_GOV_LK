@@ -1,11 +1,24 @@
 <?php
 
+include '../PHP/db_config.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require '../vendor/autoload.php';
 
-include '../PHP/db_connect.php';
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "dot_moe_gov_lk";
+$port = 3308;
+
+try {
+    $conn = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
+}
 
 header('Content-Type: application/json');
 
@@ -21,13 +34,13 @@ $otp = random_int(100000, 999999);
 $otpHash = password_hash($otp, PASSWORD_DEFAULT);
 $expiresAt = time() + (15 * 60); // 15 minutes
 
-
-
-$stmt = $conn->prepare("INSERT INTO otp_requests (email, otp_hash, expires_at) VALUES (?, ?, ?)");
-$stmt->bind_param("ssi", $email, $otpHash, $expiresAt);
+$stmt = $conn->prepare("INSERT INTO otp_requests (email, otp_hash, expires_at) VALUES (:email, :otp_hash, :expires_at)");
+$stmt->bindParam(':email', $email);
+$stmt->bindParam(':otp_hash', $otpHash);
+$stmt->bindParam(':expires_at', $expiresAt);
 $stmt->execute();
-$stmt->close();
-$conn->close();
+
+$conn = null;
 
 $mail = new PHPMailer(true);
 try {
@@ -35,7 +48,7 @@ try {
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
     $mail->Username = 'dotmoegov@gmail.com';
-    $mail->Password = '';
+    $mail->Password = 'gqdlndajmcqvlxym';
     $mail->SMTPSecure = 'tls';
     $mail->Port = 587;
 

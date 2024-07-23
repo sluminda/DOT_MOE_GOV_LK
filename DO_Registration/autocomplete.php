@@ -1,5 +1,5 @@
 <?php
-include '../PHP/db_connect.php';
+include '../PHP/db_config.php';
 
 $input = json_decode(file_get_contents("php://input"), true);
 $query = $input['query'];
@@ -9,46 +9,40 @@ if ($type === 'school') {
     $stmt = $conn->prepare("SELECT New_CenCode, New_InstitutionName 
                             FROM Institutions 
                             WHERE InstType = 'SC' 
-                            AND (New_CenCode LIKE ? OR New_InstitutionName LIKE ?) 
+                            AND (New_CenCode LIKE :query OR New_InstitutionName LIKE :query) 
                             LIMIT 10");
     $likeQuery = "%$query%";
-    $stmt->bind_param("ss", $likeQuery, $likeQuery);
+    $stmt->bindParam(':query', $likeQuery);
 } elseif ($type === 'provincial') {
     $stmt = $conn->prepare("SELECT New_CenCode, New_InstitutionName 
                             FROM Institutions 
                             WHERE InstType = 'PD' 
-                            AND (New_CenCode LIKE ? OR New_InstitutionName LIKE ?) 
+                            AND (New_CenCode LIKE :query OR New_InstitutionName LIKE :query) 
                             LIMIT 10");
     $likeQuery = "%$query%";
-    $stmt->bind_param("ss", $likeQuery, $likeQuery);
+    $stmt->bindParam(':query', $likeQuery);
 } elseif ($type === 'zonal') {
     $stmt = $conn->prepare("SELECT New_CenCode, New_InstitutionName 
                             FROM Institutions 
                             WHERE InstType = 'ZN' 
-                            AND (New_CenCode LIKE ? OR New_InstitutionName LIKE ?) 
+                            AND (New_CenCode LIKE :query OR New_InstitutionName LIKE :query) 
                             LIMIT 10");
     $likeQuery = "%$query%";
-    $stmt->bind_param("ss", $likeQuery, $likeQuery);
+    $stmt->bindParam(':query', $likeQuery);
 } elseif ($type === 'divisional') {
     $stmt = $conn->prepare("SELECT New_CenCode, New_InstitutionName 
                             FROM Institutions 
                             WHERE InstType = 'ED' 
-                            AND (New_CenCode LIKE ? OR New_InstitutionName LIKE ?) 
+                            AND (New_CenCode LIKE :query OR New_InstitutionName LIKE :query) 
                             LIMIT 10");
     $likeQuery = "%$query%";
-    $stmt->bind_param("ss", $likeQuery, $likeQuery);
+    $stmt->bindParam(':query', $likeQuery);
 }
 
 $stmt->execute();
-$result = $stmt->get_result();
-$data = [];
-
-while ($row = $result->fetch_assoc()) {
-    $data[] = $row;
-}
-
-$stmt->close();
-$conn->close();
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 header('Content-Type: application/json');
 echo json_encode($data);
+
+$conn = null;

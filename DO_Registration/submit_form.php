@@ -6,8 +6,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require '../vendor/autoload.php';
-
-include '../PHP/db_connect.php';
+include '../PHP/db_config.php';
 
 function sanitizeInput($data)
 {
@@ -108,25 +107,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($errors)) {
         // Insert into history table
-        $stmt = $conn->prepare("INSERT INTO workplace_details_history (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteCode, selectedInstituteName, submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $selectedInstituteCode, $selectedInstituteName, $submittedAt);
+        $stmt = $conn->prepare("INSERT INTO workplace_details_history (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteCode, selectedInstituteName, submittedAt) VALUES (:fullName, :nameWithInitials, :nic, :email, :whatsappNumber, :mobileNumber, :headOfInstituteName, :headOfInstituteContactNo, :currentWorkingPlace, :selectedInstituteCode, :selectedInstituteName, :submittedAt)");
+        $stmt->bindParam(':fullName', $fullName);
+        $stmt->bindParam(':nameWithInitials', $nameWithInitials);
+        $stmt->bindParam(':nic', $nic);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':whatsappNumber', $whatsappNumber);
+        $stmt->bindParam(':mobileNumber', $mobileNumber);
+        $stmt->bindParam(':headOfInstituteName', $headOfInstituteName);
+        $stmt->bindParam(':headOfInstituteContactNo', $headOfInstituteContactNo);
+        $stmt->bindParam(':currentWorkingPlace', $currentWorkingPlace);
+        $stmt->bindParam(':selectedInstituteCode', $selectedInstituteCode);
+        $stmt->bindParam(':selectedInstituteName', $selectedInstituteName);
+        $stmt->bindParam(':submittedAt', $submittedAt);
         $stmt->execute();
 
         // Check if NIC and email already exist
-        $stmt = $conn->prepare("SELECT id FROM workplace_details WHERE nic=? AND email=?");
-        $stmt->bind_param("ss", $nic, $email);
+        $stmt = $conn->prepare("SELECT id FROM workplace_details WHERE nic = :nic AND email = :email");
+        $stmt->bindParam(':nic', $nic);
+        $stmt->bindParam(':email', $email);
         $stmt->execute();
-        $result = $stmt->get_result();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($result->num_rows > 0) {
+        if ($result) {
             // Update existing record
-            $stmt = $conn->prepare("UPDATE workplace_details SET fullName=?, nameWithInitials=?, whatsappNumber=?, mobileNumber=?, headOfInstituteName=?, headOfInstituteContactNo=?, currentWorkingPlace=?, selectedInstituteCode=?, selectedInstituteName=?, submittedAt=? WHERE nic=? AND email=?");
-            $stmt->bind_param("ssssssssssss", $fullName, $nameWithInitials, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $selectedInstituteCode, $selectedInstituteName, $submittedAt, $nic, $email);
+            $stmt = $conn->prepare("UPDATE workplace_details SET fullName = :fullName, nameWithInitials = :nameWithInitials, whatsappNumber = :whatsappNumber, mobileNumber = :mobileNumber, headOfInstituteName = :headOfInstituteName, headOfInstituteContactNo = :headOfInstituteContactNo, currentWorkingPlace = :currentWorkingPlace, selectedInstituteCode = :selectedInstituteCode, selectedInstituteName = :selectedInstituteName, submittedAt = :submittedAt WHERE nic = :nic AND email = :email");
+            $stmt->bindParam(':fullName', $fullName);
+            $stmt->bindParam(':nameWithInitials', $nameWithInitials);
+            $stmt->bindParam(':whatsappNumber', $whatsappNumber);
+            $stmt->bindParam(':mobileNumber', $mobileNumber);
+            $stmt->bindParam(':headOfInstituteName', $headOfInstituteName);
+            $stmt->bindParam(':headOfInstituteContactNo', $headOfInstituteContactNo);
+            $stmt->bindParam(':currentWorkingPlace', $currentWorkingPlace);
+            $stmt->bindParam(':selectedInstituteCode', $selectedInstituteCode);
+            $stmt->bindParam(':selectedInstituteName', $selectedInstituteName);
+            $stmt->bindParam(':submittedAt', $submittedAt);
+            $stmt->bindParam(':nic', $nic);
+            $stmt->bindParam(':email', $email);
             $stmt->execute();
         } else {
             // Insert new record
-            $stmt = $conn->prepare("INSERT INTO workplace_details (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteCode, selectedInstituteName, submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssssssssss", $fullName, $nameWithInitials, $nic, $email, $whatsappNumber, $mobileNumber, $headOfInstituteName, $headOfInstituteContactNo, $currentWorkingPlace, $selectedInstituteCode, $selectedInstituteName, $submittedAt);
+            $stmt = $conn->prepare("INSERT INTO workplace_details (fullName, nameWithInitials, nic, email, whatsappNumber, mobileNumber, headOfInstituteName, headOfInstituteContactNo, currentWorkingPlace, selectedInstituteCode, selectedInstituteName, submittedAt) VALUES (:fullName, :nameWithInitials, :nic, :email, :whatsappNumber, :mobileNumber, :headOfInstituteName, :headOfInstituteContactNo, :currentWorkingPlace, :selectedInstituteCode, :selectedInstituteName, :submittedAt)");
+            $stmt->bindParam(':fullName', $fullName);
+            $stmt->bindParam(':nameWithInitials', $nameWithInitials);
+            $stmt->bindParam(':nic', $nic);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':whatsappNumber', $whatsappNumber);
+            $stmt->bindParam(':mobileNumber', $mobileNumber);
+            $stmt->bindParam(':headOfInstituteName', $headOfInstituteName);
+            $stmt->bindParam(':headOfInstituteContactNo', $headOfInstituteContactNo);
+            $stmt->bindParam(':currentWorkingPlace', $currentWorkingPlace);
+            $stmt->bindParam(':selectedInstituteCode', $selectedInstituteCode);
+            $stmt->bindParam(':selectedInstituteName', $selectedInstituteName);
+            $stmt->bindParam(':submittedAt', $submittedAt);
             $stmt->execute();
         }
 
@@ -139,7 +172,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'dotmoegov@gmail.com';
-            $mail->Password = '';
+            $mail->Password = 'gqdlndajmcqvlxym';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
@@ -197,7 +230,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     Data Management Branch,
     Ministry of Education.
 ";
-
 
             $mail->send();
             $_SESSION['message'] = 'Form submitted successfully! A confirmation email has been sent.';
