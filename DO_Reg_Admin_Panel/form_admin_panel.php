@@ -225,7 +225,7 @@ $userType = $_SESSION['userType'];
     </header>
 
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Workplace Details Admin Panel</h1>
+        <h1 class="text-center mb-4">Data Officer Registration Admin Panel</h1>
         <div class="card mb-4">
             <div class="card-body">
                 <div class="filter-container">

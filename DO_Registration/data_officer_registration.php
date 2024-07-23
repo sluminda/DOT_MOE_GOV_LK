@@ -211,7 +211,7 @@ if (!isset($_SESSION['form_token'])) {
                     <span id="emailError" class="error"></span>
                     <input type="email" id="email" name="email" required>
 
-                    <button type="button" id="sendOtp">Send OTP to Email</button>
+                    <button type="button" id="sendOtp">Send OTP Code to Email (Click Once)</button>
 
                     <!-- form fields go here, as in the original form HTML -->
                     <input type="hidden" id="otpVerified" name="otpVerified" value="false">

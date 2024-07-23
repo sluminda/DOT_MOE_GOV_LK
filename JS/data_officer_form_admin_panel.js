@@ -28,7 +28,6 @@ $(document).ready(function () {
     };
 
     $.get("fetch_data.php", filters, function (response) {
-      // Debug output
       console.log("Fetch Data Response:", response);
       try {
         const data = JSON.parse(response);
@@ -46,8 +45,8 @@ $(document).ready(function () {
           });
           if ($("#tableSelect").val() !== "history") {
             rowHtml += `<td class="actions">
-                                        <button class="btn btn-danger btn-sm deleteBtn" data-id="${row.id}">Delete</button>
-                                    </td>`;
+                          <button class="btn btn-danger btn-sm deleteBtn" data-id="${row.id}">Delete</button>
+                        </td>`;
           }
           rowHtml += "</tr>";
           tbody.append(rowHtml);
@@ -111,6 +110,20 @@ $(document).ready(function () {
   $("#firstPage").click(function () {
     if (currentPage > 1) {
       currentPage = 1;
+      fetchData(currentPage);
+    }
+  });
+
+  $("#prevPage").click(function () {
+    if (currentPage > 1) {
+      currentPage--;
+      fetchData(currentPage);
+    }
+  });
+
+  $("#nextPage").click(function () {
+    if (currentPage < totalPages) {
+      currentPage++;
       fetchData(currentPage);
     }
   });
