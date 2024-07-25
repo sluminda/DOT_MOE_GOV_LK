@@ -31,7 +31,6 @@ if (!isset($_SESSION['form_token'])) {
     <script defer src="../JS/register_form.js"></script>
 </head>
 
-
 <body>
     <?php
     if (isset($_SESSION['message'])) {
@@ -173,7 +172,7 @@ if (!isset($_SESSION['form_token'])) {
 
     <!-- Body Content Starts -->
     <main>
-        <form id="detailsForm" action="submit_form.php" method="POST">
+        <form id="detailsForm" action="./submit_form.php" method="POST">
 
             <!-- Include form token for CSRF protection -->
             <input type="hidden" name="form_token" value="<?php echo $_SESSION['form_token']; ?>">
@@ -430,7 +429,6 @@ if (!isset($_SESSION['form_token'])) {
             }, 500);
         }
     </script>
-    <script src="./script.js"></script>
 </body>
 
 </html>

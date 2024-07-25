@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const fetchAutocompleteData = async (query, type) => {
     try {
-      const response = await fetch("autocomplete.php", {
+      const response = await fetch("../DO_Registration/autocomplete.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -286,7 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (canRequestOtp) {
       const email = document.getElementById("email").value;
       if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        fetch("request_otp.php", {
+        fetch("../DO_Registration/request_otp.php", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -329,7 +329,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const otp = document.getElementById("otp").value;
     const email = document.getElementById("email").value;
 
-    fetch("verify_otp.php", {
+    fetch("../DO_Registration/verify_otp.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
