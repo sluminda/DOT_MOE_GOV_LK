@@ -38,7 +38,7 @@ try {
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
     $mail->Username = 'dotmoegov@gmail.com';
-    $mail->Password = '';
+    $mail->Password = 'xwyjdwiphkgbxnmd';
     $mail->SMTPSecure = 'tls';
     $mail->Port = 587;
 

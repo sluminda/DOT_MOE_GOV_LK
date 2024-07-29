@@ -1,6 +1,5 @@
-Website Title
-Header Navigation + Mobile
-Form Validation
-DataBase
-Website Links
-Login Related
+Use this site key in the HTML code your site serves to users.
+6LddyBoqAAAAAL_of7p6TQuCamw7_f06tNa-NmI9
+
+Use this secret key for communication between your site and reCAPTCHA.
+6LddyBoqAAAAAC2sBvPOtRbaeyCINc-oHVM0Qy4y
