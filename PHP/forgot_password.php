@@ -159,8 +159,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </a>
                 </li>
 
-                <li><a href="#contact">
-                        <div><i class="fa-regular fa-address-book"></i></div>
+                <li><a href="../Contact_Us/contact_us.php">
+                        <i class="fa-solid fa-phone"></i>
                         <h3>Contact</h3>
                     </a>
                 </li>
@@ -218,6 +218,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <i class="fa-regular fa-images"></i>
                         </div>
                         <h3>Gallery</h3>
+                    </a>
+                </li>
+                <li><a class="DF FD-R center" href="../Contact_Us/contact_us.php">
+                        <div>
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <h3>Contact</h3>
                     </a>
                 </li>
             </ul>

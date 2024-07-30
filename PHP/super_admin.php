@@ -109,7 +109,7 @@ $userType = $_SESSION['userType'];
                     </a>
                 </li>
 
-                <li><a href="./Contact_Us/contact_us.php">
+                <li><a href="../Contact_Us/contact_us.php">
                         <i class="fa-solid fa-phone"></i>
                         <h3>Contact</h3>
                     </a>
@@ -170,7 +170,7 @@ $userType = $_SESSION['userType'];
                         <h3>Gallery</h3>
                     </a>
                 </li>
-                <li><a class="DF FD-R center" href="./Contact_Us/contact_us.php">
+                <li><a class="DF FD-R center" href="../Contact_Us/contact_us.php">
                         <div>
                             <i class="fa-solid fa-phone"></i>
                         </div>

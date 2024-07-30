@@ -16,7 +16,7 @@ if ($_SESSION['userType'] !== 'Owner') {
 
 
 $sampleUsers = [
-    ["username" => "databranch", "password" => "dmb@ISURUPAYA", "userType" => "Owner", "email" => "dotmoegov@gmail.com", "phoneNumber" => "0773643424"]
+    // ["username" => "databranch", "password" => "dmb@ISURUPAYA", "userType" => "Owner", "email" => "dotmoegov@gmail.com", "phoneNumber" => "0773643424"]
 ];
 
 foreach ($sampleUsers as $user) {
