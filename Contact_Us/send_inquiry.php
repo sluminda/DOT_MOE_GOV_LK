@@ -14,13 +14,25 @@ $contactNo = $_POST['contactNo'];
 $dataOfficer = $_POST['dataOfficer'];
 $subject = $_POST['subject'];
 $message = $_POST['message'];
+$recaptchaResponse = $_POST['g-recaptcha-response'];
+
+// Verify reCAPTCHA
+$recaptchaSecret = '6LeuTxsqAAAAAISUja-FjaL-TJTZW6j_EO5m6nem';
+$recaptchaVerifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
+$response = file_get_contents("$recaptchaVerifyUrl?secret=$recaptchaSecret&response=$recaptchaResponse");
+$responseData = json_decode($response);
+
+if (!$responseData->success) {
+    echo json_encode(['success' => false, 'message' => 'reCAPTCHA verification failed']);
+    exit();
+}
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     echo json_encode(['success' => false, 'message' => 'Invalid email address']);
     exit();
 }
 
-// Save the inquiry to the database
+// Save inquiry to the database
 try {
     $stmt = $conn->prepare("INSERT INTO inquiries (fullName, nicNo, email, contactNo, dataOfficer, subject, message) VALUES (:fullName, :nicNo, :email, :contactNo, :dataOfficer, :subject, :message)");
     $stmt->bindParam(':fullName', $fullName);
@@ -57,12 +69,12 @@ try {
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
     $mail->Username = 'dotmoegov@gmail.com';
-    $mail->Password = '';
+    $mail->Password = 'xwyjdwiphkgbxnmd';
     $mail->SMTPSecure = 'tls';
     $mail->Port = 587;
 
     // Sending inquiry to admin email
-    $mail->setFrom('dotmoegov@gmail.com', 'Data Officer Inquiries');
+    $mail->setFrom('dotmoegov@gmail.com', 'Ministry of Education Inquiries');
     $mail->addAddress('dotmoegov@gmail.com'); // Replace with the admin email
 
     $mail->isHTML(true);
@@ -89,30 +101,12 @@ try {
             <p><strong>Data Officer:</strong> $dataOfficer</p>
             <p><strong>Subject:</strong> $subject</p>
             <p><strong>Message:</strong> $message</p>
-            <p>Best regards,<br>Data Management Branch,<br>Ministry of Education</p>
         </div>
     ";
-    $mail->AltBody = "
-        Dear $fullName,\n\n
-        We have received your inquiry and will get back to you shortly.\n
-        \n
-        Inquiry Details:\n
-        Full Name: $fullName\n
-        NIC No: $nicNo\n
-        Email: $email\n
-        Contact No: $contactNo\n
-        Data Officer: $dataOfficer\n
-        Subject: $subject\n
-        Message: $message\n
-        \n
-        Best regards,\n
-        Data Management Branch,\n
-        Ministry of Education\n
-    ";
-
+    $mail->AltBody = strip_tags($mail->Body);
     $mail->send();
 
-    echo json_encode(['success' => true, 'message' => 'Inquiry sent successfully']);
+    echo json_encode(['success' => true, 'message' => 'Inquiry submitted successfully']);
 } catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => 'Mail Error: ' . $mail->ErrorInfo]);
+    echo json_encode(['success' => false, 'message' => 'Mailer Error: ' . $mail->ErrorInfo]);
 }
