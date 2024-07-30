@@ -27,24 +27,17 @@ USE `dot_moe_gov_lk`;
 --
 -- Table structure for table `inquiries`
 --
-
-DROP TABLE IF EXISTS `inquiries`;
-CREATE TABLE IF NOT EXISTS `inquiries` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `fullName` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nicNo` VARCHAR(12) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `contactNo` VARCHAR(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dataOfficer` ENUM('Yes', 'No') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subject` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  KEY `email` (`email`),
-  KEY `nicNo` (`nicNo`)
+DROP TABLE IF EXISTS inquiries;
+CREATE TABLE IF NOT EXISTS inquiries (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  fullName VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  contactNo VARCHAR(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  nic VARCHAR(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+  email VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  subject VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  message TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  submittedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-
 
 --
 -- Table structure for table `district`

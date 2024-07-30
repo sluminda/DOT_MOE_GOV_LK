@@ -1,60 +1,116 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("contactForm");
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+  const fullName = document.getElementById("fullName");
+  const nic = document.getElementById("nic");
+  const email = document.getElementById("email");
+  const mobileNumber = document.getElementById("mobileNumber");
+  const subject = document.getElementById("subject");
+  const message = document.getElementById("message");
 
-    grecaptcha.ready(function () {
-      grecaptcha
-        .execute("6LeuTxsqAAAAAMK3lncv_yQ2_lpFguZ0fnRGQssx", {
-          action: "submit",
-        })
-        .then(function (token) {
-          document.getElementById("g-recaptcha-response").value = token;
+  const fullNameError = document.getElementById("fullNameError");
+  const nicError = document.getElementById("nicError");
+  const emailError = document.getElementById("emailError");
+  const mobileNumberError = document.getElementById("mobileNumberError");
+  const subjectError = document.getElementById("subjectError");
+  const messageError = document.getElementById("messageError");
 
-          const formData = new FormData(form);
+  const validateFullName = () => {
+    const fullNameValue = fullName.value.trim();
+    const regex = /^[A-Za-z\s.]+$/;
+    if (!regex.test(fullNameValue)) {
+      fullNameError.textContent =
+        "Full Name can only contain letters, spaces, and dots.";
+      return false;
+    } else {
+      fullNameError.textContent = "";
+      return true;
+    }
+  };
 
-          fetch("./send_inquiry.php", {
-            method: "POST",
-            body: formData,
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.success) {
-                showPopup(
-                  "Your inquiry has been received and a confirmation email has been sent to your email.",
-                  "success"
-                );
-              } else {
-                showPopup(
-                  "There was an error submitting your inquiry. Please try again.",
-                  "error"
-                );
-              }
-            })
-            .catch((error) => {
-              showPopup(
-                "There was an error submitting your inquiry. Please try again.",
-                "error"
-              );
-            });
-        });
-    });
+  const validateNIC = () => {
+    const nicValue = nic.value.trim();
+    const regexOldNIC = /^[0-9]{9}[vV]$/;
+    const regexNewNIC = /^[0-9]{12}$/;
+    if (!regexOldNIC.test(nicValue) && !regexNewNIC.test(nicValue)) {
+      nicError.textContent =
+        "NIC must be 10 digits ending with 'v' or 'V', or 12 digits of only numbers.";
+      return false;
+    } else {
+      nicError.textContent = "";
+      return true;
+    }
+  };
+
+  const validateEmail = () => {
+    const emailValue = email.value.trim();
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(emailValue)) {
+      emailError.textContent = "Invalid email address.";
+      return false;
+    } else {
+      emailError.textContent = "";
+      return true;
+    }
+  };
+
+  const validateMobileNumber = () => {
+    const mobileNumberValue = mobileNumber.value.trim();
+    const regex = /^0[0-9]{9}$/;
+    if (!regex.test(mobileNumberValue)) {
+      mobileNumberError.textContent =
+        "Mobile Number must be 10 digits starting with 0.";
+      return false;
+    } else {
+      mobileNumberError.textContent = "";
+      return true;
+    }
+  };
+
+  const validateSubject = () => {
+    const subjectValue = subject.value.trim().split(/\s+/);
+    if (subjectValue.length > 50) {
+      subjectError.textContent = "Subject cannot exceed 50 words.";
+      return false;
+    } else {
+      subjectError.textContent = "";
+      return true;
+    }
+  };
+
+  const validateMessage = () => {
+    const messageValue = message.value.trim().split(/\s+/);
+    if (messageValue.length > 500) {
+      messageError.textContent = "Message cannot exceed 500 words.";
+      return false;
+    } else {
+      messageError.textContent = "";
+      return true;
+    }
+  };
+
+  fullName.addEventListener("input", validateFullName);
+  nic.addEventListener("input", validateNIC);
+  email.addEventListener("input", validateEmail);
+  mobileNumber.addEventListener("input", validateMobileNumber);
+  subject.addEventListener("input", validateSubject);
+  message.addEventListener("input", validateMessage);
+
+  document.getElementById("detailsForm").addEventListener("submit", (event) => {
+    const isFullNameValid = validateFullName();
+    const isNICValid = validateNIC();
+    const isEmailValid = validateEmail();
+    const isMobileNumberValid = validateMobileNumber();
+    const isSubjectValid = validateSubject();
+    const isMessageValid = validateMessage();
+
+    if (
+      !isFullNameValid ||
+      !isNICValid ||
+      !isEmailValid ||
+      !isMobileNumberValid ||
+      !isSubjectValid ||
+      !isMessageValid
+    ) {
+      event.preventDefault();
+    }
   });
 });
-
-function showPopup(message, type) {
-  const popup = document.getElementById("popup");
-  const popupMessage = document.getElementById("popupMessage");
-  const popupBox = document.querySelector(".popup-box");
-  popupBox.classList.add(type);
-  popupMessage.innerText = message;
-  popup.classList.add("show");
-}
-
-function closePopup() {
-  const popup = document.getElementById("popup");
-  popup.classList.remove("show");
-  setTimeout(() => {
-    window.location.href = "index.html";
-  }, 500);
-}

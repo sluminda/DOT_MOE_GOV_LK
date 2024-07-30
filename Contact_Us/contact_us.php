@@ -1,35 +1,54 @@
+<?php
+session_start();
+if (!isset($_SESSION['form_token'])) {
+    $_SESSION['form_token'] = bin2hex(random_bytes(32));
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contributors</title>
+    <title>Data Officer Registration</title>
 
     <link rel="apple-touch-icon" sizes="180x180" href="../Images/Favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../Images/Favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../Images/Favicon/favicon-16x16.png">
     <link rel="manifest" href="../Images/Favicon/site.webmanifest">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
-        integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <link rel="stylesheet" href="../CSS/fonts.css">
     <link rel="stylesheet" href="../CSS/Template/header.css">
     <link rel="stylesheet" href="../CSS/Body/contact_us.css">
     <link rel="stylesheet" href="../CSS/Template/footer.css">
-    <script src="https://www.google.com/recaptcha/api.js?render=6LeuTxsqAAAAAMK3lncv_yQ2_lpFguZ0fnRGQssx"></script>
 
     <script defer src="../JS/header.js"></script>
     <script defer src="../JS/contact_us.js"></script>
 </head>
 
 <body>
+    <?php
+    if (isset($_SESSION['message'])) {
+        $messageType = $_SESSION['message_type'];
+        $messageContent = $_SESSION['message'];
+        unset($_SESSION['message']);
+        unset($_SESSION['message_type']);
+        if (isset($_SESSION['form_submitted']) && $_SESSION['form_submitted']) {
+            unset($_SESSION['form_submitted']);
+            echo "<script>localStorage.removeItem('formData');</script>"; // Clear form data in local storage
+        }
+        echo "<script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    showPopup('$messageContent', '$messageType');
+                });
+              </script>";
+    }
+    ?>
 
     <!-- Header Section -->
 
@@ -52,20 +71,20 @@
                     </a>
                 </li>
 
-                <li><a href="./Contributors.html">
+                <li><a href="../Pages/Contributors.html">
                         <div><i class="fa-solid fa-handshake-angle"></i></div>
                         <h3>Contributors</h3>
                     </a>
                 </li>
 
-                <li><a href="./Gallery.html">
+                <li><a href="../Pages/Gallery.html">
                         <div><i class="fa-regular fa-images"></i></div>
                         <h3>Gallery</h3>
                     </a>
                 </li>
 
-                <li><a href="#contact">
-                        <div><i class="fa-regular fa-address-book"></i></div>
+                <li><a href="./contact_us.php">
+                        <i class="fa-solid fa-phone"></i>
                         <h3>Contact</h3>
                     </a>
                 </li>
@@ -111,18 +130,25 @@
                         <h3>Home</h3>
                     </a>
                 </li>
-                <li><a class="DF FD-R center" href="./Contributors.html">
+                <li><a class="DF FD-R center" href="../Pages/Contributors.html">
                         <div>
                             <i class="fa-solid fa-handshake-angle"></i>
                         </div>
                         <h3>Contributors</h3>
                     </a>
                 </li>
-                <li><a class="DF FD-R center" href="./Gallery.html">
+                <li><a class="DF FD-R center" href="../Pages/Gallery.html">
                         <div>
                             <i class="fa-regular fa-images"></i>
                         </div>
                         <h3>Gallery</h3>
+                    </a>
+                </li>
+                <li><a class="DF FD-R center" href="./contact_us.php">
+                        <div>
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <h3>Contact</h3>
                     </a>
                 </li>
             </ul>
@@ -151,44 +177,50 @@
 
 
 
-
-
     <!-- Body Content Starts -->
-    <main class="DF PR FD-C">
+    <main>
+        <form id="detailsForm" action="./submit_form.php" method="POST">
 
-        <div class="container">
-            <form id="contactForm" action="send_inquiry.php" method="POST">
-                <h2>Contact Us</h2>
-                <label for="fullName">Full Name:</label>
+            <!-- Include form token for CSRF protection -->
+            <input type="hidden" name="form_token" value="<?php echo $_SESSION['form_token']; ?>">
+            <div class="headTitle">
+                <i class="fa-solid fa-phone"></i>
+                <h1>Contact Us</h1>
+            </div>
+            <div>
+                <label for="fullName"></i>Full Name:</label>
+                <span id="fullNameError" class="error"></span>
                 <input type="text" id="fullName" name="fullName" required>
 
-                <label for="nicNo">NIC No:</label>
-                <input type="text" id="nicNo" name="nicNo" required>
-
-                <label for="email">Email Address:</label>
+            </div>
+            <div>
+                <label for="nic">NIC:</label>
+                <span id="nicError" class="error"></span>
+                <input type="text" id="nic" name="nic" required>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <span id="emailError" class="error"></span>
                 <input type="email" id="email" name="email" required>
-
-                <label for="contactNo">Contact No:</label>
-                <input type="tel" id="contactNo" name="contactNo" required>
-
-                <label>Are you a Data Officer?</label>
-                <div class="radio-group">
-                    <input type="radio" id="dataOfficerYes" name="dataOfficer" value="Yes" required>
-                    <label for="dataOfficerYes">Yes</label>
-                    <input type="radio" id="dataOfficerNo" name="dataOfficer" value="No" required>
-                    <label for="dataOfficerNo">No</label>
-                </div>
-
+            </div>
+            <div>
+                <label for="mobileNumber">Mobile Number:</label>
+                <span id="mobileNumberError" class="error"></span>
+                <input type="text" id="mobileNumber" name="mobileNumber" required>
+            </div>
+            <div>
                 <label for="subject">Subject:</label>
                 <input type="text" id="subject" name="subject" required>
-
+                <div id="subjectError" class="error"></div>
+            </div>
+            <div>
                 <label for="message">Message:</label>
                 <textarea id="message" name="message" rows="4" required></textarea>
+                <div id="messageError" class="error"></div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
 
-                <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
-                <button type="submit">Send Inquiry</button>
-            </form>
-        </div>
         <div id="popup" class="popup-overlay">
             <div class="popup-box">
                 <span class="popup-close" onclick="closePopup()">×</span>
@@ -199,9 +231,6 @@
     </main>
 
 
-
-
-
     <!-- Footer Starts Here -->
     <footer class="footer DF FD-C PR">
         <!-- Contact Section -->
@@ -209,10 +238,7 @@
             <!-- Google Map Column -->
             <div class="location DF FD-C PR center">
                 <h3>Google Map</h3>
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3960.9941086631047!2d79.930527!3d6.891307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2517dc82a9fef%3A0xa2cb100ac511407c!2sMinistry%20of%20Education!5e0!3m2!1sen!2sus!4v1712734841372!5m2!1sen!2sus"
-                    style="border:0;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3960.9941086631047!2d79.930527!3d6.891307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2517dc82a9fef%3A0xa2cb100ac511407c!2sMinistry%20of%20Education!5e0!3m2!1sen!2sus!4v1712734841372!5m2!1sen!2sus" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
 
             <div id="contact" class="contact_details DF FD-C PR">
@@ -268,6 +294,25 @@
                 Ministry of Education.</p>
         </section>
     </footer>
+
+    <script>
+        function showPopup(message, type) {
+            const popup = document.getElementById('popup');
+            const popupMessage = document.getElementById('popupMessage');
+            const popupBox = document.querySelector('.popup-box');
+            popupBox.classList.add(type);
+            popupMessage.innerText = message;
+            popup.classList.add('show');
+        }
+
+        function closePopup() {
+            const popup = document.getElementById('popup');
+            popup.classList.remove('show');
+            setTimeout(() => {
+                window.location.href = '../index.html';
+            }, 500);
+        }
+    </script>
 </body>
 
 </html>
